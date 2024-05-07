@@ -4,7 +4,7 @@ export function useMousePosition() {
   const [ mousePosition, setMousePosition ] = useState({ x: null, y: null });
   
   useEffect(() => {
-    const grid = document.getElementById("grid")
+    const grid = document.getElementById('grid')
     const updateMousePosition = ev => {
       setMousePosition({ x: ev.clientX, y: ev.clientY });
     };
