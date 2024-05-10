@@ -4,19 +4,16 @@ import { StyleSheet, Text, View } from 'react-native';
 import React from 'react';
 
 const Grid = (props) => {
-    const mousePosition = useMousePosition();
     const [offsetX, setOffsetX] = useState();
     const [offsetY, setOffsetY] = useState();
     const [selectedElement, setSelectedElement] = useState(null);
-    const [firstPath, setfirstPath] = useState({x:25, y:50})
-    const [secondPath, setSecondPath] = useState({x:50, y:0})
     const viewbox = `0 0 ${props.size} ${props.size}`;
 
     function createGrid(){
-        let num = props.size/10
+        let num = props.size/10 
         for(let i=0; i<num+1; i++){
             const svgns = "http://www.w3.org/2000/svg"
-            const grid = document.getElementById('grid')
+            const grid = document.getElementById('modalGrid')
             const horizLine = document.createElementNS(svgns, 'path')
             const vertLine = document.createElementNS(svgns, 'path')
             horizLine.setAttributeNS(null, 'd', `M 0 ${i*10} h${props.size}`)
@@ -47,20 +44,20 @@ const Grid = (props) => {
             selectedElement.setAttributeNS(null, "cx", xCoord);
             selectedElement.setAttributeNS(null, "cy", yCoord);
             if(selectedElement.id==="circle1"){
-                setfirstPath({x:xCoord-50, y:yCoord-100})
-                document.getElementById('grid').removeChild(document.getElementById('path'))
+                props.setFirstPoint({x:xCoord-50, y:yCoord-100})
+                document.getElementById('modalGrid').removeChild(document.getElementById('path'))
                 drawPath()
-                props.setPath(` q${firstPath.x},${firstPath.y} ${secondPath.x},${secondPath.y}`)
             }else{
-                setSecondPath({x:xCoord-50, y:yCoord-100})
-                document.getElementById('grid').removeChild(document.getElementById('path'))
+                props.setSecondPoint({x:xCoord-50, y:yCoord-100})
+                document.getElementById('modalGrid').removeChild(document.getElementById('path'))
                 drawPath()
-                props.setPath(` q${firstPath.x},${firstPath.y} ${secondPath.x},${secondPath.y}`)
             }
         }
     }
     function endDrag() {
         setSelectedElement(null);
+        // const newPath = `${props.path} q${props.firstPoint.x},${props.firstPoint.y} ${props.secondPoint.x},${props.secondPoint.y}`
+        // props.setPath(newPath)
     }
     function startDrag(evt) {
         if (evt.target.classList.contains('draggable')) {
@@ -74,10 +71,10 @@ const Grid = (props) => {
     }
     function drawPath(){
             const svgns = "http://www.w3.org/2000/svg"
-            const grid = document.getElementById('grid')
+            const grid = document.getElementById('modalGrid')
             const currentPath = document.createElementNS(svgns, 'path')
             currentPath.setAttributeNS(null, "id", "path")
-            currentPath.setAttributeNS(null, 'd', `M50,100 q${firstPath.x},${firstPath.y} ${secondPath.x},${secondPath.y}`)
+            currentPath.setAttributeNS(null, 'd', `M50,100 q${props.firstPoint.x},${props.firstPoint.y} ${props.secondPoint.x},${props.secondPoint.y}`)
             currentPath.setAttributeNS(null, 'stroke', "#0000ff")
             currentPath.setAttributeNS(null, 'strokeWidth', 0.5)
             currentPath.setAttributeNS(null, 'fill', 'none')
@@ -91,12 +88,12 @@ const Grid = (props) => {
 
     return(
         <View style={styles.container}>
-            <svg id='grid' height={props.size} width={props.size} viewBox={viewbox} onMouseMove={(evt) => drag(evt)} onMouseLeave={endDrag} >
+            <svg id='modalGrid' height={props.size} width={props.size} viewBox={viewbox} onMouseMove={(evt) => drag(evt)} onMouseLeave={endDrag} >
                 <circle className="draggable" id="circle1" cx="75" cy="150" r="5" onMouseDown={(evt) => startDrag(evt)}  onMouseUp={endDrag} style={styles.drag}/>
                 <circle className="draggable" id="circle2" cx="100" cy="100" r="5" onMouseDown={(evt) => startDrag(evt)}  onMouseUp={endDrag} style={styles.drag} />
             </svg>
             <View style={styles.position}>
-                <Text>Current Command Path: "q{firstPath.x},{firstPath.y} {secondPath.x},{secondPath.y}"</Text>
+                <Text>Current Command Path: "q{props.firstPoint.x},{props.firstPoint.y} {props.secondPoint.x},{props.secondPoint.y}"</Text>
             </View>
         </View>
     )

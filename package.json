@@ -21,7 +21,8 @@
     "react-router-dom": "^6.23.0",
     "sha1-file": "^3.0.0",
     "styled-components": "6.1.9",
-    "uuid": "^9.0.1"
+    "uuid": "^9.0.1",
+    "expo-font": "~11.10.3"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
