@@ -1,21 +1,21 @@
-import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 import React from 'react';
 import Main from './components/main';
-
+import * as Font from 'expo-font';
 
 export default function App() {
+  async function loadFonts() {
+    await Font.loadAsync({
+      'Geologica': require('./assets/fonts/Geologica.ttf'),
+      'Poppins-ExtraLight': require('./assets/fonts/Poppins-ExtraLight.ttf'),
+      'Poppins-Light': require('./assets/fonts/Poppins-Light.ttf'),
+      'Poppins-Medium': require('./assets/fonts/Poppins-Medium.ttf'),
+      'Poppins-Bold': require('./assets/fonts/Poppins-Bold.ttf'),
+    });
+  }
+  loadFonts();
   return (
     <View style={styles.container}>
-      <Text style={styles.poppinsRegular}>
-        This text uses a Poppins font
-      </Text>
-      <Text style={styles.geologicaLight}>
-        This text uses a Geologica light font
-      </Text>
-      <Text style={styles.geologicaBlack}>
-        This text uses a heavy Geologica black font.
-      </Text>
       <Main />
     </View>
   );
@@ -24,24 +24,8 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#2d2d2d',
+    backgroundColor: '#7b7b7b',
     alignItems: 'center',
     justifyContent: 'space-evenly',
   },
-  poppinsRegular: {
-    fontFamily: 'Poppins-Regular',
-    fontSize: 20,
-  },
-  geologicaLight: {
-    fontFamily: 'Geologica_Cursive-Light',
-    fontSize: 20,
-  },
-  geologicaThin: {
-    fontFamily: 'Geologica_Cursive-Thin',
-    fontSize: 20,
-  },
-  geologicaBlack: {
-    fontFamily: 'Geologica_Cursive-Black',
-    fontSize: 20,
-  }
 });

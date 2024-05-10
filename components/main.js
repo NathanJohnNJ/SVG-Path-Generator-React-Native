@@ -7,10 +7,8 @@ import React from 'react';
 
 const Draw = () => {
     const [type, setType] = useState('relative');
-    // const [path, setPath] = useState("M50,50 q25,50 50,0 q25,-50 50,0");
-    const [path, setPath] = useState("M50,50 q25,50 50,0 q25,-50 50,0 q24,34 91,1 q25,50 55,93");
+    const [path, setPath] = useState("M100,100 q25,50 50,0 q25,-50 50,0");
     const [hover, setHover] = useState(false);
-    
     
     function toggle(){
         const rel = document.getElementById('relative');
@@ -22,9 +20,9 @@ const Draw = () => {
         }
     }
     function commandToggle(){
-        const buttons = document.getElementById("commandBtns")
         const button = document.getElementById("commandBtn")
-        if (buttons.style.display==="none"){
+        const buttons = document.getElementById("commandBtns")
+        if (button.style.display==="flex"){
             button.style.display = "none"
             buttons.style.display = "flex"
         }else{
@@ -38,6 +36,7 @@ const Draw = () => {
     function buttonLeave(){
         setHover(false)
     }
+    
 
     return (
         <View style={styles.container}>
@@ -45,14 +44,10 @@ const Draw = () => {
                 <Text onClick={()=>toggle()} style={type==='absolute'?styles.selected:styles.switch}>Absolute</Text>
                 <Text onClick={()=>toggle()} style={type==='relative'?styles.selected:styles.switch}>Relative</Text>
             </TypeSwitcher>
-            <button id="commandBtn" className="cmdBtn" onClick={() => commandToggle()} onMouseOver={buttonHover} onMouseLeave={buttonLeave} style={hover?styles.hover:styles.button}>
-                <Text>?</Text>
-            </button>
+            <button id="commandBtn" onClick={() => commandToggle()} onMouseOver={buttonHover} onMouseLeave={buttonLeave} style={hover?styles.hover:styles.button}>Commands</button>
             <CommandButtons id="commandBtns">
                 <Q type={type} toggle={commandToggle} path={path} setPath={setPath} />
-                <View onClick={() => commandToggle()}>
-                <button id="close" onMouseOver={buttonHover} onMouseLeave={buttonLeave}  style={hover?styles.hover:styles.button}><Text>X</Text></button>
-                </View>
+                <button id="close" onClick={() => commandToggle()} onMouseOver={buttonHover} onMouseLeave={buttonLeave} style={hover?styles.hover:styles.button}>X</button>
             </CommandButtons>
             <View>
                 <Grid size="400" path={path} />
@@ -70,45 +65,73 @@ const styles = StyleSheet.create({
       justifyContent: 'space-evenly',
     },
     button: {
-        width:'30px',
-        height:'30px',    
+        display:'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        width:'fit-content',
+        height:25,   
         color:'#4e4e4e',
         backgroundColor: '#6c6c6c',
         textAlign: 'center',
         textShadow: '-1px 1px 1px #4e4e4e',
-        fontSize: '20px',
+        fontFamily: 'Poppins-Medium',
+        fontSize: 18,
         textJustify: 'center',
         border: 'none',
         borderRadius: '5px',
+        margin: 5
       },
       hover: {
-          width:'30px',
-          height:'30px',    
-          color:'#ffffff',
-          backgroundColor: '#4e4e4e',
-          textAlign: 'center',
-          textShadow: '-1px 1px 1px #ffffff',
-          fontSize: '20px',
-          textJustify: 'center',
-          cursor: 'pointer',
-          boxShadow: '-1px -1px 1px 1px #ffffff, -1px 1px 1px 1px #ffffff, 1px 1px 1px 1px #ffffff, 1px -1px 1px 1px #ffffff',
-          border: 'none',
-          borderRadius: '5px'
+        display:'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        width:'fit-content',
+        height:25,   
+        color:'#ffffff',
+        backgroundColor: '#4e4e4e',
+        textAlign: 'center',
+        textShadow: '-1px 1px 1px #ffffff',
+        fontFamily: 'Poppins-Medium',
+        fontSize: 18,
+        textJustify: 'center',
+        cursor: 'pointer',
+        boxShadow: '-1px -1px 1px 1px #ffffff, -1px 1px 1px 1px #ffffff, 1px 1px 1px 1px #ffffff, 1px -1px 1px 1px #ffffff',
+        border: 'none',
+        borderRadius: '5px',
+        margin: 5
       },
       switch:{
         width:'fit-content',
-        height:'20px',
-        color:'#6c6c6c',
+        height:22,
+        padding: 2,
+        textAlign:'center',
+        textJustify:'center',
+        color:'#2d2d2d',
         backgroundColor: '#0e0e0e',
-        cursor: 'pointer'
+        border: 'none',
+        borderRadius: '5px',
+        cursor: 'pointer',
+        marginTop: 10,
+        fontFamily: 'Poppins-Medium',
+        fontSize: 15,
       },
       selected:{
         width:'fit-content',
-        height:'20px',
+        height:22,
+        padding: 2,
+        textAlign:'center',
+        textJustify:'center',
         cursor: 'pointer',
         boxShadow: '-1px -1px 1px 1px #ffffff, -1px 1px 1px 1px #ffffff, 1px 1px 1px 1px #ffffff, 1px -1px 1px 1px #ffffff',
         color: '#ffffff',
-        backgroundColor: '#6c6c6c'
+        border: 'none',
+        borderRadius: '5px',
+        backgroundColor: '#6c6c6c',
+        marginTop: 10,
+        fontFamily: 'Poppins-Medium',
+        fontSize: 15,
       },
 })
 
@@ -122,7 +145,7 @@ const CommandButtons = styled.View`
 const TypeSwitcher = styled.View`
     display:flex;
     flex-direction: row;
-    justify-content: space-between;
-    width:105px;
+    width:'fit-content';
     height: 20px;
+    margin: 20px
 `

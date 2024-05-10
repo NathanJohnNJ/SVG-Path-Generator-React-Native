@@ -27,7 +27,6 @@ const Grid = (props) => {
         if(!props.path){
 
         }else{
-            console.log(props.path)
             const svgns = "http://www.w3.org/2000/svg"
             const grid = document.getElementById('grid')
             const currentPath = document.createElementNS(svgns, 'path')
@@ -47,9 +46,9 @@ const Grid = (props) => {
     return(
         <View style={styles.container}>
             <svg id='grid' height={props.size} width={props.size} viewBox={viewbox} />
-            <View style={styles.position}>
-                <Text>Current Path: "{props.path}"</Text>
-            </View>
+            
+                <Text style={styles.position}>Current Path: "{props.path}"</Text>
+         
         </View>
     )
 };
@@ -62,10 +61,15 @@ const styles = StyleSheet.create({
       backgroundColor: '#fff',
       alignItems: 'center',
       justifyContent: 'center',
+      padding: 20
     },
     position: {
       flex:1,
       alignItems: 'center',
       justifyContent: 'center',
+      marginTop: 15,
+      fontFamily: 'Geologica',
+      fontWeight:500,
+      fontSize: 16
     }
 })
