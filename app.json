@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "build-react-native",
-    "slug": "build-react-native",
+    "name": "svg-path-generator",
+    "slug": "svg-path-generator",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -15,19 +15,27 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.nathanjohnnj.svgpathgenerator"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.nathanjohnnj.svgpathgenerator"
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
     "plugins": [
       "expo-font"
-    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "17f44693-6d9e-4fc9-955d-1118abf2470f"
+      }
+    },
+    "owner": "nathanjohnnj"
   }
 }

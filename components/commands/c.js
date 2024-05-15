@@ -3,71 +3,79 @@ import GridWithDrag from '../gridWithDrag';
 import Modal from 'react-modal';
 import { StyleSheet, Text, View } from 'react-native';
 import React from 'react';
+import FieldSet from 'react-native-fieldset';
 
 const C = (props) => {
     const [absRel, setAbsRel] = useState("c");
     const [modalIsOpen, setModalIsOpen] = useState(false);
     const [hover, setHover] = useState({sub: false, can: false, c:false});
-    const [firstPoint, setFirstPoint] = useState({x:25, y:50})
-    const [secondPoint, setSecondPoint] = useState({x:75, y:50})
-    const [thirdPoint, setThirdPoint] = useState({x:100, y:0})
-
-    // const pathArr = props.path.split(/[A-Z]/g)
-    // const nextArr = pathArr[1].split(/[a-z]/g)
-    // let numbers = [nextArr[0]]
-    // let x = 0
-    // let y = 0
-    // for (let i=1; i<nextArr.length; i++){
-    //     const newArr = nextArr[i].split(" ")
-    //     const toUse = newArr[newArr.length-1]
-    //     numbers.push(toUse) 
-    // }
-    // for (let i=0; i<numbers.length; i++){
-    //     const coOrds = numbers[i].split(",")
-    //     x += Number(coOrds[0])
-    //     y += Number(coOrds[1])
-    // }
-    // const startingPoint = {
-    //     x: x,
-    //     y: y
-    // }
-    // const cCMD = {
-    //     type: 'C',
-    //     sx: {key: 'Start x', value: 50},
-    //     sy: {key: 'Start y', value: 50},
-    //     dx1: {key: 'dx1', value: firstCtrl.x, absoluteValue: firstCtrl.dx+props.sx},
-    //     dy1: {key: 'dy1', value: firstCtrl.y, absoluteValue: firstCtrl.dy+props.sy},
-    //     dx2: {key: 'dx2', value: secondCtrl.x, absoluteValue: secondCtrl.dx+props.sx},
-    //     dy2: {key: 'dy2', value: secondCtrl.y, absoluteValue: secondCtrl.dy+props.sy},
-    //     x:  {key: 'x',value: endPoint.x, absoluteValue: endPoint.x+props.sx},
-    //     y: {key: 'y', value: endPoint.y, absoluteValue: endPoint.y+props.sy},
-    //     relCommand: `q${firstCtrl.x},${firstCtrl.y} ${endPoint.x},${endPoint.y}`,
-    //     absCommand: `Q${props.sx+firstCtrl.x},${props.sy+firstCtrl.y} ${props.sx+endPoint.x},${props.sy+endPoint.y}`,
-    //     }
+    const [firstCtrl, setFirstCtrl] = useState({x:25, y:50})
+    const [secondCtrl, setSecondCtrl] = useState({x:75, y:50})
+    const [endPoint, setEndPoint] = useState({x:100, y:0})
 
     function openModal(){
         setModalIsOpen(true)
-        setFirstPoint({x:25, y:50})
-        setSecondPoint({x:75, y:50})
-        setThirdPoint({x:100, y:0})
+        setFirstCtrl({x:25, y:50})
+        setSecondCtrl({x:75, y:50})
+        setEndPoint({x:100, y:0})
         props.toggle()
     }
     function closeModal(){
         setModalIsOpen(false)
     }
+    function hoverFunc(path){
+        path.style.strokeWidth = props.strWidth*2;
+        path.style.stroke = '#0000ff';
+    }
+    function leaveFunc(path){
+        path.style.strokeWidth = props.strWidth;
+        path.style.stroke = '#444444';
+    }
+    function clickFunc(path){
+        // props.setModalIsOpen(true)
+    }
+
     function addToPath(){
-        const newPath = `${props.path}c${firstPoint.x},${firstPoint.y} ${secondPoint.x},${secondPoint.y} ${thirdPoint.x},${thirdPoint.y}`
+        const i = props.pathID
+        const startX = props.startPoints[i-1].sx;
+        const startY = props.startPoints[i-1].sy;
+        const cPath = {
+        type: 'C',
+        sx: {key: 'Start x', value: startX},
+        sy: {key: 'Start y', value: startY},
+        dx1: {key: 'dx1', value: firstCtrl.x, absoluteValue: firstCtrl.x+startX},
+        dy1: {key: 'dy1', value: firstCtrl.y, absoluteValue: firstCtrl.y+startY},
+        dx2: {key: 'dx2', value: secondCtrl.x, absoluteValue: secondCtrl.x+startX},
+        dy2: {key: 'dy2', value: secondCtrl.y, absoluteValue: secondCtrl.y+startY},
+        x:  {key: 'x',value: endPoint.x, absoluteValue: endPoint.x+startX},
+        y: {key: 'y', value: endPoint.y, absoluteValue: endPoint.y+startY},
+        relCommand: `c${firstCtrl.x},${firstCtrl.y} ${secondCtrl.x},${secondCtrl.y} ${endPoint.x},${endPoint.y}`,
+        absCommand: `C${startX+firstCtrl.x},${startY+firstCtrl.y} ${startX+secondCtrl.x},${startY+secondCtrl.y}  ${startX+endPoint.x},${startY+endPoint.y}`,
+        }
+        const newPath = [...props.path, cPath]
         props.setPath(newPath)
+        const newStartPoints = [...props.startPoints, {sx: startX+endPoint.x, sy: startY+endPoint.y}]
+        props.setStartPoints(newStartPoints)
         const grid = document.getElementById('grid')
-        const svgns = "http://www.w3.org/2000/svg"
-        const currentPath = document.createElementNS(svgns, 'path')
-        currentPath.setAttributeNS(null, 'd', `${newPath}`)
-        currentPath.setAttributeNS(null, 'stroke', "#0000ff")
-        currentPath.setAttributeNS(null, 'strokeWidth', 0.5)
-        currentPath.setAttributeNS(null, 'fill', 'none')
         grid.removeChild(grid.lastChild)
-        grid.appendChild(currentPath)
-        setModalIsOpen(false)
+        const svgns = "http://www.w3.org/2000/svg"
+        newPath.map((path, i) => {
+            const currentPath = document.createElementNS(svgns, 'path')
+            const fullPath = `M${path.sx.value},${path.sy.value}${path.relCommand}`
+            currentPath.setAttributeNS(null, 'd', fullPath)
+            currentPath.setAttributeNS(null, 'stroke', "#444444")
+            currentPath.setAttributeNS(null, 'stroke-width', props.strWidth)
+            currentPath.setAttributeNS(null, 'fill', 'none')
+            currentPath.setAttributeNS(null, 'style', 'styles.path')
+            currentPath.setAttributeNS(null, 'id', `path${path.id}`)
+            grid.appendChild(currentPath)
+            let thisPath = document.getElementById(`path${path.id}`)
+            thisPath.addEventListener('mouseover', ()=>hoverFunc(thisPath))
+            thisPath.addEventListener('mouseleave', ()=>leaveFunc(thisPath))
+            thisPath.addEventListener('click', ()=>clickFunc(props.path))
+        })
+        props.setPathID(props.pathID+1)  
+        setModalIsOpen(false) 
     }
 
     useEffect(()=>{
@@ -77,6 +85,117 @@ const C = (props) => {
             setAbsRel("C")
         }
     })
+
+    function showTables(){
+        if(!props.relative){
+            return(
+                <View>
+                    <View style={styles.tableContainer}>
+                        <FieldSet label="First Control Point" labelColor="#00f" labelFontSize='17.5px' labelStyle={styles.label} mainStyle={styles.fieldSet}>
+                            <table style={styles.table}>
+                                <tbody style={styles.tbody}>
+                                    <tr style={styles.tr}>
+                                        <th style={styles.th}>dx1</th>
+                                        <td style={styles.td}>{firstCtrl.x+props.path[props.pathID-1].x.absoluteValue}</td>
+                                    </tr>
+                                    <tr style={styles.tr}>
+                                        <th style={styles.th}>dy1</th>
+                                        <td style={styles.td}>{firstCtrl.y+props.path[props.pathID-1].y.absoluteValue}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </FieldSet>
+                    </View>
+                    <View style={styles.tableContainer}>
+                        <FieldSet label="Second Control Point" labelColor="#00f" labelFontSize='17.5px' labelStyle={styles.label} mainStyle={styles.fieldSet}>
+                            <table style={styles.table}>
+                                <tbody style={styles.tbody}>
+                                    <tr style={styles.tr}>
+                                        <th style={styles.th}>dx2</th>
+                                        <td style={styles.td}>{secondCtrl.x+props.path[props.pathID-1].x.absoluteValue}</td>
+                                    </tr>
+                                    <tr style={styles.tr}>
+                                        <th style={styles.th}>dy2</th>
+                                        <td style={styles.td}>{secondCtrl.y+props.path[props.pathID-1].y.absoluteValue}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </FieldSet>
+                    </View>
+                    <View style={styles.tableContainer}>
+                        <FieldSet label="End Point" labelColor="#f00" labelFontSize="17.5px" labelStyle={styles.label} mainStyle={styles.fieldSet}>
+                            <table style={styles.table}>
+                                <tbody style={styles.tbody}>
+                                    <tr style={styles.tr}>
+                                        <th style={styles.th}>x</th>
+                                        <td style={styles.end}>{endPoint.x+props.path[props.pathID-1].x.absoluteValue}</td>
+                                    </tr>
+                                    <tr style={styles.tr}>
+                                        <th style={styles.th}>y</th>
+                                        <td style={styles.end}>{endPoint.y+props.path[props.pathID-1].y.absoluteValue}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </FieldSet>
+                    </View>
+                </View>
+            )
+        } else {
+            return(
+                <View>
+                    <View style={styles.tableContainer}>
+                        <FieldSet label="First Control Point" labelColor="#00f" labelFontSize='17.5px' labelStyle={styles.label} mainStyle={styles.fieldSet}>
+                            <table style={styles.table}>
+                                <tbody style={styles.tbody}>
+                                    <tr style={styles.tr}>
+                                        <th style={styles.th}>dx1</th>
+                                        <td style={styles.td}>{firstCtrl.x}</td>
+                                    </tr>
+                                    <tr style={styles.tr}>
+                                        <th style={styles.th}>dy1</th>
+                                        <td style={styles.td}>{firstCtrl.y}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </FieldSet>
+                    </View>
+                    <View style={styles.tableContainer}>
+                        <FieldSet label="Second Control Point" labelColor="#00f" labelFontSize='17.5px' labelStyle={styles.label} mainStyle={styles.fieldSet}>
+                            <table style={styles.table}>
+                                <tbody style={styles.tbody}>
+                                    <tr style={styles.tr}>
+                                        <th style={styles.th}>dx2</th>
+                                        <td style={styles.td}>{secondCtrl.x}</td>
+                                    </tr>
+                                    <tr style={styles.tr}>
+                                        <th style={styles.th}>dy2</th>
+                                        <td style={styles.td}>{secondCtrl.y}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </FieldSet>
+                    </View>
+                    <View style={styles.tableContainer}>
+                        <FieldSet label="End Point" labelColor="#f00" labelFontSize="17.5px" labelStyle={styles.label} mainStyle={styles.fieldSet}>
+                            <table style={styles.table}>
+                                <tbody style={styles.tbody}>
+                                    <tr style={styles.tr}>
+                                        <th style={styles.th}>x</th>
+                                        <td style={styles.end}>{endPoint.x}</td>
+                                    </tr>
+                                    <tr style={styles.tr}>
+                                        <th style={styles.th}>y</th>
+                                        <td style={styles.end}>{endPoint.y}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </FieldSet>
+                    </View>
+                </View>
+            )
+        }
+    }
+
 
     return (
         <View className="command">
@@ -89,62 +208,10 @@ const C = (props) => {
                 >
                 <View style={styles.row}>
                     <View style={styles.container}>
-                        <GridWithDrag size="200" command="C" relative={props.relative} firstPoint={firstPoint} setFirstPoint={setFirstPoint} secondPoint={secondPoint} setSecondPoint={setSecondPoint} thirdPoint={thirdPoint} setThirdPoint={setThirdPoint}/>
-                        {/* startingPoint={startingPoint}  */}
+                        <GridWithDrag size="200" command="C" relative={props.relative} firstCtrl={firstCtrl} setFirstCtrl={setFirstCtrl} secondCtrl={secondCtrl} setSecondCtrl={setSecondCtrl} endPoint={endPoint} setEndPoint={setEndPoint} strWidth={props.strWidth} setStrWidth={props.setStrWidth} stroke={props.stroke} setStroke={props.setStroke} fill={props.fill} setFill={props.setFill}/>
                     </View>
                     <View style={styles.container}>
-                    <View style={styles.tableContainer}>
-                        {/* <table style={styles.table}>
-                            <tbody>
-                                <tr>
-                                    <th style={styles.startTh}>Start x</th>
-                                    <td style={styles.start}>{startingPoint.x}</td>
-                                </tr>
-                                <tr>
-                                    <th style={styles.startTh}>Start y</th>
-                                    <td style={styles.start}>{startingPoint.y}</td>
-                                </tr>
-                            </tbody>
-                        </table> */}
-                        <table style={styles.table}>
-                            <tbody>
-                                <tr>
-                                    <th style={styles.th}>dx1</th>
-                                    <td style={styles.td}>{firstPoint.x}</td>
-                                </tr>
-                                <tr>
-                                    <th style={styles.th}>dy1</th>
-                                    <td style={styles.td}>{firstPoint.y}</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </View>
-                    <View style={styles.tableContainer}>
-                        <table style={styles.table}>
-                            <tbody>
-                                <tr>
-                                    <th style={styles.th}>dx2</th>
-                                    <td style={styles.td}>{secondPoint.x}</td>
-                                </tr>
-                                <tr>
-                                    <th style={styles.th}>dy2</th>
-                                    <td style={styles.td}>{secondPoint.y}</td>
-                                </tr>
-                                </tbody>
-                        </table>
-                        <table style={styles.table}>
-                            <tbody>
-                                <tr>
-                                    <th style={styles.th}>x</th>
-                                    <td style={styles.end}>{thirdPoint.x}</td>
-                                </tr>
-                                <tr>
-                                    <th style={styles.th}>y</th>
-                                    <td style={styles.end}>{thirdPoint.y}</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </View>
+                        {showTables()}
                     </View>
                 </View>
                 <View style={styles.subCan}>
@@ -177,53 +244,109 @@ const styles = StyleSheet.create({
     },
     tableContainer: {
         display: "flex",
-        flexDirection: 'row',
+        flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
+        flex:1
+    },
+    fieldSet:{
+        backgroundColor: '#a2a2a2',
+        height: 80,
+        width: 'fit-content',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'flex-start',
+    },
+    label: {
+        fontFamily: 'Geologica',
+        fontWeight: 600,
+        fontSize: 17.5
     },
     table: {
-        backgroundColor: '#dadada',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
         color: '#fff',
-        width: 110,
-        height: 70,
-        marginRight: 45,
-        marginBottom: 5
+        marginTop: 5,
+        marginLeft: 10,
+        flex:1
     },
-    startTh: {
-        border: '1.5px solid black',
-        fontFamily: 'Geologica',
-        fontWeight: 500,
-        width: 65,
+    tbody:{
+        flex:1,
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    tr: {
+        flex: 1,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderRadius: '5px',
     },
     th: {
-        border: '1.5px solid black',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        border: '1.8px solid black',
         fontFamily: 'Geologica',
         fontWeight: 500,
-        width: 25,
+        fontSize: 18,
+        flex:1,
+        width: 40,
+        height: 25,
+        marginTop: -5,
+        marginBottom: -5,
     },
     td: {
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
         textAlign: 'center',
-        border: '1.5px dashed black',
+        border: '1.5px dashed grey',
         fontFamily: 'Geologica',
-        fontWeight: 200,
-        width: 45,
-        color: '#12f'
+        fontWeight: 400,
+        fontSize: 18,
+        color: '#12f',
+        flex:1,
+        width: 60,
+        height: 25,
+        margin: 2
     },
     start: {
+        display: 'flex',
         textAlign: 'center',
-        border: '1.5px dashed black',
+        alignItems: 'center',
+        justifyContent: 'center',
+        border: '1.5px dashed grey',
         fontFamily: 'Geologica',
-        fontWeight: 200,
-        width: 45,
-        color: '#159c06'
+        fontWeight: 400,
+        fontSize: 18,
+        color: '#159c06',
+        flex:1,
+        width: 60,
+        height: 25,
+        margin: 2
     },
     end: {
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
         textAlign: 'center',
-        border: '1.5px dashed black',
+        border: '1.5px dashed grey',
         fontFamily: 'Geologica',
-        fontWeight: 200,
+        fontWeight: 400,
+        fontSize: 18,
         color: '#f00',
-        width: 45,
+        flex:1,
+        width: 60,
+        height: 25,
+        margin: 2
+    },
+    path:{
+        cursor: 'pointer'
     },
     subCan: {
         flex: 1,
