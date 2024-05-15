@@ -30,7 +30,7 @@ const Q = (props) => {
         path.style.stroke = '#444444';
     }
     function clickFunc(path){
-        // setModalIsOpen(true)
+        // props.setModalIsOpen(true)
     }
     function addToPath(){
         const i = props.pathID
@@ -41,8 +41,8 @@ const Q = (props) => {
             id: props.pathID+1,
             sx: {key: 'Start x', value: startX},
             sy: {key: 'Start y', value: startY},
-            dx: {key: 'dx', value: firstCtrl.x, absoluteValue: firstCtrl.x+startX},
-            dy: {key: 'dy', value: firstCtrl.y, absoluteValue: firstCtrl.y+startY},
+            dx1: {key: 'dx', value: firstCtrl.x, absoluteValue: firstCtrl.x+startX},
+            dy1: {key: 'dy', value: firstCtrl.y, absoluteValue: firstCtrl.y+startY},
             x:  {key: 'x',value: endPoint.x, absoluteValue: endPoint.x+startX},
             y: {key: 'y', value: endPoint.y, absoluteValue: endPoint.y+startY},
             relCommand: `q${firstCtrl.x},${firstCtrl.y} ${endPoint.x},${endPoint.y}`,
@@ -56,7 +56,6 @@ const Q = (props) => {
         grid.removeChild(grid.lastChild)
         const svgns = "http://www.w3.org/2000/svg"
         newPath.map((path, i) => {
-            console.log(path)
             const currentPath = document.createElementNS(svgns, 'path')
             const fullPath = `M${path.sx.value},${path.sy.value}${path.relCommand}`
             currentPath.setAttributeNS(null, 'd', fullPath)
@@ -70,9 +69,8 @@ const Q = (props) => {
             thisPath.addEventListener('mouseover', ()=>hoverFunc(thisPath))
             thisPath.addEventListener('mouseleave', ()=>leaveFunc(thisPath))
             thisPath.addEventListener('click', ()=>clickFunc(props.path))
-        })
-        
-    props.setPathID(props.pathID+1)  
+        })    
+        props.setPathID(props.pathID+1)  
         setModalIsOpen(false)
     }
     useEffect(()=>{
@@ -83,8 +81,6 @@ const Q = (props) => {
         }
     }, [])
     function showTables(){
-
-    console.log()
         if(!props.relative){
             return(
                 <View>
@@ -173,7 +169,7 @@ const Q = (props) => {
                 >
                 <View style={styles.row}>
                     <View style={styles.container}>
-                        <GridWithDrag size="200" command="Q" relative={props.relative} firstCtrl={firstCtrl} setFirstCtrl={setFirstCtrl} endPoint={endPoint} setEndPoint={setEndPoint} strWidth={props.strWidth} setStrWidth={props.setStrWidth}  />
+                        <GridWithDrag size="200" command="Q" relative={props.relative} firstCtrl={firstCtrl} setFirstCtrl={setFirstCtrl} endPoint={endPoint} setEndPoint={setEndPoint} strWidth={props.strWidth} setStrWidth={props.setStrWidth} stroke={props.stroke} setStroke={props.setStroke} fill={props.fill} setFill={props.setFill} />
                     </View>
                     <View style={styles.container}>
                         {showTables()}

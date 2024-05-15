@@ -10,7 +10,9 @@ const Main = (props) => {
     const [startPoints, setStartPoints] = useState([]);
     const [pathID, setPathID] = useState(1);
     const [relative, setRelative] = useState(true);
-    const [strWidth, setStrWidth] = useState(3)
+    const [strWidth, setStrWidth] = useState(3);
+    const [stroke, setStroke] = useState('#444');
+    const [fill, setFill] = useState('none');
     const firstCMD = {
         type: 'C',
         id:pathID,
@@ -64,12 +66,12 @@ const Main = (props) => {
             </TypeSwitcher>
             <button id="commandBtn" onClick={() => commandToggle()} onMouseOver={buttonHover} onMouseLeave={buttonLeave} style={hover?styles.hover:styles.button}>Commands</button>
             <View style={styles.commands} id="commandBtns">
-                <Q strWidth={strWidth} setStrWidth={setStrWidth} relative={relative} toggle={commandToggle} path={path} setPath={setPath} pathID={pathID} setPathID={setPathID} startPoints={startPoints} setStartPoints={setStartPoints} />
-                {/* <C strWidth={strWidth} setStrWidth={setStrWidth} relative={relative} toggle={commandToggle} path={path} setPath={setPath} pathID={pathID} setPathID={setPathID} startPoints={startPoints} setStartPoints={setStartPoints} /> */}
+                <Q strWidth={strWidth} setStrWidth={setStrWidth} relative={relative} toggle={commandToggle} path={path} setPath={setPath} pathID={pathID} setPathID={setPathID} startPoints={startPoints} setStartPoints={setStartPoints} stroke={stroke} setStroke={setStroke} fill={fill} setFill={setFill} />
+                <C strWidth={strWidth} setStrWidth={setStrWidth} relative={relative} toggle={commandToggle} path={path} setPath={setPath} pathID={pathID} setPathID={setPathID} startPoints={startPoints} setStartPoints={setStartPoints} stroke={stroke} setStroke={setStroke} fill={fill} setFill={setFill} />
                 <button id="close" onClick={() => commandToggle()} onMouseOver={buttonHover} onMouseLeave={buttonLeave} style={hover?styles.hoverClose:styles.close}>X</button>
             </View>
             <View>
-                <Grid strWidth={strWidth} setStrWidth={setStrWidth} size="400" path={path} relative={relative} startPoints={startPoints} setStartPoints={setStartPoints} pathID={pathID} setPathID={setPathID} />
+                <Grid strWidth={strWidth} setStrWidth={setStrWidth} size="400" path={path} relative={relative} startPoints={startPoints} setStartPoints={setStartPoints} pathID={pathID} setPathID={setPathID} stroke={stroke} setStroke={setStroke} fill={fill} setFill={setFill}  />
             </View>
         </View>
     )
