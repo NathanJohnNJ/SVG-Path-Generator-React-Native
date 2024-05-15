@@ -1,6 +1,7 @@
 import { StyleSheet, Text, View } from 'react-native';
 import React from 'react';
 import Main from './components/main';
+import Toolbar from './components/toolbar';
 import * as Font from 'expo-font';
 
 export default function App() {
@@ -14,8 +15,10 @@ export default function App() {
     });
   }
   loadFonts();
+  
   return (
     <View style={styles.container}>
+      {/* <Toolbar /> */}
       <Main />
     </View>
   );
