@@ -1,38 +1,40 @@
-import { useState, useEffect } from 'react';
-import GridWithDrag from '../gridWithDrag';
-import Modal from 'react-modal';
-import { StyleSheet, Text, View } from 'react-native';
-import React from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import GridWithDrag from './gridWithDrag';
+import Svg, { Path, Rect, ForeignObject, Defs, Pattern, Line, Ellipse } from "react-native-svg"
+import { StyleSheet, Text, View, Pressable, Modal } from 'react-native';
 import FieldSet from 'react-native-fieldset';
 
 const C = (props) => {
     const [absRel, setAbsRel] = useState("c");
     const [modalIsOpen, setModalIsOpen] = useState(false);
-    const [hover, setHover] = useState({sub: false, can: false, c:false});
-    const [firstCtrl, setFirstCtrl] = useState({x:25, y:50})
-    const [secondCtrl, setSecondCtrl] = useState({x:75, y:50})
-    const [endPoint, setEndPoint] = useState({x:100, y:0})
+    const [firstCtrl, setFirstCtrl] = useState({x:25, y:50});
+    const [secondCtrl, setSecondCtrl] = useState({x:75, y:50});
+    const [endPoint, setEndPoint] = useState({x:100, y:0});
+    const pathRef = useRef();
 
     function openModal(){
-        setModalIsOpen(true)
         setFirstCtrl({x:25, y:50})
         setSecondCtrl({x:75, y:50})
         setEndPoint({x:100, y:0})
-        props.toggle()
+        setModalIsOpen(true)
+        props.setVisible(visible => !visible )
     }
     function closeModal(){
         setModalIsOpen(false)
-    }
-    function hoverFunc(path){
-        path.style.strokeWidth = props.strWidth*2;
-        path.style.stroke = '#0000ff';
-    }
-    function leaveFunc(path){
-        path.style.strokeWidth = props.strWidth;
-        path.style.stroke = '#444444';
-    }
-    function clickFunc(path){
-        // props.setModalIsOpen(true)
+    }  
+ 
+    function pressFunc(){
+      pathRef.current.style.stroke = '#00f'
+      pathRef.current.style.strokeWidth = props.strWidth*2
+      pathRef.current.removeEventListener('press', pressFunc)
+      pathRef.current.addEventListener('press', secondPress)
+   }
+    function secondPress(){
+      pathRef.current.style.stroke = '#444'
+      pathRef.current.style.strokeWidth = props.strWidth
+      pathRef.current.removeEventListener('press', secondPress)
+      pathRef.current.addEventListener('press', pressFunc)
+      props.setEditModalIsOpen(true)
     }
 
     function addToPath(){
@@ -56,23 +58,18 @@ const C = (props) => {
         props.setPath(newPath)
         const newStartPoints = [...props.startPoints, {sx: startX+endPoint.x, sy: startY+endPoint.y}]
         props.setStartPoints(newStartPoints)
-        const grid = document.getElementById('grid')
-        grid.removeChild(grid.lastChild)
-        const svgns = "http://www.w3.org/2000/svg"
+        
+        props.gridRef.current.removeChild(grid.lastChild)
         newPath.map((path, i) => {
-            const currentPath = document.createElementNS(svgns, 'path')
             const fullPath = `M${path.sx.value},${path.sy.value}${path.relCommand}`
-            currentPath.setAttributeNS(null, 'd', fullPath)
-            currentPath.setAttributeNS(null, 'stroke', "#444444")
-            currentPath.setAttributeNS(null, 'stroke-width', props.strWidth)
-            currentPath.setAttributeNS(null, 'fill', 'none')
-            currentPath.setAttributeNS(null, 'style', 'styles.path')
-            currentPath.setAttributeNS(null, 'id', `path${path.id}`)
-            grid.appendChild(currentPath)
-            let thisPath = document.getElementById(`path${path.id}`)
-            thisPath.addEventListener('mouseover', ()=>hoverFunc(thisPath))
-            thisPath.addEventListener('mouseleave', ()=>leaveFunc(thisPath))
-            thisPath.addEventListener('click', ()=>clickFunc(props.path))
+            const id = `path${path.id}`
+            const size = 200
+            pathRef.current.addEventListener('press', pressFunc)
+            return(
+                <Svg width={size+20} height={size+20} viewBox={viewBox} x="0" y="0" style={styles.grid}>
+                    <Path ref={pathRef} id={id} d={fullPath} x="0" y="0" stroke={props.stroke} strokeWidth={props.strWidth} fill={props.fill} onPress={pressFunc}/>
+                </Svg>
+            )
         })
         props.setPathID(props.pathID+1)  
         setModalIsOpen(false) 
@@ -196,36 +193,43 @@ const C = (props) => {
         }
     }
 
-
     return (
-        <View className="command">
-            <button onClick={openModal} onMouseOver={()=>{setHover({sub: false, can:false, c: true})}} onMouseLeave={()=>{setHover({sub: false, can:false, c: false})}} style={hover.c?styles.hover:styles.button}>{absRel}</button>
+        <View>
+            <Pressable onPress={openModal} style={styles.button}><Text style={styles.btnText}>{absRel}</Text></Pressable>
             <Modal
-                isOpen={modalIsOpen}
-                onRequestClose={closeModal}
-                ariaHideApp={false}
-                style={styles.modal}
-                >
+                 visible={modalIsOpen}
+                 animationType='slide'
+                 onRequestClose={closeModal}
+                 transparent={true}
+                 style={styles.modal}
+                 >
                 <View style={styles.row}>
                     <View style={styles.container}>
-                        <GridWithDrag size="200" command="C" relative={props.relative} firstCtrl={firstCtrl} setFirstCtrl={setFirstCtrl} secondCtrl={secondCtrl} setSecondCtrl={setSecondCtrl} endPoint={endPoint} setEndPoint={setEndPoint} strWidth={props.strWidth} setStrWidth={props.setStrWidth} stroke={props.stroke} setStroke={props.setStroke} fill={props.fill} setFill={props.setFill}/>
+                        <GridWithDrag size="200" command="C" relative={props.relative} firstCtrl={firstCtrl} setFirstCtrl={setFirstCtrl} secondCtrl={secondCtrl} setSecondCtrl={setSecondCtrl} endPoint={endPoint} setEndPoint={setEndPoint} strWidth={props.strWidth} stroke={props.stroke} fill={props.fill}/>
                     </View>
                     <View style={styles.container}>
                         {showTables()}
                     </View>
                 </View>
                 <View style={styles.subCan}>
-                    <button onClick={addToPath} onMouseOver={()=>{setHover({sub: true, can:false, c: false})}} onMouseLeave={()=>{setHover({sub: false, can:false, c: false})}} style={hover.sub?styles.submitHover:styles.submitButton}>Add to path!</button>
-                    <button onClick={closeModal} onMouseOver={()=>{setHover({sub: false, can:true, c: false})}} onMouseLeave={()=>{setHover({sub: false, can:false, c: false})}} style={hover.can?styles.cancelHover:styles.cancelButton}>Cancel</button>
+                    <Pressable onPress={addToPath} style={styles.submitButton}><Text style={styles.btnText}>Add to path!</Text></Pressable>
+                    <Pressable onPress={closeModal} style={styles.cancelButton}><Text style={styles.cancelText}>Cancel</Text></Pressable>
                 </View>
             </Modal>
-        </View>
-    )
+       </View>
+   )
 };
 
 export default C;
 
+//All checked below, all used.
 const styles = StyleSheet.create({
+  grid: {
+    marginTop: 50,
+    marginBottom: 30,
+    marginLeft: 30,
+    marginRight: 10
+},
     modal: {
       flex: 1,
       backgroundColor: '#fff',
@@ -252,7 +256,7 @@ const styles = StyleSheet.create({
     fieldSet:{
         backgroundColor: '#a2a2a2',
         height: 80,
-        width: 'fit-content',
+        width: 'auto',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
@@ -315,21 +319,6 @@ const styles = StyleSheet.create({
         height: 25,
         margin: 2
     },
-    start: {
-        display: 'flex',
-        textAlign: 'center',
-        alignItems: 'center',
-        justifyContent: 'center',
-        border: '1.5px dashed grey',
-        fontFamily: 'Geologica',
-        fontWeight: 400,
-        fontSize: 18,
-        color: '#159c06',
-        flex:1,
-        width: 60,
-        height: 25,
-        margin: 2
-    },
     end: {
         display: 'flex',
         alignItems: 'center',
@@ -345,9 +334,6 @@ const styles = StyleSheet.create({
         height: 25,
         margin: 2
     },
-    path:{
-        cursor: 'pointer'
-    },
     subCan: {
         flex: 1,
         flexDirection: 'row',
@@ -361,105 +347,52 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        width:'fit-content',
+        width:25,
         height:25,   
-        color:'#4e4e4e',
         backgroundColor: '#6c6c6c',
+        border: 'none',
+        borderRadius: 6,
+        margin: 5
+    },
+    btnText:{
         textShadow: '-1px 1px 1px #4e4e4e',
         fontFamily: 'Poppins-Medium',
-        fontSize: 18,
-        border: 'none',
-        borderRadius: '5px',
-        margin: 5
-      },
-      hover: {
-        display:'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        width:'fit-content',
-        height:25,   
-        color:'#ffffff',
-        backgroundColor: '#4e4e4e',
-        textShadow: '-1px 1px 1px #ffffff',
-        fontFamily: 'Poppins-Medium',
-        fontSize: 18,
-        cursor: 'pointer',
-        boxShadow: '-1px -1px 1px 1px #ffffff, -1px 1px 1px 1px #ffffff, 1px 1px 1px 1px #ffffff, 1px -1px 1px 1px #ffffff',
-        border: 'none',
-        borderRadius: '5px',
-        margin: 5
-      },
-        submitButton: {
-        display:'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        width:'fit-content',
-        height:22,
-        padding:'2px',    
         color:'#4e4e4e',
+        fontSize: 18,
+    },
+    submitButton: {
+        display:'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        width:'auto',
+        height:22,
+        padding:'2px',
         backgroundColor: '#fff',
-        textShadow: '-1px 1px 1px #4e4e4e',
-        fontFamily: 'Poppins-Medium',
-        fontSize: 15,
         borderColor: '#4e4e4e',
         borderStyle: 'solid',
         borderWidth: '1.5px',
-        borderRadius: '5px'
-      },
-      submitHover: {
-        display:'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        width:'fit-content',
-        height:22,
-        padding:'2px', 
-        color:'#ffffff',
-        borderRadius: '5px',
-        border: 'none',
-        backgroundColor: '#4e4e4e',
-        textShadow: '-1px 1px 1px #ffffff',
-        fontFamily: 'Poppins-Medium',
-        fontSize: 15,
-        cursor: 'pointer',
-        boxShadow: '-1px -1px 1px 2px #4e4e4e, -1px 1px 1px 2px #4e4e4e, 1px 1px 1px 2px #4e4e4e, 1px -1px 1px 2px #4e4e4e'
-      },
+        borderRadius: 6
+    },
     cancelButton: {
         display:'flex',
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        width:'fit-content',
+        width:'auto',
         height:22,
         padding:'2px',  
         color:'#f00',
-        backgroundColor: '#fff',
-        textShadow: '-1px 1px 1px #ffffff',
-        fontFamily: 'Poppins-Medium',
-        fontSize: 15,
+        backgroundColor: '#f00',
         borderColor: '#f00',
         borderStyle: 'solid',
         borderWidth: '1.5px',
-        borderRadius: '5px'
-      },
-      cancelHover: {
-        display:'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        width:'fit-content',
-        height:22,
-        padding:'2px', 
-        color:'#fff',
-        borderRadius: '5px',
-        border: 'none',
-        backgroundColor: '#f00',
+        borderRadius: 6
+    },
+    cancelText:{
         textShadow: '-1px 1px 1px #fff',
         fontFamily: 'Poppins-Medium',
-        fontSize: 15,
-        cursor: 'pointer',
-        boxShadow: '-1px -1px 1px 2px #f00, -1px 1px 1px 2px #f00, 1px 1px 1px 2px #f00, 1px -1px 1px 2px #f00'
-      }
+        color:'#f00',
+        fontSize: 18,
+    },
 })

@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import Svg, { Path } from "react-native-svg"
 import { StyleSheet, Text, View } from 'react-native';
 import React from 'react';
 
@@ -10,15 +11,27 @@ const GridWithDrag = (props) => {
 
     function createGrid(){
         let num = props.size/10 
+        const svgns = "http://www.w3.org/2000/svg"
+        const grid = document.getElementById('modalGrid')
         for(let i=0; i<num+1; i++){
-            const svgns = "http://www.w3.org/2000/svg"
-            const grid = document.getElementById('modalGrid')
             const horizLine = document.createElementNS(svgns, 'path')
             const vertLine = document.createElementNS(svgns, 'path')
             horizLine.setAttributeNS(null, 'd', `M 0 ${i*10} h${props.size}`)
             horizLine.setAttributeNS(null, 'stroke', "#bbbbbb")
             vertLine.setAttributeNS(null, 'd', `M ${i*10} 0 v${props.size}`)
             vertLine.setAttributeNS(null, 'stroke', "#bbbbbb")
+            grid.appendChild(horizLine)
+            grid.appendChild(vertLine)
+        }
+        for(let i=0; i<num+1; i+=5){
+            const horizLine = document.createElementNS(svgns, 'path')
+            const vertLine = document.createElementNS(svgns, 'path')
+            horizLine.setAttributeNS(null, 'd', `M 0 ${i*10} h${props.size}`)
+            horizLine.setAttributeNS(null, 'stroke', "#bbbbbb")
+            horizLine.setAttributeNS(null, 'stroke-width', 2)
+            vertLine.setAttributeNS(null, 'd', `M ${i*10} 0 v${props.size}`)
+            vertLine.setAttributeNS(null, 'stroke', "#bbbbbb")
+            vertLine.setAttributeNS(null, 'stroke-width', 2)
             grid.appendChild(horizLine)
             grid.appendChild(vertLine)
         }
@@ -76,7 +89,7 @@ const GridWithDrag = (props) => {
         currentPath.setAttributeNS(null, "id", "path")
         currentPath.setAttributeNS(null, 'stroke', "#0000ff")
         currentPath.setAttributeNS(null, 'stroke-width', props.strWidth)
-        currentPath.setAttributeNS(null, 'fill', 'none')
+        currentPath.setAttributeNS(null, 'fill', props.fill)
         if(props.command==='Q'){
             currentPath.setAttributeNS(null, 'd', `M50,100q${props.firstCtrl.x},${props.firstCtrl.y} ${props.endPoint.x},${props.endPoint.y}`)
         }else if(props.command==='C'){
@@ -91,14 +104,11 @@ const GridWithDrag = (props) => {
     }, [])
 
     if(props.command==='Q'){
-        const title1 = `${props.firstCtrl.x},${props.firstCtrl.y}`
-        const title2 = `${props.endPoint.x},${props.endPoint.y}`
+        const title1 = `Control Point: ${props.firstCtrl.x},${props.firstCtrl.y}`
+        const title2 = `End Point: ${props.endPoint.x},${props.endPoint.y}`
         return(
             <View style={styles.container}>
-                <svg id='modalGrid' height={props.size} width={props.size} viewBox={viewbox} onMouseMove={(evt) => drag(evt)} onMouseLeave={endDrag} >
-                    {/* <circle cx="50" cy="100" r="5" style={styles.start}>
-                        <title>Starting point: {props.startPoint.sx},{props.startPoint.sy}</title>
-                    </circle> */}
+                <Svg id='modalGrid' height={props.size} width={props.size} viewBox={viewbox} onMouseMove={(evt) => drag(evt)} onMouseLeave={endDrag} >
                     <circle className="draggable" id="firstCtrl" cx="75" cy="150" r="5" onMouseDown={(evt) => startDrag(evt)}  onMouseUp={endDrag} style={styles.drag}>
                         <title>
                             {title1}
@@ -109,22 +119,19 @@ const GridWithDrag = (props) => {
                             {title2}
                         </title>
                     </circle>
-                </svg>
+                </Svg>
                 <View style={styles.position}>
                     <Text>Current Command: "q{props.firstCtrl.x},{props.firstCtrl.y} {props.endPoint.x},{props.endPoint.y}"</Text>
                 </View>
             </View>
         )
     }else if(props.command==='C'){
-        const title1 = `${props.firstCtrl.x},${props.firstCtrl.y}`
-        const title2 = `${props.secondCtrl.x},${props.secondCtrl.y}`
-        const title3 = `${props.endPoint.x},${props.endPoint.y}`
+        const title1 = `First Control Point: ${props.firstCtrl.x},${props.firstCtrl.y}`
+        const title2 = `Second Control Point: ${props.secondCtrl.x},${props.secondCtrl.y}`
+        const title3 = `End Point: ${props.endPoint.x},${props.endPoint.y}`
         return(
             <View style={styles.container}>
-                <svg id='modalGrid' height={props.size} width={props.size} viewBox={viewbox} onMouseMove={(evt) => drag(evt)} onMouseLeave={endDrag} >
-                    {/* <circle cx="50" cy="100" r="5" style={styles.start}>
-                        <title>Starting point: {props.startPoint.sx},{props.startPoint.sy}</title>
-                    </circle> */}
+                <Svg id='modalGrid' height={props.size} width={props.size} viewBox={viewbox} onMouseMove={(evt) => drag(evt)} onMouseLeave={endDrag} >
                     <circle className="draggable" id="firstCtrl" cx="75" cy="150" r="5" onMouseDown={(evt) => startDrag(evt)}  onMouseUp={endDrag} style={styles.drag}>
                         <title>
                             {title1}
@@ -140,7 +147,7 @@ const GridWithDrag = (props) => {
                             {title3}
                         </title>
                     </circle>
-                </svg>
+                </Svg>
                 <View style={styles.position}>
                     <Text>Current Command Path: "c{props.firstCtrl.x},{props.firstCtrl.y} {props.secondCtrl.x},{props.secondCtrl.y} {props.endPoint.x},{props.endPoint.y}"</Text>
                 </View>

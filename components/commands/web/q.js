@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
-import GridWithDrag from '../gridWithDrag';
-import Modal from 'react-modal';
+import GridWithDrag from './gridWithDrag';
 import { StyleSheet, Text, View } from 'react-native';
 import React from 'react';
+import Modal from 'react-modal';
 import FieldSet from 'react-native-fieldset';
 
 const Q = (props) => {
@@ -16,7 +16,6 @@ const Q = (props) => {
         setFirstCtrl({x:25, y:50})
         setEndPoint({x:50, y:0})
         setModalIsOpen(true)
-        props.toggle()
     }
     function closeModal(){
         setModalIsOpen(false)
@@ -29,9 +28,7 @@ const Q = (props) => {
         path.style.strokeWidth = props.strWidth;
         path.style.stroke = '#444444';
     }
-    function clickFunc(path){
-        // props.setModalIsOpen(true)
-    }
+    
     function addToPath(){
         const i = props.pathID
         const startX = props.startPoints[i-1].sx;
@@ -41,12 +38,13 @@ const Q = (props) => {
             id: props.pathID+1,
             sx: {key: 'Start x', value: startX},
             sy: {key: 'Start y', value: startY},
-            dx1: {key: 'dx', value: firstCtrl.x, absoluteValue: firstCtrl.x+startX},
-            dy1: {key: 'dy', value: firstCtrl.y, absoluteValue: firstCtrl.y+startY},
-            x:  {key: 'x',value: endPoint.x, absoluteValue: endPoint.x+startX},
-            y: {key: 'y', value: endPoint.y, absoluteValue: endPoint.y+startY},
-            relCommand: `q${firstCtrl.x},${firstCtrl.y} ${endPoint.x},${endPoint.y}`,
-            absCommand: `Q${startX+firstCtrl.x},${startY+firstCtrl.y} ${startX+endPoint.x},${startY+endPoint.y}`
+            dx1: {key: 'dx', value: props.relative?firstCtrl.x:firstCtrl.x+startX},
+        dy1: {key: 'dy', value: props.relative?firstCtrl.y:firstCtrl.y+startY},
+            x:  {key: 'x',value: props.relative?endPoint.x:endPoint.x+startX},
+            y: {key: 'y', value: props.relative?endPoint.y:endPoint.y+startY},
+            command: props.relative?`q${firstCtrl.x},${firstCtrl.y} ${endPoint.x},${endPoint.y}`:`Q${startX+firstCtrl.x},${startY+firstCtrl.y} ${startX+endPoint.x},${startY+endPoint.y}`,
+            absCommand: `Q${startX+firstCtrl.x},${startY+firstCtrl.y} ${startX+endPoint.x},${startY+endPoint.y}`,
+            relCommand: `q${firstCtrl.x},${firstCtrl.y} ${endPoint.x},${endPoint.y}`
         } 
         const newPath = [...props.path, qPath]
         props.setPath(newPath)
@@ -57,7 +55,7 @@ const Q = (props) => {
         const svgns = "http://www.w3.org/2000/svg"
         newPath.map((path, i) => {
             const currentPath = document.createElementNS(svgns, 'path')
-            const fullPath = `M${path.sx.value},${path.sy.value}${path.relCommand}`
+            const fullPath = `M${path.sx.value},${path.sy.value}${path.command}`
             currentPath.setAttributeNS(null, 'd', fullPath)
             currentPath.setAttributeNS(null, 'stroke', "#444444")
             currentPath.setAttributeNS(null, 'stroke-width', props.strWidth)
@@ -68,7 +66,7 @@ const Q = (props) => {
             let thisPath = document.getElementById(`path${path.id}`)
             thisPath.addEventListener('mouseover', ()=>hoverFunc(thisPath))
             thisPath.addEventListener('mouseleave', ()=>leaveFunc(thisPath))
-            thisPath.addEventListener('click', ()=>clickFunc(props.path))
+            thisPath.addEventListener('click', ()=>props.editFunc(qPath))
         })    
         props.setPathID(props.pathID+1)  
         setModalIsOpen(false)
@@ -79,7 +77,7 @@ const Q = (props) => {
         } else {
             setAbsRel("Q")
         }
-    }, [])
+    })
     function showTables(){
         if(!props.relative){
             return(
@@ -160,7 +158,7 @@ const Q = (props) => {
 
     return (
         <View>
-            <button onClick={openModal} onMouseOver={()=>{setHover({sub: false, can:false, q: true})}} onMouseLeave={()=>{setHover({sub: false, can:false, q: false})}} style={hover.q?styles.hover:styles.button}>{absRel}</button>
+            <Text onClick={openModal} onMouseOver={()=>{setHover({sub: false, can:false, q: true})}} onMouseLeave={()=>{setHover({sub: false, can:false, q: false})}} style={hover.q?styles.hover:styles.button}>{absRel}</Text>
             <Modal
                 isOpen={modalIsOpen}
                 onRequestClose={closeModal}
@@ -176,8 +174,8 @@ const Q = (props) => {
                     </View>
                 </View>
                 <View style={styles.subCan}>
-                    <button onClick={addToPath} onMouseOver={()=>{setHover({sub: true, can:false, q: false})}} onMouseLeave={()=>{setHover({sub: false, can:false, q: false})}} style={hover.sub?styles.submitHover:styles.submitButton}>Add to path!</button>
-                    <button onClick={closeModal} onMouseOver={()=>{setHover({sub: false, can:true, q: false})}} onMouseLeave={()=>{setHover({sub: false, can:false, q: false})}} style={hover.can?styles.cancelHover:styles.cancelButton}>Cancel</button>
+                    <Text onClick={addToPath} onMouseOver={()=>{setHover({sub: true, can:false, q: false})}} onMouseLeave={()=>{setHover({sub: false, can:false, q: false})}} style={hover.sub?styles.submitHover:styles.submitButton}>Add to path!</Text>
+                    <Text onClick={closeModal} onMouseOver={()=>{setHover({sub: false, can:true, q: false})}} onMouseLeave={()=>{setHover({sub: false, can:false, q: false})}} style={hover.can?styles.cancelHover:styles.cancelButton}>Cancel</Text>
                 </View>
             </Modal>
         </View>
@@ -213,7 +211,7 @@ const styles = StyleSheet.create({
     fieldSet:{
         backgroundColor: '#a2a2a2',
         height: 80,
-        width: 'fit-content',
+        width: 'auto',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
@@ -322,7 +320,7 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        width:'fit-content',
+        width:25,
         height:25,   
         color:'#4e4e4e',
         backgroundColor: '#6c6c6c',
@@ -338,7 +336,7 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        width:'fit-content',
+        width:25,
         height:25,   
         color:'#ffffff',
         backgroundColor: '#4e4e4e',
@@ -356,7 +354,7 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        width:'fit-content',
+        width:'auto',
         height:22,
         padding:'2px',    
         color:'#4e4e4e',
@@ -374,7 +372,7 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        width:'fit-content',
+        width:'auto',
         height:22,
         padding:'2px', 
         color:'#ffffff',
@@ -392,7 +390,7 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        width:'fit-content',
+        width:'auto',
         height:22,
         padding:'2px',  
         color:'#f00',
@@ -410,7 +408,7 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        width:'fit-content',
+        width:'auto',
         height:22,
         padding:'2px', 
         color:'#fff',
