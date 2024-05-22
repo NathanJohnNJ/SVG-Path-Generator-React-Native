@@ -4,6 +4,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import React from 'react';
 import Modal from 'react-modal';
 import FieldSet from 'react-native-fieldset';
+import Tables from './tables';
 
 const Q = (props) => {
     const [absRel, setAbsRel] = useState("q");
@@ -12,8 +13,21 @@ const Q = (props) => {
     const [firstCtrl, setFirstCtrl] = useState({x:25, y:50})
     const [endPoint, setEndPoint] = useState({x:50, y:0})
 
+    const defaultPath = {
+        type: 'Q',
+        id: props.pathID+1,
+        sx: {key: 'Start x', value: 50},
+        sy: {key: 'Start y', value: 50},
+        dx1: {key: 'dx', value: props.relative?25:75},
+        dy1: {key: 'dy', value: props.relative?50:100},
+        x:  {key: 'x',value: props.relative?50:100},
+        y: {key: 'y', value: props.relative?0:50},
+        command: props.relative?'q25,50 50,0':'Q75,100 100,50',
+        absCommand: 'Q75,100 100,50',
+        relCommand: 'q25,50 50,0'
+    }
     function openModal(){
-        setFirstCtrl({x:25, y:50})
+        setFirstCtrl({x:25, y:50})  
         setEndPoint({x:50, y:0})
         setModalIsOpen(true)
     }
@@ -21,12 +35,12 @@ const Q = (props) => {
         setModalIsOpen(false)
     }
     function hoverFunc(path){
-        path.style.strokeWidth = props.strWidth*2;
+        path.style.strokeWidth = props.strokeWidth*2;
         path.style.stroke = '#0000ff';
     }
     function leaveFunc(path){
-        path.style.strokeWidth = props.strWidth;
-        path.style.stroke = '#444444';
+        path.style.strokeWidth = props.strokeWidth;
+        path.style.stroke = props.stoke;
     }
     
     function addToPath(){
@@ -57,16 +71,18 @@ const Q = (props) => {
             const currentPath = document.createElementNS(svgns, 'path')
             const fullPath = `M${path.sx.value},${path.sy.value}${path.command}`
             currentPath.setAttributeNS(null, 'd', fullPath)
-            currentPath.setAttributeNS(null, 'stroke', "#444444")
-            currentPath.setAttributeNS(null, 'stroke-width', props.strWidth)
-            currentPath.setAttributeNS(null, 'fill', 'none')
+            currentPath.setAttributeNS(null, 'stroke', props.stroke)
+            currentPath.setAttributeNS(null, 'strokeWidth', props.strokeWidth)
+            currentPath.setAttributeNS(null, 'fill', props.fill)
+            currentPath.setAttributeNS(null, 'stroke-opacity', props.strokeOpacity)
+            currentPath.setAttributeNS(null, 'fill-opacity', props.fillOpacity)
             currentPath.setAttributeNS(null, 'style', 'styles.path')
             currentPath.setAttributeNS(null, 'id', `path${path.id}`)
             grid.appendChild(currentPath)
             let thisPath = document.getElementById(`path${path.id}`)
             thisPath.addEventListener('mouseover', ()=>hoverFunc(thisPath))
             thisPath.addEventListener('mouseleave', ()=>leaveFunc(thisPath))
-            thisPath.addEventListener('click', ()=>props.editFunc(qPath))
+            thisPath.addEventListener('click', path =>props.editFunc(path))
         })    
         props.setPathID(props.pathID+1)  
         setModalIsOpen(false)
@@ -78,83 +94,7 @@ const Q = (props) => {
             setAbsRel("Q")
         }
     })
-    function showTables(){
-        if(!props.relative){
-            return(
-                <View>
-                    <View style={styles.tableContainer}>
-                        <FieldSet label="Control Point" labelColor="#00f" labelFontSize='17.5px' labelStyle={styles.label} mainStyle={styles.fieldSet}>
-                            <table style={styles.table}>
-                                <tbody style={styles.tbody}>
-                                    <tr style={styles.tr}>
-                                        <th style={styles.th}>dx</th>
-                                        <td style={styles.td}>{firstCtrl.x+props.path[props.pathID-1].x.absoluteValue}</td>
-                                    </tr>
-                                    <tr style={styles.tr}>
-                                        <th style={styles.th}>dy</th>
-                                        <td style={styles.td}>{firstCtrl.y+props.path[props.pathID-1].y.absoluteValue}</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </FieldSet>
-                    </View>
-                    <View style={styles.tableContainer}>
-                        <FieldSet label="End Point" labelColor="#f00" labelFontSize="17.5px" labelStyle={styles.label} mainStyle={styles.fieldSet}>
-                            <table style={styles.table}>
-                                <tbody style={styles.tbody}>
-                                    <tr style={styles.tr}>
-                                        <th style={styles.th}>x</th>
-                                        <td style={styles.end}>{endPoint.x+props.path[props.pathID-1].x.absoluteValue}</td>
-                                    </tr>
-                                    <tr style={styles.tr}>
-                                        <th style={styles.th}>y</th>
-                                        <td style={styles.end}>{endPoint.y+props.path[props.pathID-1].y.absoluteValue}</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </FieldSet>
-                    </View>
-                </View>
-            )
-        } else {
-            return(
-                <View>
-                    <View style={styles.tableContainer}>
-                        <FieldSet label="Control Point" labelColor="#00f" labelFontSize='17.5px' labelStyle={styles.label} mainStyle={styles.fieldSet}>
-                            <table style={styles.table}>
-                                <tbody style={styles.tbody}>
-                                    <tr style={styles.tr}>
-                                        <th style={styles.th}>dx</th>
-                                        <td style={styles.td}>{firstCtrl.x}</td>
-                                    </tr>
-                                    <tr style={styles.tr}>
-                                        <th style={styles.th}>dy</th>
-                                        <td style={styles.td}>{firstCtrl.y}</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </FieldSet>
-                    </View>
-                    <View style={styles.tableContainer}>
-                        <FieldSet label="End Point" labelColor="#f00" labelFontSize="17.5px" labelStyle={styles.label} mainStyle={styles.fieldSet}>
-                            <table style={styles.table}>
-                                <tbody style={styles.tbody}>
-                                    <tr style={styles.tr}>
-                                        <th style={styles.th}>x</th>
-                                        <td style={styles.end}>{endPoint.x}</td>
-                                    </tr>
-                                    <tr style={styles.tr}>
-                                        <th style={styles.th}>y</th>
-                                        <td style={styles.end}>{endPoint.y}</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </FieldSet>
-                    </View>
-                </View>
-            )
-        }
-    }
+    
 
     return (
         <View>
@@ -167,12 +107,13 @@ const Q = (props) => {
                 >
                 <View style={styles.row}>
                     <View style={styles.container}>
-                        <GridWithDrag size="200" command="Q" relative={props.relative} firstCtrl={firstCtrl} setFirstCtrl={setFirstCtrl} endPoint={endPoint} setEndPoint={setEndPoint} strWidth={props.strWidth} setStrWidth={props.setStrWidth} stroke={props.stroke} setStroke={props.setStroke} fill={props.fill} setFill={props.setFill} />
+                        <GridWithDrag size="200" command="Q" relative={props.relative} firstCtrl={firstCtrl} setFirstCtrl={setFirstCtrl} endPoint={endPoint} setEndPoint={setEndPoint} strokeWidth={props.strokeWidth} stroke={props.stroke} fill={props.fill} fillOpacity={props.fillOpacity} strokeOpacity={props.strokeOpacity} startPoints={props.startPoints}/>
                     </View>
                     <View style={styles.container}>
-                        {showTables()}
+                        <Tables path={defaultPath} />
                     </View>
                 </View>
+                
                 <View style={styles.subCan}>
                     <Text onClick={addToPath} onMouseOver={()=>{setHover({sub: true, can:false, q: false})}} onMouseLeave={()=>{setHover({sub: false, can:false, q: false})}} style={hover.sub?styles.submitHover:styles.submitButton}>Add to path!</Text>
                     <Text onClick={closeModal} onMouseOver={()=>{setHover({sub: false, can:true, q: false})}} onMouseLeave={()=>{setHover({sub: false, can:false, q: false})}} style={hover.can?styles.cancelHover:styles.cancelButton}>Cancel</Text>

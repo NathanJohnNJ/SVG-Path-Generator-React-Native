@@ -86,10 +86,12 @@ const GridWithDrag = (props) => {
         const svgns = "http://www.w3.org/2000/svg"
         const grid = document.getElementById('modalGrid')
         const currentPath = document.createElementNS(svgns, 'path')
-        currentPath.setAttributeNS(null, "id", "path")
-        currentPath.setAttributeNS(null, 'stroke', "#0000ff")
-        currentPath.setAttributeNS(null, 'stroke-width', props.strWidth)
+        currentPath.setAttributeNS(null, "id", 'path')
+        currentPath.setAttributeNS(null, 'stroke', props.stroke)
+        currentPath.setAttributeNS(null, 'strokeWidth', props.strokeWidth)
         currentPath.setAttributeNS(null, 'fill', props.fill)
+        currentPath.setAttributeNS(null, 'stroke-opacity', props.strokeOpacity)
+        currentPath.setAttributeNS(null, 'fill-opacity', props.fillOpacity)
         if(props.command==='Q'){
             currentPath.setAttributeNS(null, 'd', `M50,100q${props.firstCtrl.x},${props.firstCtrl.y} ${props.endPoint.x},${props.endPoint.y}`)
         }else if(props.command==='C'){
@@ -102,6 +104,18 @@ const GridWithDrag = (props) => {
         createGrid()
         drawPath()
     }, [])
+
+    function currentCommand(){
+        if (props.relative){
+            return(
+                <Text>Current Command: "q{props.firstCtrl.x},{props.firstCtrl.y} {props.endPoint.x},{props.endPoint.y}"</Text>
+            )
+        }else{
+            return(
+                <Text>Current Command: "Q{props.firstCtrl.x+props.startPoints[props.pathID]},{props.firstCtrl.y} {props.endPoint.x},{props.endPoint.y}"</Text>
+            )
+        }
+    }
 
     if(props.command==='Q'){
         const title1 = `Control Point: ${props.firstCtrl.x},${props.firstCtrl.y}`
@@ -118,10 +132,11 @@ const GridWithDrag = (props) => {
                         <title>
                             {title2}
                         </title>
-                    </circle>
+                    </circle>   
                 </Svg>
                 <View style={styles.position}>
-                    <Text>Current Command: "q{props.firstCtrl.x},{props.firstCtrl.y} {props.endPoint.x},{props.endPoint.y}"</Text>
+                    {/* <Text>Current Command: "q{props.firstCtrl.x},{props.firstCtrl.y} {props.endPoint.x},{props.endPoint.y}"</Text> */}
+                    {currentCommand()}
                 </View>
             </View>
         )
@@ -157,7 +172,7 @@ const GridWithDrag = (props) => {
 };
 
 export default GridWithDrag;
-
+    
 const styles = StyleSheet.create({
     container: {
       flex: 1,

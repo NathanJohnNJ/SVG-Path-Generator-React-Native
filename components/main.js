@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import Commands from './commands';
 import WebGrid from './webGrid';
 import MobileGrid from './mobGrid';
+import Edit from './edit';
 import Config from './configurations';
 import styled from 'styled-components/native';
 import { StyleSheet, Text, View, Platform, Pressable, Modal } from 'react-native';
@@ -12,7 +13,7 @@ const Main = (props) => {
     const [pathID, setPathID] = useState(1);
     const [relative, setRelative] = useState(true);
     const [visible, setVisible] = useState(false);
-    const [strWidth, setStrWidth] = useState(3);
+    const [strokeWidth, setStrokeWidth] = useState(3);
     const [stroke, setStroke] = useState('#444');
     const [fill, setFill] = useState('none');
     const [strokeOpacity, setStrokeOpacity] = useState(1);
@@ -26,15 +27,17 @@ const Main = (props) => {
         sy: {key: 'Start y', value: 50},
         dx1: {key: 'dx1', value: relative?50:100},
         dy1: {key: 'dy1', value: relative?50:100},
-        dx2: {key: 'dx2', value: relative?75:125},
+        dx2: {key: 'dx2', value: relative?100:150},
         dy2: {key: 'dy2', value: relative?-50:0},
-        x:  {key: 'x',value: relative?125:175},
+        x:  {key: 'x',value: relative?150:200},
         y: {key: 'y', value: relative?0:50},
-        command: relative?'c50,50 75,-50 125,0':'C100,100 125,0 175,50',
-        absCommand: 'C100,100 125,0 175,50',
-        relCommand: 'c50,50 75,-50 125,0'
+        command: relative?'c50,50 100,-50 150,0':'C100,100 150,0 200,50',
+        absCommand: 'C100,100 150,0 200,50',
+        relCommand: 'c50,50 100,-50 150,0',
+        editCommand: 'M50,100c50,50 100,-50 150,0'
     }
     const [path, setPath] = useState([firstCMD]);
+    const [editPath, setEditPath] = useState(firstCMD);
     const [hover, setHover] = useState(false);
 
     function buttonHover(){
@@ -44,23 +47,24 @@ const Main = (props) => {
         setHover(false)
     }
     
-    function displayGrid(){
-      if (Platform.OS !== 'web'){
-        return(
-          <MobileGrid strWidth={strWidth} setStrWidth={setStrWidth} size="400" path={path} relative={relative} startPoints={startPoints} setStartPoints={setStartPoints} pathID={pathID} setPathID={setPathID} stroke={stroke} setStroke={setStroke} fill={fill} setFill={setFill} gridRef={gridRef} setEditModalIsOpen={setEditModalIsOpen} editModalIsOpen={editModalIsOpen} />
-        )
-      }else{
-        return(
-          <WebGrid strWidth={strWidth} setStrWidth={setStrWidth} size="400" path={path} relative={relative} startPoints={startPoints} setStartPoints={setStartPoints} pathID={pathID} setPathID={setPathID} stroke={stroke} setStroke={setStroke} fill={fill} setFill={setFill} gridRef={gridRef} setEditModalIsOpen={setEditModalIsOpen} editModalIsOpen={editModalIsOpen} />
-        )
-      }
-    }
+    // function displayGrid(){
+    //   if (Platform.OS !== 'web'){
+    //     return(
+    //       <MobileGrid size="400" path={path} relative={relative} startPoints={startPoints} setStartPoints={setStartPoints} pathID={pathID} setPathID={setPathID} stroke={stroke} setStroke={setStroke} strokeWidth={strokeWidth} setStrokeWidth={setStrokeWidth} fill={fill} setFill={setFill} fillOpacity={fillOpacity} setFillOpacity={setFillOpacity} strokeOpacity={setStrokeOpacity} setStrokeOpacity={setStrokeOpacity} gridRef={gridRef} setEditModalIsOpen={setEditModalIsOpen} editModalIsOpen={editModalIsOpen} editPath={editPath} setEditPath={setEditPath} />
+    //     )
+    //   }else{
+    //     return(
+    //       <WebGrid strokeWidth={strokeWidth} setStrokeWidth={setStrokeWidth} size="500" path={path} relative={relative} startPoints={startPoints} setStartPoints={setStartPoints} pathID={pathID} setPathID={setPathID} stroke={stroke} setStroke={setStroke} fill={fill} fillOpacity={fillOpacity} strokeOpacity={strokeOpacity} gridRef={gridRef} setEditModalIsOpen={setEditModalIsOpen} editModalIsOpen={editModalIsOpen}  editPath={editPath} setEditPath={setEditPath}/>
+    //     )
+    //   }
+    // }
     function editFunc(path){
-      props.setEditModalIsOpen(true)
-      props.setEditPath(path)
-  }
+      setEditPath(path)
+      setEditModalIsOpen(true)
+    }
 
     return (
+      <View>
         <View style={styles.container}>
           
           <Text style={styles.title}>SVG Path Generator</Text>
@@ -70,20 +74,36 @@ const Main = (props) => {
                 <Pressable onPress={() => setRelative(relative => !relative)} disabled={relative} style={relative?styles.selected:styles.switch}><Text style={relative?styles.selectedText:styles.switchText}>Relative</Text></Pressable>
             </TypeSwitcher>
 
-            <Pressable id="commandBtn" onPress={() => setVisible(visible => !visible)} onMouseOver={buttonHover} onMouseLeave={buttonLeave} style={[hover?styles.hover:styles.button, !visible?styles.visible:styles.hidden]}><Text>+</Text></Pressable>
-          
-              <View style={[styles.commands, visible?styles.visible:styles.hidden]} id="commandBtns">
-                  <Commands strWidth={strWidth} relative={relative} path={path} setPath={setPath} pathID={pathID} setPathID={setPathID} startPoints={startPoints} setStartPoints={setStartPoints} stroke={stroke} fill={fill} gridRef={props.gridRef} editFunc={editFunc}/>
-                  
-                  <Button id="close" onPress={() => setVisible(visible => !visible)} onMouseOver={buttonHover} onMouseLeave={buttonLeave} style={[hover?styles.hoverClose:styles.close, Platform.OS==='web'?styles.web:styles.mobile, visible?styles.visible:styles.hidden]}><Text style={styles.closeBtn}>X</Text></Button>
-              </View>
-              <View style={styles.options} id="options">
-                <Config  stroke={stroke} setStroke={setStroke} fill={fill} setFill={setFill} strWidth={strWidth} setStrWidth={setStrWidth} strokeOpacity={strokeOpacity} setStrokeOpacity={setStrokeOpacity} fillOpacity={fillOpacity} setFillOpacity={setFillOpacity} />
+            <View style={styles.buttonsRow}>
+              <Pressable id="commandBtn" onPress={() => setVisible(visible => !visible)} onMouseOver={buttonHover} onMouseLeave={buttonLeave} style={[hover?styles.hover:styles.button, !visible?styles.visible:styles.hidden]}><Text>+</Text></Pressable>
+            
+                <View style={[styles.commands, visible?styles.visible:styles.hidden]} id="commandBtns">
+                    <Commands strokeWidth={strokeWidth} relative={relative} path={path} setPath={setPath} pathID={pathID} setPathID={setPathID} startPoints={startPoints} setStartPoints={setStartPoints} stroke={stroke} fill={fill} gridRef={gridRef} strokeOpacity={strokeOpacity} fillOpacity={fillOpacity}/>
+                    
+                    <Pressable id="close" onPress={() => setVisible(visible => !visible)} onMouseOver={buttonHover} onMouseLeave={buttonLeave} style={[hover?styles.hoverClose:styles.close, Platform.OS==='web'?styles.web:styles.mobile, visible?styles.visible:styles.hidden]}><Text style={styles.closeBtn}>X</Text></Pressable>
+                </View>
+
+                
+             </View>
+             </View>
+             <View style={styles.optionsContainer}>
+             <View style={styles.options} id="options">
+                  <Config stroke={stroke} setStroke={setStroke} path={path} fill={fill} setFill={setFill} strokeWidth={strokeWidth} setStrokeWidth={setStrokeWidth} strokeOpacity={strokeOpacity} setStrokeOpacity={setStrokeOpacity} fillOpacity={fillOpacity} setFillOpacity={setFillOpacity} />
+                </View>
               </View>
             
             <View style={styles.gridArea}>
-              {displayGrid()}
+              {/* {displayGrid()} */}
+              <WebGrid strokeWidth={strokeWidth} setStrokeWidth={setStrokeWidth} size="500" path={path} relative={relative} startPoints={startPoints} setStartPoints={setStartPoints} pathID={pathID} setPathID={setPathID} stroke={stroke} setStroke={setStroke} fill={fill} fillOpacity={fillOpacity} strokeOpacity={strokeOpacity} gridRef={gridRef} setEditModalIsOpen={setEditModalIsOpen} editModalIsOpen={editModalIsOpen}  editPath={editPath} setEditPath={setEditPath} editFunc={editFunc}/>
             </View>
+
+            <View>
+              <Text>
+                Stroke: {stroke}
+                Width: {strokeWidth}
+              </Text>
+            </View>
+              <Edit path={editPath} strokeWidth={strokeWidth} size="300" relative={relative} startPoints={startPoints} setStartPoints={setStartPoints} pathID={pathID} setPathID={setPathID} stroke={stroke} fill={fill} fillOpacity={fillOpacity} strokeOpacity={strokeOpacity} gridRef={gridRef} setEditModalIsOpen={setEditModalIsOpen} editModalIsOpen={editModalIsOpen}  editPath={editPath} editFunc={editFunc}/>
         </View>
     )
 };
@@ -98,12 +118,25 @@ const styles = StyleSheet.create({
       alignItems: 'center',
       justifyContent: 'center',
     },
-    btnSection: {
+    optionsContainer:{
+      flex:1,
+      display:'flex',
+      flexDirection: 'row',
+      alignContent: 'left'
+    },
+    options:{
+      flex:1,
+      display: 'flex',
+      alignSelf: 'flex-start',
+      position: 'fixed',
+      left: 20
+    },
+    buttonsRow: {
       display: 'flex',
       flexDirection: 'row'
     },
     title:{
-      fontFamily: 'Geologica-Black',
+      fontFamily: 'Quicksand-Bold',
       fontSize:36,
       marginTop: -20
     },
@@ -117,14 +150,14 @@ const styles = StyleSheet.create({
       width: 25,
       color: '#fff',
       textAlign: 'center',
-      fontFamily: 'Poppins-Bold'
+      fontFamily: 'Quicksand-Medium'
     },
     gridArea:{
-      marginTop: -40
+      marginTop: -5
     },
     position: {
       marginTop: -250,
-      fontFamily: 'Geologica-Medium',
+      fontFamily: 'Quicksand-Bold',
       fontSize: 16
     },
     button: {
@@ -137,7 +170,7 @@ const styles = StyleSheet.create({
         color:'#4e4e4e',
         backgroundColor: '#6c6c6c',
         textAlign: 'center',
-        fontFamily: 'Geologica-Medium',
+        fontFamily: 'Quicksand-Bold',
         fontSize: 18,
         borderRadius: 5,
         margin: 5
@@ -163,7 +196,7 @@ const styles = StyleSheet.create({
         color:'#ffffff',
         backgroundColor: '#4e4e4e',
         textAlign: 'center',
-        fontFamily: 'Poppins-Medium',
+        fontFamily: 'Quicksand-Regular',
         fontSize: 18,
         borderRadius: 5,
         margin: 5
@@ -182,7 +215,7 @@ const styles = StyleSheet.create({
         textShadowOffset: {x:'-1px', y:'-1px'},
         textShadowColor: '#4e4e4e',
         textShadowRadius: 1,
-        fontFamily: 'Poppins-Medium',
+        fontFamily: 'Quicksand-Regular',
         fontSize: 18,
         borderRadius: 5,
         margin: 5
@@ -198,7 +231,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#4e4e4e',
         textAlign: 'center',
         textShadow: '-1px -1px 1px #200000',
-        fontFamily: 'Poppins-Medium',
+        fontFamily: 'Quicksand-Regular',
         fontSize: 18,
         borderRadius: 5,
         margin: 5
@@ -219,7 +252,7 @@ const styles = StyleSheet.create({
       switchText:{
         textAlign:'center',
         color:'#6c6c6c',
-        fontFamily: 'Poppins-Medium',
+        fontFamily: 'Quicksand-Regular',
         fontSize: 15,
       },
       selected:{
@@ -236,7 +269,7 @@ const styles = StyleSheet.create({
       selectedText:{
         textAlign:'center',
         color: '#ffffff',
-        fontFamily: 'Poppins-Medium',
+        fontFamily: 'Quicksand-Regular',
         fontSize: 15,
         textShadowOffset: {x:'-2px', y:'2px'},
         textShadowColor: '#0e0e0e',
@@ -249,10 +282,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         margin: 5
       },
-      options:{
-        display: 'flex',
-        // flex: 1
-      }
+      
 })
 
 
@@ -260,23 +290,8 @@ const styles = StyleSheet.create({
 const TypeSwitcher = styled.View`
     display:flex;
     flex-direction: row;
-    width:'auto';
+    width:'auto'; 
     height: 20px;
     margin: 20px
-`
-
- const Button = styled.Pressable`
-    display:'flex';
-    flex-direction: 'column';
-    align-items: 'center';
-    justify-content: 'center';
-    width:'auto';
-    height:'25px';
-    width:'25px';
-    color:'#4e4e4e';
-    background-color: '#6c6c6c';
-    text-align: 'center';
-    font-family: 'Poppins-Medium';
-    font-size: '18px';                
 `
 

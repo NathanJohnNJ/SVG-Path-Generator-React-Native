@@ -3,16 +3,16 @@ import { StyleSheet, Text, View } from 'react-native';
 import React from 'react';
 import Modal from 'react-modal';
 import EditGrid from './editGrid';
-import FieldSet from 'react-native-fieldset';
+import FieldSet from 'react-native-fieldset';  
 
 const Grid = (props) => {
     const viewbox = `0 0 ${props.size} ${props.size}`
-    const [modalIsOpen, setModalIsOpen] = useState(false)
-    const [command, setCommand] = useState({})
+    const [command, setCommand] = useState({});
     const [hover, setHover] = useState({sub: false, can: false});
-    const [firstCtrl, setFirstCtrl] = useState({x:props.path[0].dx1.value, y:props.path[0].dy1.value})
-    const [secondCtrl, setSecondCtrl] = useState({x:props.path[0].dx2.value, y:props.path[0].dy2.value})
-    const [endPoint, setEndPoint] = useState({x:props.path[0].x.value, y:props.path[0].y.value})
+    const [modalIsOpen, setModalIsOpen] = useState(false)
+    const [firstCtrl, setFirstCtrl] = useState({x:props.path[0].dx1.value, y:props.path[0].dy1.value});
+    const [secondCtrl, setSecondCtrl] = useState({x:props.path[0].dx2.value, y:props.path[0].dy2.value});
+    const [endPoint, setEndPoint] = useState({x:props.path[0].x.value, y:props.path[0].y.value});
 
     function createGrid(){
         let num = props.size/10
@@ -43,29 +43,31 @@ const Grid = (props) => {
 
     }
     function hoverFunc(path){
-        path.style.strokeWidth = props.strWidth*2;
+        path.style.strokeWidth = props.strokeWidth*2;
         path.style.stroke = '#0000ff';
     }
     function leaveFunc(path){
-        path.style.strokeWidth = props.strWidth;
-        path.style.stroke = '#444444';
+        path.style.strokeWidth = props.strokeWidth;
+        path.style.stroke = props.stroke;
     }
     function clickFunc(path){
         setCommand(path)
-        setModalIsOpen(true)
+        props.setEditModalIsOpen(true)
+
     }
 
     function drawPath(){
             const svgns = "http://www.w3.org/2000/svg"
             const grid = document.getElementById('grid')
-            props.setStartPoints([...props.startPoints, {sx: 175, sy:50}])
+            props.setStartPoints([...props.startPoints, {sx: 200, sy:50}])
             const currentPath = document.createElementNS(svgns, 'path')
             currentPath.setAttributeNS(null, 'stroke', props.stroke);
-            currentPath.setAttributeNS(null, 'stroke-width', props.strWidth);
+            currentPath.setAttributeNS(null, 'stroke-width', props.strokeWidth);
             currentPath.setAttributeNS(null, 'fill', props.fill);
-            currentPath.setAttributeNS(null, 'style', 'styles.path')
             currentPath.setAttributeNS(null, 'id', 'path0');
-            (props.relative)?currentPath.setAttributeNS(null, 'd', `M${props.path[0].sx.value},${props.path[0].sy.value}${props.path[0].command}`):currentPath.setAttributeNS(null, 'd', `M${props.path[0].sx.value},${props.path[0].sy.value}${props.path[0].command}`)
+            currentPath.setAttributeNS(null, 'stroke-opacity', props.strokeOpacity);
+            currentPath.setAttributeNS(null,'fill-opacity', props.fillOpacity);
+            currentPath.setAttributeNS(null, 'd', `M${props.path[0].sx.value},${props.path[0].sy.value}${props.path[0].command}`)
             grid.appendChild(currentPath)
             let thisPath = document.getElementById('path0')
             thisPath.addEventListener('mouseover', ()=>hoverFunc(thisPath))
@@ -77,13 +79,16 @@ const Grid = (props) => {
         createGrid()
         drawPath()
     }, [])
-    function updatePath(){
+
+    function updatePath(path){
+        const changingPath = props.path;
+        const newPath = changingPath.splice(props.pathID, 1, path)
         const grid = document.getElementById('grid')
         const svgns = "http://www.w3.org/2000/svg"
         const currentPath = document.createElementNS(svgns, 'path')
-        currentPath.setAttributeNS(null, 'd', `${newPath}`)
-        currentPath.setAttributeNS(null, 'stroke', "#444444")
-        currentPath.setAttributeNS(null, 'stroke-width', props.strWidth)
+        currentPath.setAttributeNS(null, 'd', path)
+        currentPath.setAttributeNS(null, 'stroke', props.stroke)
+        currentPath.setAttributeNS(null, 'stroke-width', props.strokeWidth)
         currentPath.setAttributeNS(null, 'fill', 'none')
         grid.removeChild(grid.lastChild)
         grid.appendChild(currentPath)
@@ -107,114 +112,64 @@ const Grid = (props) => {
     }
 
     function showTables(){
-        if(!props.relative){
-            return(
-                <View>
-                    <View style={styles.tableContainer}>
-                        <FieldSet label="First Control Point" labelColor="#00f" labelFontSize='17.5px' labelStyle={styles.label} mainStyle={styles.fieldSet}>
-                            <table style={styles.table}>
-                                <tbody style={styles.tbody}>
-                                    <tr style={styles.tr}>
-                                        <th style={styles.th}>dx1</th>
-                                        <td style={styles.td}>{props.path[0].dx1.value}</td>
-                                    </tr>
-                                    <tr style={styles.tr}>
-                                        <th style={styles.th}>dy1</th>
-                                        <td style={styles.td}>{props.path[0].dy1.value}</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </FieldSet>
-                    </View>
-                    <View style={styles.tableContainer}>
-                        <FieldSet label="Second Control Point" labelColor="#00f" labelFontSize='17.5px' labelStyle={styles.label} mainStyle={styles.fieldSet}>
-                            <table style={styles.table}>
-                                <tbody style={styles.tbody}>
-                                    <tr style={styles.tr}>
-                                        <th style={styles.th}>dx2</th>
-                                        <td style={styles.td}>{props.path[0].dx2.value}</td>
-                                    </tr>
-                                    <tr style={styles.tr}>
-                                        <th style={styles.th}>dy2</th>
-                                        <td style={styles.td}>{props.path[0].dy2.value}</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </FieldSet>
-                    </View>
-                    <View style={styles.tableContainer}>
-                        <FieldSet label="End Point" labelColor="#f00" labelFontSize="17.5px" labelStyle={styles.label} mainStyle={styles.fieldSet}>
-                            <table style={styles.table}>
-                                <tbody style={styles.tbody}>
-                                    <tr style={styles.tr}>
-                                        <th style={styles.th}>x</th>
-                                        <td style={styles.end}>{props.path[0].x.value}</td>
-                                    </tr>
-                                    <tr style={styles.tr}>
-                                        <th style={styles.th}>y</th>
-                                        <td style={styles.end}>{props.path[0].y.value}</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </FieldSet>
-                    </View>
+        return(
+            <View>
+                <View style={styles.tableContainer}>
+                    <FieldSet label="First Control Point" labelColor="#00f" labelFontSize='17.5px' labelStyle={styles.label} mainStyle={styles.fieldSet}>
+                        <table style={styles.table}>
+                            <tbody style={styles.tbody}>
+                                <tr style={styles.tr}>
+                                    <th style={styles.th}>dx1</th>
+                                    <td style={styles.td}>{props.path[0].dx1.value}</td>
+                                </tr>
+                                <tr style={styles.tr}>
+                                    <th style={styles.th}>dy1</th>
+                                    <td style={styles.td}>{props.path[0].dy1.value}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </FieldSet>
                 </View>
-            )
-        } else {
-            return(
-                <View>
-                    <View style={styles.tableContainer}>
-                        <FieldSet label="First Control Point" labelColor="#00f" labelFontSize='17.5px' labelStyle={styles.label} mainStyle={styles.fieldSet}>
-                            <table style={styles.table}>
-                                <tbody style={styles.tbody}>
-                                    <tr style={styles.tr}>
-                                        <th style={styles.th}>dx1</th>
-                                        <td style={styles.td}>{firstCtrl.x}</td>
-                                    </tr>
-                                    <tr style={styles.tr}>
-                                        <th style={styles.th}>dy1</th>
-                                        <td style={styles.td}>{firstCtrl.y}</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </FieldSet>
-                    </View>
-                    <View style={styles.tableContainer}>
-                        <FieldSet label="Second Control Point" labelColor="#00f" labelFontSize='17.5px' labelStyle={styles.label} mainStyle={styles.fieldSet}>
-                            <table style={styles.table}>
-                                <tbody style={styles.tbody}>
-                                    <tr style={styles.tr}>
-                                        <th style={styles.th}>dx2</th>
-                                        <td style={styles.td}>{secondCtrl.x}</td>
-                                    </tr>
-                                    <tr style={styles.tr}>
-                                        <th style={styles.th}>dy2</th>
-                                        <td style={styles.td}>{secondCtrl.y}</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </FieldSet>
-                    </View>
-                    <View style={styles.tableContainer}>
-                        <FieldSet label="End Point" labelColor="#f00" labelFontSize="17.5px" labelStyle={styles.label} mainStyle={styles.fieldSet}>
-                            <table style={styles.table}>
-                                <tbody style={styles.tbody}>
-                                    <tr style={styles.tr}>
-                                        <th style={styles.th}>x</th>
-                                        <td style={styles.end}>{endPoint.x}</td>
-                                    </tr>
-                                    <tr style={styles.tr}>
-                                        <th style={styles.th}>y</th>
-                                        <td style={styles.end}>{endPoint.y}</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </FieldSet>
-                    </View>
+                <View style={styles.tableContainer}>
+                    <FieldSet label="Second Control Point" labelColor="#00f" labelFontSize='17.5px' labelStyle={styles.label} mainStyle={styles.fieldSet}>
+                        <table style={styles.table}>
+                            <tbody style={styles.tbody}>
+                                <tr style={styles.tr}>
+                                    <th style={styles.th}>dx2</th>
+                                    <td style={styles.td}>{props.path[0].dx2.value}</td>
+                                </tr>
+                                <tr style={styles.tr}>
+                                    <th style={styles.th}>dy2</th>
+                                    <td style={styles.td}>{props.path[0].dy2.value}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </FieldSet>
                 </View>
-            )
-        }
+                <View style={styles.tableContainer}>
+                    <FieldSet label="End Point" labelColor="#f00" labelFontSize="17.5px" labelStyle={styles.label} mainStyle={styles.fieldSet}>
+                        <table style={styles.table}>
+                            <tbody style={styles.tbody}>
+                                <tr style={styles.tr}>
+                                    <th style={styles.th}>x</th>
+                                    <td style={styles.end}>{props.path[0].x.value}</td>
+                                </tr>
+                                <tr style={styles.tr}>
+                                    <th style={styles.th}>y</th>
+                                    <td style={styles.end}>{props.path[0].y.value}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </FieldSet>
+                </View>
+            </View>
+        )
     }
+
+    function editFunc(path){
+        props.setEditModalIsOpen(true)
+        setEditPath(path)
+    }   
 
     return(
         <View style={styles.container}>
@@ -228,14 +183,14 @@ const Grid = (props) => {
                 >
                 <View style={styles.row}>
                     <View style={styles.container}>
-                        <EditGrid size="200" command={command.type} relative={props.relative} path={props.path} firstCtrl={firstCtrl} setFirstCtrl={setFirstCtrl} secondCtrl={secondCtrl} setSecondCtrl={setSecondCtrl} endPoint={endPoint} setEndPoint={setEndPoint} pathID={props.pathID} stroke={props.stroke} fill={props.fill} strWidth={props.strWidth}/>
+                        <EditGrid size="200" command={command.type} relative={props.relative} path={props.path} firstCtrl={firstCtrl} setFirstCtrl={setFirstCtrl} secondCtrl={secondCtrl} setSecondCtrl={setSecondCtrl} endPoint={endPoint} setEndPoint={setEndPoint} pathID={props.pathID} strokeWidth={props.strokeWidth} stroke={props.stroke} fill={props.fill} fillOpacity={props.fillOpacity} strokeOpacity={props.strokeOpacity} />
                     </View>
                     <View style={styles.container}>
                         {showTables()}
                     </View>
                 </View>
                 <View style={styles.subCan}>
-                    <button onClick={updatePath} onMouseOver={()=>{setHover({sub: true, can:false})}} onMouseLeave={()=>{setHover({sub: false, can:false})}} style={hover.sub?styles.submitHover:styles.submitButton}>Add to path!</button>
+                    <button onClick={() => updatePath()} onMouseOver={()=>{setHover({sub: true, can:false})}} onMouseLeave={()=>{setHover({sub: false, can:false})}} style={hover.sub?styles.submitHover:styles.submitButton}>Add to path!</button>
                     <button onClick={closeModal} onMouseOver={()=>{setHover({sub: false, can:true})}} onMouseLeave={()=>{setHover({sub: false, can:false})}} style={hover.can?styles.cancelHover:styles.cancelButton}>Cancel</button>
                 </View>
             </Modal>
@@ -258,7 +213,7 @@ const styles = StyleSheet.create({
       alignItems: 'center',
       justifyContent: 'center',
       marginTop: 5,
-      fontFamily: 'Geologica-Light',
+      fontFamily: 'Quicksand-Light',
       fontSize: 15
     },
     path:{
@@ -291,8 +246,7 @@ const styles = StyleSheet.create({
           justifyContent: 'flex-start',
       },
       label: {
-          fontFamily: 'Geologica',
-          fontWeight: 600,
+          fontFamily: 'Quicksand-Medium',
           fontSize: 17.5
       },
       table: {
@@ -323,8 +277,7 @@ const styles = StyleSheet.create({
           alignItems: 'center',
           justifyContent: 'center',
           border: '1.8px solid black',
-          fontFamily: 'Geologica',
-          fontWeight: 500,
+          fontFamily: 'Quicksand-Regular',
           fontSize: 18,
           flex:1,
           width: 40,
@@ -338,8 +291,7 @@ const styles = StyleSheet.create({
           justifyContent: 'center',
           textAlign: 'center',
           border: '1.5px dashed grey',
-          fontFamily: 'Geologica',
-          fontWeight: 400,
+          fontFamily: 'Quicksand-Medium',
           fontSize: 18,
           color: '#12f',
           flex:1,
@@ -353,8 +305,7 @@ const styles = StyleSheet.create({
           alignItems: 'center',
           justifyContent: 'center',
           border: '1.5px dashed grey',
-          fontFamily: 'Geologica',
-          fontWeight: 400,
+          fontFamily: 'Quicksand-Regular',
           fontSize: 18,
           color: '#159c06',
           flex:1,
@@ -368,17 +319,13 @@ const styles = StyleSheet.create({
           justifyContent: 'center',
           textAlign: 'center',
           border: '1.5px dashed grey',
-          fontFamily: 'Geologica',
-          fontWeight: 400,
+          fontFamily:'Quicksand-Medium',      
           fontSize: 18,
           color: '#f00',
           flex:1,
           width: 60,
           height: 25,
           margin: 2
-      },
-      path:{
-          cursor: 'pointer'
       },
       subCan: {
           flex: 1,
@@ -398,7 +345,7 @@ const styles = StyleSheet.create({
           color:'#4e4e4e',
           backgroundColor: '#6c6c6c',
           textShadow: '-1px 1px 1px #4e4e4e',
-          fontFamily: 'Poppins-Medium',
+          fontFamily: 'Quicksand-Regular',
           fontSize: 18,
           border: 'none',
           borderRadius: '5px',
@@ -414,7 +361,7 @@ const styles = StyleSheet.create({
           color:'#ffffff',
           backgroundColor: '#4e4e4e',
           textShadow: '-1px 1px 1px #ffffff',
-          fontFamily: 'Poppins-Medium',
+          fontFamily: 'Quicksand-Regular',
           fontSize: 18,
           cursor: 'pointer',
           boxShadow: '-1px -1px 1px 1px #ffffff, -1px 1px 1px 1px #ffffff, 1px 1px 1px 1px #ffffff, 1px -1px 1px 1px #ffffff',
@@ -433,7 +380,7 @@ const styles = StyleSheet.create({
           color:'#4e4e4e',
           backgroundColor: '#fff',
           textShadow: '-1px 1px 1px #4e4e4e',
-          fontFamily: 'Poppins-Medium',
+          fontFamily: 'Quicksand-Regular',
           fontSize: 15,
           borderColor: '#4e4e4e',
           borderStyle: 'solid',
@@ -453,7 +400,7 @@ const styles = StyleSheet.create({
           border: 'none',
           backgroundColor: '#4e4e4e',
           textShadow: '-1px 1px 1px #ffffff',
-          fontFamily: 'Poppins-Medium',
+          fontFamily: 'Quicksand-Regular',
           fontSize: 15,
           cursor: 'pointer',
           boxShadow: '-1px -1px 1px 2px #4e4e4e, -1px 1px 1px 2px #4e4e4e, 1px 1px 1px 2px #4e4e4e, 1px -1px 1px 2px #4e4e4e'
@@ -469,7 +416,7 @@ const styles = StyleSheet.create({
           color:'#f00',
           backgroundColor: '#fff',
           textShadow: '-1px 1px 1px #ffffff',
-          fontFamily: 'Poppins-Medium',
+          fontFamily: 'Quicksand-Regular',
           fontSize: 15,
           borderColor: '#f00',
           borderStyle: 'solid',
@@ -489,7 +436,7 @@ const styles = StyleSheet.create({
           border: 'none',
           backgroundColor: '#f00',
           textShadow: '-1px 1px 1px #fff',
-          fontFamily: 'Poppins-Medium',
+          fontFamily: 'Quicksand-Regular',
           fontSize: 15,
           cursor: 'pointer',
           boxShadow: '-1px -1px 1px 2px #f00, -1px 1px 1px 2px #f00, 1px 1px 1px 2px #f00, 1px -1px 1px 2px #f00'
