@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import Svg, { Path } from "react-native-svg";
 import { StyleSheet, Text, View } from 'react-native';
 import React from 'react';
 
@@ -95,7 +96,7 @@ const GridWithDrag = (props) => {
         const title2 = `${props.endPoint.x},${props.endPoint.y}`
         return(
             <View style={styles.container}>
-                <svg id='modalGrid' height={props.size} width={props.size} viewBox={viewbox} onMouseMove={(evt) => drag(evt)} onMouseLeave={endDrag} >
+                <Svg id='modalGrid' height={props.size} width={props.size} viewBox={viewbox} onMouseMove={(evt) => drag(evt)} onMouseLeave={endDrag} >
                     {/* <circle cx="50" cy="100" r="5" style={styles.start}>
                         <title>Starting point: {props.startPoint.sx},{props.startPoint.sy}</title>
                     </circle> */}
@@ -109,7 +110,7 @@ const GridWithDrag = (props) => {
                             {title2}
                         </title>
                     </circle>
-                </svg>
+                </Svg>
                 <View style={styles.position}>
                     <Text>Current Command: "q{props.firstCtrl.x},{props.firstCtrl.y} {props.endPoint.x},{props.endPoint.y}"</Text>
                 </View>
@@ -121,7 +122,7 @@ const GridWithDrag = (props) => {
         const title3 = `${props.endPoint.x},${props.endPoint.y}`
         return(
             <View style={styles.container}>
-                <svg id='modalGrid' height={props.size} width={props.size} viewBox={viewbox} onMouseMove={(evt) => drag(evt)} onMouseLeave={endDrag} >
+                <Svg id='modalGrid' height={props.size} width={props.size} viewBox={viewbox} onMouseMove={(evt) => drag(evt)} onMouseLeave={endDrag} >
                     {/* <circle cx="50" cy="100" r="5" style={styles.start}>
                         <title>Starting point: {props.startPoint.sx},{props.startPoint.sy}</title>
                     </circle> */}
@@ -140,7 +141,7 @@ const GridWithDrag = (props) => {
                             {title3}
                         </title>
                     </circle>
-                </svg>
+                </Svg>
                 <View style={styles.position}>
                     <Text>Current Command Path: "c{props.firstCtrl.x},{props.firstCtrl.y} {props.secondCtrl.x},{props.secondCtrl.y} {props.endPoint.x},{props.endPoint.y}"</Text>
                 </View>

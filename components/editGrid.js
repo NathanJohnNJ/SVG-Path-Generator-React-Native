@@ -1,28 +1,44 @@
 import { useEffect, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import React from 'react';
+import Svg, { G } from "react-native-svg";
 
-const Grid = (props) => {
+const EditGrid = (props) => {
     const [offsetX, setOffsetX] = useState();
     const [offsetY, setOffsetY] = useState();
     const [selectedElement, setSelectedElement] = useState(null);
+    const [firstCtrl, setFirstCtrl] = useState({x:props.path.dx1.value, y:props.path.dy1.value});
+    const [secondCtrl, setSecondCtrl] = useState({x:props.path.dx2.value, y:props.path.dy2.value});
+    const [endPoint, setEndPoint] = useState({x:props.path.x.value, y:props.path.y.value});
     const viewbox = `0 0 ${props.size} ${props.size}`;
 
     function createGrid(){
-        let num = props.size/10 
+        let num = props.size/10;
         for(let i=0; i<num+1; i++){
-            const svgns = "http://www.w3.org/2000/svg"
-            const grid = document.getElementById('editGrid')
-            const horizLine = document.createElementNS(svgns, 'path')
-            const vertLine = document.createElementNS(svgns, 'path')
-            horizLine.setAttributeNS(null, 'd', `M 0 ${i*10} h${props.size}`)
-            horizLine.setAttributeNS(null, 'stroke', "#bbbbbb")
-            horizLine.setAttributeNS(null, 'strokeWidth', 0.1)
-            vertLine.setAttributeNS(null, 'd', `M ${i*10} 0 v${props.size}`)
-            vertLine.setAttributeNS(null, 'stroke', "#bbbbbb")
-            vertLine.setAttributeNS(null, 'strokeWidth', 0.1)
+            const svgns = "http://www.w3.org/2000/svg";
+            const grid = document.getElementById('editGrid');
+            const horizLine = document.createElementNS(svgns, 'path');
+            const vertLine = document.createElementNS(svgns, 'path');
+            horizLine.setAttributeNS(null, 'd', `M 0 ${i*10} h${props.size}`);
+            horizLine.setAttributeNS(null, 'stroke', "#bbbbbb");
+            vertLine.setAttributeNS(null, 'd', `M ${i*10} 0 v${props.size}`);
+            vertLine.setAttributeNS(null, 'stroke', "#bbbbbb");
             grid.appendChild(horizLine)
             grid.appendChild(vertLine)
+        }
+        for(let i=0; i<num+1; i+=5){
+            const svgns = "http://www.w3.org/2000/svg";
+            const grid = document.getElementById('editGrid');
+            const horizLine = document.createElementNS(svgns, 'path');
+            const vertLine = document.createElementNS(svgns, 'path');
+            horizLine.setAttributeNS(null, 'd', `M 0 ${i*10} h${props.size}`);
+            horizLine.setAttributeNS(null, 'stroke', "#bbbbbb");
+            horizLine.setAttributeNS(null, 'stroke-width', 2);
+            vertLine.setAttributeNS(null, 'd', `M ${i*10} 0 v${props.size}`);
+            vertLine.setAttributeNS(null, 'stroke', "#bbbbbb");
+            vertLine.setAttributeNS(null, 'stroke-width', 2);
+            grid.appendChild(horizLine);
+            grid.appendChild(vertLine);
         }
     }
 
@@ -42,17 +58,17 @@ const Grid = (props) => {
             let yCoord = Math.round( ( coord.y - offsetY ))
             selectedElement.setAttributeNS(null, "cx", xCoord);
             selectedElement.setAttributeNS(null, "cy", yCoord);
-            if(selectedElement.id==="circle1"){
-                props.setFirstPoint({x:xCoord-50, y:yCoord-100})
+            if(selectedElement.id==="firstCtrl"){
+                props.setFirstCtrl({x:xCoord-50, y:yCoord-100})
                 document.getElementById('editGrid').removeChild(document.getElementById('path'))
                 drawPath()
-            }else if(selectedElement.id==="circle2"){
-                props.setSecondPoint({x:xCoord-50, y:yCoord-100})
+            }else if(selectedElement.id==="secondCtrl"){
+                props.setSecondCtrl({x:xCoord-50, y:yCoord-100})
                 document.getElementById('editGrid').removeChild(document.getElementById('path'))
                 drawPath()
             }
             else{
-                props.setThirdPoint({x:xCoord-50, y:yCoord-100})
+                props.setEndPoint({x:xCoord-50, y:yCoord-100})
                 document.getElementById('editGrid').removeChild(document.getElementById('path'))
                 drawPath()
             }
@@ -72,153 +88,113 @@ const Grid = (props) => {
         }
     }
     function drawPath(){
-        const svgns = "http://www.w3.org/2000/svg"
-        const grid = document.getElementById('editGrid')
-        const currentPath = document.createElementNS(svgns, 'path')
-        currentPath.setAttributeNS(null, "id", "path")
-        currentPath.setAttributeNS(null, 'stroke', "#0000ff")
-        currentPath.setAttributeNS(null, 'strokeWidth', 0.5)
-        currentPath.setAttributeNS(null, 'fill', 'none')
-        if(props.command==='Q'){
-            currentPath.setAttributeNS(null, 'd', `M50,100q${props.firstPoint.x},${props.firstPoint.y} ${props.secondPoint.x},${props.secondPoint.y}`)
-        }else if(props.command==='C'){
-            currentPath.setAttributeNS(null, 'd', `M50,100c${props.firstPoint.x},${props.firstPoint.y} ${props.secondPoint.x},${props.secondPoint.y} ${props.thirdPoint.x},${props.thirdPoint.y}`)
+        const svgns = "http://www.w3.org/2000/svg";
+        const grid = document.getElementById('editGrid');
+        const currentPath = document.createElementNS(svgns, 'path');
+        currentPath.setAttributeNS(null, "id", 'path');
+        currentPath.setAttributeNS(null, 'stroke', props.stroke);
+        currentPath.setAttributeNS(null, 'stroke-width', props.strokeWidth);
+        currentPath.setAttributeNS(null, 'stroke-opacity', props.strokeOpacity);
+        currentPath.setAttributeNS(null, 'fill-opacity', props.fillOpacity);
+        currentPath.setAttributeNS(null, 'fill', props.fill);
+        // currentPath.setAttributeNS(null, 'd', props.path.editCommand)
+        // currentPath.setAttributeNS(null, 'd', `M50,100c ${firstCtrl.x},${firstCtrl.y} ${secondCtrl.x},${secondCtrl.y} ${endPoint.x},${endPoint.y}`)
+        if(props.path.type==='Q'){
+            currentPath.setAttributeNS(null, 'd', `M50,100q${firstCtrl.x},${firstCtrl.y}  ${endPoint.x},${endPoint.y}`)
+        }else if(props.path.type==='C'){
+            currentPath.setAttributeNS(null, 'd', `M50,100c${firstCtrl.x},${firstCtrl.y} ${secondCtrl.x},${secondCtrl.y} ${endPoint.x},${endPoint.y}`)
         }else {
-            currentPath.setAttributeNS(null, 'd', `M50,100l${props.secondPoint.x},${props.secondPoint.y}`)
+            currentPath.setAttributeNS(null, 'd', `M50,100l${endPoint.x},${endPoint.y}`)
         }
         grid.appendChild(currentPath)
     }
-    // function drawPath(){
-    //     const svgns = "http://www.w3.org/2000/svg"
-    //     const grid = document.getElementById('grid')
-    //     let startPoints = [];
-    //     for (let i=0; i<1; i++){
-    //         console.log(props.path[i].relCommand);
-    //         const startX = props.path[i].x+props.path[i].sx
-    //         const startY = props.path[i].y+props.path[i].sy
-    //         startPoints.push({sx: startX, sy:startY})
-    //         let start = {
-    //             x: props.path[i].sx,
-    //             y: props.path[i].sy
-    //         }
-    //         const currentPath = document.createElementNS(svgns, 'path')
-    //         currentPath.setAttributeNS(null, 'stroke', "#0000ff");
-    //         currentPath.setAttributeNS(null, 'stroke-width', 1.5);
-    //         currentPath.setAttributeNS(null, 'fill', 'none');
-    //         currentPath.setAttributeNS(null, 'id', `path${i}`);
-    //         (props.relative)?currentPath.setAttributeNS(null, 'd', `M50,50${props.path[i].relCommand}`):currentPath.setAttributeNS(null, 'd', `${props.path[i].absCommand}`)
-    //         grid.appendChild(currentPath)
-    //         let thisPath = document.getElementById(`path${i}`)
-    //         thisPath.addEventListener('mouseover', ()=>hoverFunc(thisPath))
-    //         thisPath.addEventListener('mouseleave', ()=>leaveFunc(thisPath))
-    //         thisPath.addEventListener('click', ()=>clickFunc(props.path[i]), start)
-    //     }
-    //     for (let i=1; i<props.path.length; i++){
-    //         console.log(props.path[i].relCommand);
-    //         const startX = startPoints[i-1].sx;
-    //         const startY = startPoints[i-1].sy;
-    //         const currentPath = document.createElementNS(svgns, 'path')
-    //         currentPath.setAttributeNS(null, 'stroke', "#0000ff");
-    //         currentPath.setAttributeNS(null, 'stroke-width', 1.5);
-    //         currentPath.setAttributeNS(null, 'fill', 'none');
-    //         currentPath.setAttributeNS(null, 'id', `path${i}`);
-    //         (props.relative)?currentPath.setAttributeNS(null, 'd', `M${startX},${startY}${props.path[i].relCommand}`):currentPath.setAttributeNS(null, 'd', `${props.path[i].absCommand}`)
-    //         grid.appendChild(currentPath)
-    //         let thisPath = document.getElementById(`path${i}`)
-    //         thisPath.addEventListener('mouseover', ()=>hoverFunc(thisPath))
-    //         thisPath.addEventListener('mouseleave', ()=>leaveFunc(thisPath))
-    //         thisPath.addEventListener('click', ()=>clickFunc(props.path[i], startPoints[i-1]))
-    //         const nextStartX = props.path[i].x+startPoints[i-1].sx;
-    //         const nextStartY = props.path[i].y+startPoints[i-1].sy;
-    //         startPoints.push({sx: nextStartX, sy:nextStartY});
-    //     }
-    // }
-
+    
     useEffect(() => {
         createGrid()
         drawPath()
-        console.log(props)
     }, [])
-    if(props.command==='Q'){
-        const title1 = `${props.firstPoint.x},${props.firstPoint.y}`
-        const title2 = `${props.secondPoint.x},${props.secondPoint.y}`
+
+        function pathDecider(){
+    if(props.path.type==='Q'){
+        const title1 = `Control Point: ${props.path.dx1.value},${props.path.dy1.value}`
+        const title2 = `End Point: ${props.path.x.value},${props.path.y.value}`     
         return(
             <View style={styles.container}>
-                <svg id='editGrid' height={props.size} width={props.size} viewBox={viewbox} onMouseMove={(evt) => drag(evt)} onMouseLeave={endDrag} >
-                    <circle cx="50" cy="100" r="5" style={styles.start}>
-                        <title>Starting point: {props.startingPoint.x},{props.startingPoint.y}</title>
-                    </circle>
-                    <circle className="draggable" id="circle1" cx="75" cy="150" r="5" onMouseDown={(evt) => startDrag(evt)}  onMouseUp={endDrag} style={styles.drag}>
+                <Svg height={props.size} width={props.size} viewBox={viewbox} onMouseMove={(evt) => drag(evt)} onMouseLeave={endDrag} >
+                    <circle className="draggable" id="firstCtrl" cx={props.path.dx1.value} cy={props.path.dy1.value} r="5" onMouseDown={(evt) => startDrag(evt)} onMouseUp={endDrag} style={styles.drag}>
                         <title>
                             {title1}
                         </title>
                     </circle>
-                    <circle className="draggable" id="circle2" cx="100" cy="100" r="5" onMouseDown={(evt) => startDrag(evt)}  onMouseUp={endDrag} style={styles.end}>
+                    <circle className="draggable" id="endPoint" cx={props.path.x.value} cy={props.path.y.value} r="5" onMouseDown={(evt) => startDrag(evt)} onMouseUp={endDrag} style={styles.end}>
                         <title>
                             {title2}
                         </title>
                     </circle>
-                </svg>
+                </Svg>
                 <View style={styles.position}>
-                    <Text>Current Command: "q{props.firstPoint.x},{props.firstPoint.y} {props.secondPoint.x},{props.secondPoint.y}"</Text>
+                    <Text>Current Command: "q{props.path.dx1.value},{props.path.dy1.value} {props.path.x.value},{props.path.y.value}"</Text>
                 </View>
             </View>
         )
-    }else if(props.command==='C'){
-        const title1 = `${props.firstPoint.x},${props.firstPoint.y}`
-        const title2 = `${props.secondPoint.x},${props.secondPoint.y}`
-        const title3 = `${props.thirdPoint.x},${props.thirdPoint.y}`
-        return(
-            <View style={styles.container}>
-                <svg id='editGrid' height={props.size} width={props.size} viewBox={viewbox} onMouseMove={(evt) => drag(evt)} onMouseLeave={endDrag} >
-                    <circle cx="50" cy="100" r="5" style={styles.start}>
-                        <title>Starting point: {props.startingPoint.x},{props.startingPoint.y}</title>
-                    </circle>
-                    <circle className="draggable" id="circle1" cx="75" cy="150" r="5" onMouseDown={(evt) => startDrag(evt)}  onMouseUp={endDrag} style={styles.drag}>
+    }else if(props.path.type==='C'){
+        const title1 = `First Control Point: ${props.path.dx1.value},${props.path.dy1.value}`
+        const title2 = `Second Control Point: ${props.path.dx2.value},${props.path.dy2.value}`
+        const title3 = `End Point: ${props.path.x.value},${props.path.y.value}`
+        return(     
+                <View style={styles.container}>
+                <Svg id='editGrid' height={props.size} width={props.size} viewBox={viewbox} onMouseMove={(evt) => drag(evt)} onMouseLeave={endDrag} >
+                    <circle className="draggable" id="firstCtrl" cx={props.path.dx1.value} cy={props.path.dy1.value} r="5" onMouseDown={(evt) => startDrag(evt)}  onMouseUp={endDrag} style={styles.drag}>
                         <title>
                             {title1}
                         </title>
                     </circle>
-                    <circle className="draggable" id="circle2" cx="125" cy="150" r="5" onMouseDown={(evt) => startDrag(evt)}  onMouseUp={endDrag} style={styles.drag}>
+                    <circle className="draggable" id="secondCtrl" cx={props.path.dx2.value} cy={props.path.dy2.value} r="5" onMouseDown={(evt) => startDrag(evt)}  onMouseUp={endDrag} style={styles.drag}>
                         <title>
                             {title2}
                         </title>
                     </circle>
-                    <circle className="draggable" id="circle3" cx="150" cy="100" r="5" onMouseDown={(evt) => startDrag(evt)}  onMouseUp={endDrag} style={styles.end}>
+                    <circle className="draggable" id="endPoint" cx={props.path.x.value} cy={props.path.y.value} r="5" onMouseDown={(evt) => startDrag(evt)}  onMouseUp={endDrag} style={styles.end}>
                         <title>
                             {title3}
                         </title>
                     </circle>
-                </svg>
+                </Svg>
                 <View style={styles.position}>
-                    <Text>Current Command Path: "c{props.firstPoint.x},{props.firstPoint.y} {props.secondPoint.x},{props.secondPoint.y} {props.thirdPoint.x},{props.thirdPoint.y}"</Text>
+                    <Text>Current Command Path: "c{props.firstCtrl.x},{props.firstCtrl.y} {props.secondCtrl.x},{props.secondCtrl.y} {props.endPoint.x},{props.endPoint.y}"</Text>
                 </View>
             </View>
         )
-    } else if(props.command==='H'||props.command==='V'||props.command==='L'){
-        const title1 = `${props.firstPoint.x},${props.firstPoint.y}`
-        const title2 = `${props.firstPoint.x+props.path.dx},${props.firstPoint.y+props.path.dy}`
+    } else if(props.path.type==='H'||props.path.type==='V'||props.path.type==='L'){
+        const title = `${props.path.x.value},${props.path.y.value}`
         return(
             <View style={styles.container}>
-                <svg id='editGrid' height={props.size} width={props.size} viewBox={viewbox} onMouseMove={(evt) => drag(evt)} onMouseLeave={endDrag} >
-                    <circle cx="50" cy="100" r="5" style={styles.start}>
-                        <title>Starting point: {props.firstPoint.x},{props.firstPoint.y}</title>
-                    </circle>
-                    <circle className="draggable" id="circle2" cx="50" cy="150" r="5" onMouseDown={(evt) => startDrag(evt)}  onMouseUp={endDrag} style={styles.end}>
+                <Svg id='editGrid' height={props.size} width={props.size} viewBox={viewbox} onMouseMove={(evt) => drag(evt)} onMouseLeave={endDrag} >
+                    <circle className="draggable" id="endPoint" cx="50" cy="150" r="5" onMouseDown={(evt) => startDrag(evt)}  onMouseUp={endDrag} style={styles.end}>
                         <title>
-                            {title2}
+                            {title}
                         </title>
                     </circle>
-                </svg>
+                </Svg>
                 <View style={styles.position}>
-                    <Text>Current Command: "l{props.path.dx},{props.path.dy}"</Text>
+                    <Text>Current Command: "l{props.path.dx1.valuee},{props.path.dy1.value}"</Text>
                 </View>
             </View>
         )
-    }
+    }}
+
+
+    return(
+        <View>
+            <Svg id='editGrid' height={props.size} width={props.size} viewBox={viewbox} onMouseMove={(evt) => drag(evt)} onMouseLeave={endDrag} >
+            {pathDecider()}
+            </Svg>
+        </View>
+    )
 };
 
-export default Grid;
+
+export default EditGrid;
 
 const styles = StyleSheet.create({
     container: {
