@@ -1,6 +1,6 @@
-import QWeb from './web/q';
+import QWeb from '../web/commands/q';
 import QMobile from './mobile/q';
-import CWeb from './web/c';
+import CWeb from '../web/commands/c';
 import CMobile from './mobile/c';
 import { StyleSheet, Text, View, Platform } from 'react-native';
 

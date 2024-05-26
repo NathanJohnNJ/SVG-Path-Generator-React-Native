@@ -1,0 +1,7 @@
+Each section of path needs:
+  - starting point (q/c/s/t/a/l/v/h) - always absolute - always the same as the previous sections end point
+  - end point (q/c/s/t/a/l/v/h) - absolute/relative
+  - first control (q/c/) - absolute/relative
+  - second control (c/t) - absolute/relative
+  
+Need to make table fields editable so path can be updated by typing as well as click and drag
