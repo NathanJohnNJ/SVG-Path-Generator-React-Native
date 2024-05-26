@@ -1,4 +1,3 @@
 {
-    "hqServer.browser.useBuiltinBrowser": true,
-    "fauna.dbSecret": "fnAFiJK4BMAAzprYftNp-K82oisrQBBlfVGdtdJc"
+    "hqServer.browser.useBuiltinBrowser": true
 }
