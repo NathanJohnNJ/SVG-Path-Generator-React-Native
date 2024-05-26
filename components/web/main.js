@@ -1,28 +1,26 @@
-import { useState, useRef, useEffect } from 'react';
+import React, { useState } from 'react';
 import Commands from './commands';
 import WebGrid from './webGrid';
-import MobileGrid from './mobGrid';
+import Grid from '../new/grid';
+import PathFromArray from '../new/pathFromArray';
+import SidePanel from '../new/sidePanel';
+import ConfigPanel from '../new/configPanel';
+import CommandPanel from '../new/commandPanel';
 import Edit from './edit';
-import Config from './configurations';
+import Edit2CP from './edit2CP';
 import styled from 'styled-components/native';
-import { StyleSheet, Text, View, Platform, Pressable, Modal } from 'react-native';
-import React from 'react';
+import { StyleSheet, Text, View, Platform, Pressable } from 'react-native';
 
 const Main = (props) => {
-    const [startPoints, setStartPoints] = useState([]);
-    const [pathID, setPathID] = useState(1);
     const [relative, setRelative] = useState(true);
+    const [startPoints, setStartPoints] = useState([]);
+    const [pathID, setPathID] = useState(0);
     const [visible, setVisible] = useState(false);
-    const [strokeWidth, setStrokeWidth] = useState(3);
-    const [stroke, setStroke] = useState('#444');
-    const [fill, setFill] = useState('none');
-    const [strokeOpacity, setStrokeOpacity] = useState(1);
-    const [fillOpacity, setFillOpacity] = useState(1);
     const [editModalIsOpen, setEditModalIsOpen] = useState(false);
-    const gridRef = useRef();
+    const [edit2ModalIsOpen, setEdit2ModalIsOpen] = useState(false);
     const firstCMD = {
         type: 'C',
-        id:pathID,
+        id:`path${pathID}`,
         sx: {key: 'Start x', value: 50},
         sy: {key: 'Start y', value: 50},
         dx1: {key: 'dx1', value: relative?50:100},
@@ -31,36 +29,40 @@ const Main = (props) => {
         dy2: {key: 'dy2', value: relative?-50:0},
         x:  {key: 'x',value: relative?150:200},
         y: {key: 'y', value: relative?0:50},
+        absX: {value: 200},
+        absY: {value: 50},
+        startPoint: {x: 50, y: 50},
+        controlPoints: relative?[{key: 'dx1', value:50}, {key: 'dy1', value:50}, {key: 'dx2', value:100}, {key: 'dy2', value:-50}]:[{key: 'dx1', value:100}, {key: 'dy1', value:100}, {key: 'dx2', value:100}, {key: 'dy2', value:-50}],
+        endPoint: relative?{x: 150,y: 0}:{x: 200,y: 50},
         command: relative?'c50,50 100,-50 150,0':'C100,100 150,0 200,50',
         absCommand: 'C100,100 150,0 200,50',
-        relCommand: 'c50,50 100,-50 150,0',
-        editCommand: 'M50,100c50,50 100,-50 150,0'
+        relCommand: 'c50,50 100,-50 150,0'
+    };  
+    const blank = {
+      type: '-',
+      id: '-',
+      absX: {value: '-'},
+      absY: {value: '-'},
+      startPoint: {x: '-', y: '-'},
+      controlPoints: [{key: '-', value:'-'}],
+      endPoint: {x: '-', y: '-'},
+      command: '-',
+      absCommand: '-',
+      relCommand: '-'
     }
     const [path, setPath] = useState([firstCMD]);
     const [editPath, setEditPath] = useState(firstCMD);
     const [hover, setHover] = useState(false);
+    const [info, setInfo] = useState(blank);
+    const [firstCtrl, setFirstCtrl] = useState({});
+    const [secondCtrl, setSecondCtrl] = useState({});
+    const [endPoint, setEndPoint] = useState({});
 
     function buttonHover(){
         setHover(true)
     }
     function buttonLeave(){
         setHover(false)
-    }
-    
-    // function displayGrid(){
-    //   if (Platform.OS !== 'web'){
-    //     return(
-    //       <MobileGrid size="400" path={path} relative={relative} startPoints={startPoints} setStartPoints={setStartPoints} pathID={pathID} setPathID={setPathID} stroke={stroke} setStroke={setStroke} strokeWidth={strokeWidth} setStrokeWidth={setStrokeWidth} fill={fill} setFill={setFill} fillOpacity={fillOpacity} setFillOpacity={setFillOpacity} strokeOpacity={setStrokeOpacity} setStrokeOpacity={setStrokeOpacity} gridRef={gridRef} setEditModalIsOpen={setEditModalIsOpen} editModalIsOpen={editModalIsOpen} editPath={editPath} setEditPath={setEditPath} />
-    //     )
-    //   }else{
-    //     return(
-    //       <WebGrid strokeWidth={strokeWidth} setStrokeWidth={setStrokeWidth} size="500" path={path} relative={relative} startPoints={startPoints} setStartPoints={setStartPoints} pathID={pathID} setPathID={setPathID} stroke={stroke} setStroke={setStroke} fill={fill} fillOpacity={fillOpacity} strokeOpacity={strokeOpacity} gridRef={gridRef} setEditModalIsOpen={setEditModalIsOpen} editModalIsOpen={editModalIsOpen}  editPath={editPath} setEditPath={setEditPath}/>
-    //     )
-    //   }
-    // }
-    function editFunc(path){
-      setEditPath(path)
-      setEditModalIsOpen(true)
     }
 
     return (
@@ -73,37 +75,18 @@ const Main = (props) => {
                 <Pressable onPress={() => setRelative(relative => !relative)} disabled={!relative} style={!relative?styles.selected:styles.switch}><Text style={!relative?styles.selectedText:styles.switchText}>Absolute</Text></Pressable>
                 <Pressable onPress={() => setRelative(relative => !relative)} disabled={relative} style={relative?styles.selected:styles.switch}><Text style={relative?styles.selectedText:styles.switchText}>Relative</Text></Pressable>
             </TypeSwitcher>
-
-            <View style={styles.buttonsRow}>
-              <Pressable id="commandBtn" onPress={() => setVisible(visible => !visible)} onMouseOver={buttonHover} onMouseLeave={buttonLeave} style={[hover?styles.hover:styles.button, !visible?styles.visible:styles.hidden]}><Text>+</Text></Pressable>
-            
-                <View style={[styles.commands, visible?styles.visible:styles.hidden]} id="commandBtns">
-                    <Commands strokeWidth={strokeWidth} relative={relative} path={path} setPath={setPath} pathID={pathID} setPathID={setPathID} startPoints={startPoints} setStartPoints={setStartPoints} stroke={stroke} fill={fill} gridRef={gridRef} strokeOpacity={strokeOpacity} fillOpacity={fillOpacity}/>
-                    
-                    <Pressable id="close" onPress={() => setVisible(visible => !visible)} onMouseOver={buttonHover} onMouseLeave={buttonLeave} style={[hover?styles.hoverClose:styles.close, Platform.OS==='web'?styles.web:styles.mobile, visible?styles.visible:styles.hidden]}><Text style={styles.closeBtn}>X</Text></Pressable>
-                </View>
-
-                
-             </View>
-             </View>
-             <View style={styles.optionsContainer}>
-             <View style={styles.options} id="options">
-                  <Config stroke={stroke} setStroke={setStroke} path={path} fill={fill} setFill={setFill} strokeWidth={strokeWidth} setStrokeWidth={setStrokeWidth} strokeOpacity={strokeOpacity} setStrokeOpacity={setStrokeOpacity} fillOpacity={fillOpacity} setFillOpacity={setFillOpacity} />
-                </View>
-              </View>
+            </View>
             
             <View style={styles.gridArea}>
-              {/* {displayGrid()} */}
-              <WebGrid strokeWidth={strokeWidth} setStrokeWidth={setStrokeWidth} size="500" path={path} relative={relative} startPoints={startPoints} setStartPoints={setStartPoints} pathID={pathID} setPathID={setPathID} stroke={stroke} setStroke={setStroke} fill={fill} fillOpacity={fillOpacity} strokeOpacity={strokeOpacity} gridRef={gridRef} setEditModalIsOpen={setEditModalIsOpen} editModalIsOpen={editModalIsOpen}  editPath={editPath} setEditPath={setEditPath} editFunc={editFunc}/>
+              <View style={styles.mainCont}>
+                <View style={styles.configCommands}>
+                  <ConfigPanel stroke={props.stroke} strokeWidth={props.strokeWidth} strokeOpacity={props.strokeOpacity} fill={props.fill} fillOpacity={props.fillOpacity} setStroke={props.setStroke} setStrokeWidth={props.setStrokeWidth} setStrokeOpacity={props.setStrokeOpacity} setFill={props.setFill} setFillOpacity={props.setFillOpacity} />
+                  <CommandPanel path={path} setPath={setPath} relative={relative}/>
+                </View>
+                <Grid size="450" id="grid" children={<PathFromArray id={path.id} path={path} stroke={props.stroke} strokeWidth={props.strokeWidth} strokeOpacity={props.strokeOpacity} fill={props.fill} fillOpacity={props.fillOpacity} setInfo={setInfo} firstCtrl={firstCtrl} setFirstCtrl={setFirstCtrl} secondCtrl={secondCtrl} setSecondCtrl={setSecondCtrl} endPoint={endPoint} setEndPoint={setEndPoint} />} />
+                <SidePanel path={info} firstCtrl={firstCtrl} setFirstCtrl={setFirstCtrl} secondCtrl={secondCtrl} setSecondCtrl={setSecondCtrl} endPoint={endPoint} setEndPoint={setEndPoint} />
+              </View>
             </View>
-
-            <View>
-              <Text>
-                Stroke: {stroke}
-                Width: {strokeWidth}
-              </Text>
-            </View>
-              <Edit path={editPath} strokeWidth={strokeWidth} size="300" relative={relative} startPoints={startPoints} setStartPoints={setStartPoints} pathID={pathID} setPathID={setPathID} stroke={stroke} fill={fill} fillOpacity={fillOpacity} strokeOpacity={strokeOpacity} gridRef={gridRef} setEditModalIsOpen={setEditModalIsOpen} editModalIsOpen={editModalIsOpen}  editPath={editPath} editFunc={editFunc}/>
         </View>
     )
 };
@@ -112,11 +95,15 @@ export default Main;
 
 //All below checked, all are being used
 const styles = StyleSheet.create({
+  mainCont:{
+    display: 'flex',
+    flexDirection: 'row'
+  },
     container: {
       display:'flex',
       flexDirection: 'column',
       alignItems: 'center',
-      justifyContent: 'center',
+      // justifyContent: 'center',
     },
     optionsContainer:{
       flex:1,
@@ -124,16 +111,16 @@ const styles = StyleSheet.create({
       flexDirection: 'row',
       alignContent: 'left'
     },
+    configCommands: {
+      display:'flex',
+      flexDirection:'column'
+    },
     options:{
       flex:1,
       display: 'flex',
       alignSelf: 'flex-start',
       position: 'fixed',
       left: 20
-    },
-    buttonsRow: {
-      display: 'flex',
-      flexDirection: 'row'
     },
     title:{
       fontFamily: 'Quicksand-Bold',

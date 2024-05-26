@@ -1,38 +1,15 @@
-import { useState, useEffect } from 'react';
-import GridWithDrag from './gridWithDrag';
-import { StyleSheet, Text, View } from 'react-native';
-import React from 'react';
-import Modal from 'react-modal';
-import FieldSet from 'react-native-fieldset';
-import Tables from './tables';
+import React, { useState } from 'react';
+import EditGrid from './editGrid';
+import { StyleSheet, Text, View, Modal} from 'react-native';
+import Tables from './commands/tables';
 
-const Q = (props) => {
-    const [absRel, setAbsRel] = useState("q");
-    const [modalIsOpen, setModalIsOpen] = useState(false);
-    const [hover, setHover] = useState({sub: false, can: false, q:false});
-    const [firstCtrl, setFirstCtrl] = useState({x:25, y:50})
-    const [endPoint, setEndPoint] = useState({x:50, y:0})
+const Edit = (props) => {
+    const [hover, setHover] = useState({sub: false, can: false, c:false});
+    const [firstCtrl, setFirstCtrl] = useState({x:props.editPath.dx1.value, y:props.editPath.dy1.value})
+    const [endPoint, setEndPoint] = useState({x:props.editPath.x.value, y:props.editPath.y.value})
 
-    const defaultPath = {
-        type: 'Q',
-        id: props.pathID+1,
-        sx: {key: 'Start x', value: 50},
-        sy: {key: 'Start y', value: 50},
-        dx1: {key: 'dx', value: props.relative?25:75},
-        dy1: {key: 'dy', value: props.relative?50:100},
-        x:  {key: 'x',value: props.relative?50:100},
-        y: {key: 'y', value: props.relative?0:50},
-        command: props.relative?'q25,50 50,0':'Q75,100 100,50',
-        absCommand: 'Q75,100 100,50',
-        relCommand: 'q25,50 50,0'
-    }
-    function openModal(){
-        setFirstCtrl({x:25, y:50})  
-        setEndPoint({x:50, y:0})
-        setModalIsOpen(true)
-    }
     function closeModal(){
-        setModalIsOpen(false)
+        props.setEditModalIsOpen(false)
     }
     function hoverFunc(path){
         path.style.strokeWidth = props.strokeWidth*2;
@@ -40,90 +17,60 @@ const Q = (props) => {
     }
     function leaveFunc(path){
         path.style.strokeWidth = props.strokeWidth;
-        path.style.stroke = props.stoke;
+        path.style.stroke = '#444444';
     }
-    
-    function addToPath(){
-        const i = props.pathID
-        const startX = props.startPoints[i-1].sx;
-        const startY = props.startPoints[i-1].sy;
-        const qPath = {
-            type: 'Q',
-            id: props.pathID+1,
-            sx: {key: 'Start x', value: startX},
-            sy: {key: 'Start y', value: startY},
-            dx1: {key: 'dx', value: props.relative?firstCtrl.x:firstCtrl.x+startX},
-        dy1: {key: 'dy', value: props.relative?firstCtrl.y:firstCtrl.y+startY},
-            x:  {key: 'x',value: props.relative?endPoint.x:endPoint.x+startX},
-            y: {key: 'y', value: props.relative?endPoint.y:endPoint.y+startY},
-            command: props.relative?`q${firstCtrl.x},${firstCtrl.y} ${endPoint.x},${endPoint.y}`:`Q${startX+firstCtrl.x},${startY+firstCtrl.y} ${startX+endPoint.x},${startY+endPoint.y}`,
-            absCommand: `Q${startX+firstCtrl.x},${startY+firstCtrl.y} ${startX+endPoint.x},${startY+endPoint.y}`,
-            relCommand: `q${firstCtrl.x},${firstCtrl.y} ${endPoint.x},${endPoint.y}`
-        } 
-        const newPath = [...props.path, qPath]
-        props.setPath(newPath)
-        const newStartPoints = [...props.startPoints, {sx: startX+endPoint.x, sy: startY+endPoint.y}]
-        props.setStartPoints(newStartPoints)
+
+    function confirmChanges(){
+        
         const grid = document.getElementById('grid')
-        grid.removeChild(grid.lastChild)
+        const oldPath = document.getElementById(`path${props.editPath.id}`)
+        grid.removeChild(oldPath)
         const svgns = "http://www.w3.org/2000/svg"
-        newPath.map((path, i) => {
-            const currentPath = document.createElementNS(svgns, 'path')
-            const fullPath = `M${path.sx.value},${path.sy.value}${path.command}`
-            currentPath.setAttributeNS(null, 'd', fullPath)
-            currentPath.setAttributeNS(null, 'stroke', props.stroke)
-            currentPath.setAttributeNS(null, 'strokeWidth', props.strokeWidth)
-            currentPath.setAttributeNS(null, 'fill', props.fill)
-            currentPath.setAttributeNS(null, 'stroke-opacity', props.strokeOpacity)
-            currentPath.setAttributeNS(null, 'fill-opacity', props.fillOpacity)
-            currentPath.setAttributeNS(null, 'style', 'styles.path')
-            currentPath.setAttributeNS(null, 'id', `path${path.id}`)
-            grid.appendChild(currentPath)
-            let thisPath = document.getElementById(`path${path.id}`)
-            thisPath.addEventListener('mouseover', ()=>hoverFunc(thisPath))
-            thisPath.addEventListener('mouseleave', ()=>leaveFunc(thisPath))
-            thisPath.addEventListener('click', path =>props.editFunc(path))
-        })    
-        props.setPathID(props.pathID+1)  
-        setModalIsOpen(false)
+        const currentPath = document.createElementNS(svgns, 'path')
+        const fullPath = `M${props.editPath.sx.value},${props.editPath.sy.value}${props.editPath.command}`
+        currentPath.setAttributeNS(null, 'd', fullPath)
+        currentPath.setAttributeNS(null, 'stroke', props.stroke)
+        currentPath.setAttributeNS(null, 'stroke-width', props.strokeWidth)
+        currentPath.setAttributeNS(null, 'fill', props.fill)
+        currentPath.setAttributeNS(null, 'style', 'styles.path')
+        currentPath.setAttributeNS(null, 'stroke-opacity', props.strokeOpacity)
+        currentPath.setAttributeNS(null, 'fill-opacity', props.fillOpacity)
+        currentPath.setAttributeNS(null, 'id', `path${props.editPath.id}`)
+        currentPath.addEventListener('mouseover', ()=>hoverFunc(thisPath))
+        currentPath.addEventListener('mouseleave', ()=>leaveFunc(thisPath))
+        currentPath.addEventListener('click', ()=>props.editFunc(props.editPath)) 
+        grid.appendChild(currentPath)
+        props.setEditModalIsOpen(false) 
     }
-    useEffect(()=>{
-        if (props.relative){
-            setAbsRel("q")
-        } else {
-            setAbsRel("Q")
-        }
-    })
-    
 
     return (
-        <View>
-            <Text onClick={openModal} onMouseOver={()=>{setHover({sub: false, can:false, q: true})}} onMouseLeave={()=>{setHover({sub: false, can:false, q: false})}} style={hover.q?styles.hover:styles.button}>{absRel}</Text>
+        <View className="command">
             <Modal
-                isOpen={modalIsOpen}
-                onRequestClose={closeModal}
-                ariaHideApp={false}
-                style={styles.modal}
-                >
+            animationType="slide"
+            transparent={false}
+            visible={props.editModalIsOpen}
+            onRequestClose={closeModal}
+            style={styles.modal}
+            >
+                    <Text style={styles.title}>{`${props.editPath.type} Command`}</Text>
                 <View style={styles.row}>
                     <View style={styles.container}>
-                        <GridWithDrag size="200" command="Q" relative={props.relative} firstCtrl={firstCtrl} setFirstCtrl={setFirstCtrl} endPoint={endPoint} setEndPoint={setEndPoint} strokeWidth={props.strokeWidth} stroke={props.stroke} fill={props.fill} fillOpacity={props.fillOpacity} strokeOpacity={props.strokeOpacity} startPoints={props.startPoints}/>
+                        <EditGrid size="300" relative={props.relative} firstCtrl={firstCtrl} setFirstCtrl={setFirstCtrl} endPoint={endPoint} setEndPoint={setEndPoint} strokeWidth={props.strokeWidth} stroke={props.stroke} fill={props.fill} fillOpacity={props.fillOpacity} strokeOpacity={props.strokeOpacity} path={props.editPath}/>
                     </View>
                     <View style={styles.container}>
-                        <Tables path={defaultPath} />
+                        <Tables path={props.editPath} />
                     </View>
                 </View>
-                
                 <View style={styles.subCan}>
-                    <Text onClick={addToPath} onMouseOver={()=>{setHover({sub: true, can:false, q: false})}} onMouseLeave={()=>{setHover({sub: false, can:false, q: false})}} style={hover.sub?styles.submitHover:styles.submitButton}>Add to path!</Text>
-                    <Text onClick={closeModal} onMouseOver={()=>{setHover({sub: false, can:true, q: false})}} onMouseLeave={()=>{setHover({sub: false, can:false, q: false})}} style={hover.can?styles.cancelHover:styles.cancelButton}>Cancel</Text>
+                    <Text onClick={confirmChanges} onMouseOver={()=>{setHover({sub: true, can:false, c: false})}} onMouseLeave={()=>{setHover({sub: false, can:false, c: false})}} style={hover.sub?styles.submitHover:styles.submitButton}>Confirm</Text>
+                    <Text onClick={closeModal} onMouseOver={()=>{setHover({sub: false, can:true, c: false})}} onMouseLeave={()=>{setHover({sub: false, can:false, c: false})}} style={hover.can?styles.cancelHover:styles.cancelButton}>Cancel</Text>
                 </View>
             </Modal>
         </View>
     )
 };
 
-export default Q;
+export default Edit;
 
 const styles = StyleSheet.create({
     modal: {
@@ -131,6 +78,11 @@ const styles = StyleSheet.create({
       backgroundColor: '#fff',
       alignItems: 'center',
       justifyContent: 'space-evenly',
+    },
+    title:{
+        fontFamily:'Quicksand-Bold',
+        fontSize: 25,
+        textDecorationLine: 'underline'
     },
     container: {
       flex: 1,
@@ -159,8 +111,7 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-start',
     },
     label: {
-        fontFamily: 'Geologica',
-        fontWeight: 600,
+        fontFamily: 'Quicksand-Medium',
         fontSize: 17.5
     },
     table: {
@@ -191,8 +142,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         border: '1.8px solid black',
-        fontFamily: 'Geologica',
-        fontWeight: 500,
+        fontFamily: 'Quicksand-Medium',
         fontSize: 18,
         flex:1,
         width: 40,
@@ -206,8 +156,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         textAlign: 'center',
         border: '1.5px dashed grey',
-        fontFamily: 'Geologica',
-        fontWeight: 400,
+        fontFamily: 'Quicksand-Medium',
         fontSize: 18,
         color: '#12f',
         flex:1,
@@ -221,8 +170,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         border: '1.5px dashed grey',
-        fontFamily: 'Geologica',
-        fontWeight: 400,
+        fontFamily: 'Quicksand-Medium',
         fontSize: 18,
         color: '#159c06',
         flex:1,
@@ -236,8 +184,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         textAlign: 'center',
         border: '1.5px dashed grey',
-        fontFamily: 'Geologica',
-        fontWeight: 400,
+        fontFamily: 'Quicksand-Medium',
         fontSize: 18,
         color: '#f00',
         flex:1,

@@ -1,7 +1,6 @@
-import { useEffect, useState } from 'react';
-import Svg, { Path } from "react-native-svg"
+import React, { useEffect, useState } from 'react';
+import Svg from "react-native-svg"
 import { StyleSheet, Text, View } from 'react-native';
-import React from 'react';
 
 const GridWithDrag = (props) => {
     const [offsetX, setOffsetX] = useState();
@@ -14,24 +13,24 @@ const GridWithDrag = (props) => {
         const svgns = "http://www.w3.org/2000/svg"
         const grid = document.getElementById('modalGrid')
         for(let i=0; i<num+1; i++){
-            const horizLine = document.createElementNS(svgns, 'path')
-            const vertLine = document.createElementNS(svgns, 'path')
-            horizLine.setAttributeNS(null, 'd', `M 0 ${i*10} h${props.size}`)
-            horizLine.setAttributeNS(null, 'stroke', "#bbbbbb")
-            vertLine.setAttributeNS(null, 'd', `M ${i*10} 0 v${props.size}`)
-            vertLine.setAttributeNS(null, 'stroke', "#bbbbbb")
-            grid.appendChild(horizLine)
-            grid.appendChild(vertLine)
+            const horizLine = document.createElementNS(svgns, 'path');
+            const vertLine = document.createElementNS(svgns, 'path');
+            horizLine.setAttributeNS(null, 'd', `M 0 ${i*10} h${props.size}`);
+            horizLine.setAttributeNS(null, 'stroke', "#bbbbbb");
+            vertLine.setAttributeNS(null, 'd', `M ${i*10} 0 v${props.size}`);
+            vertLine.setAttributeNS(null, 'stroke', "#bbbbbb");
+            grid.appendChild(horizLine);
+            grid.appendChild(vertLine);
         }
         for(let i=0; i<num+1; i+=5){
             const horizLine = document.createElementNS(svgns, 'path')
             const vertLine = document.createElementNS(svgns, 'path')
-            horizLine.setAttributeNS(null, 'd', `M 0 ${i*10} h${props.size}`)
-            horizLine.setAttributeNS(null, 'stroke', "#bbbbbb")
-            horizLine.setAttributeNS(null, 'stroke-width', 2)
-            vertLine.setAttributeNS(null, 'd', `M ${i*10} 0 v${props.size}`)
-            vertLine.setAttributeNS(null, 'stroke', "#bbbbbb")
-            vertLine.setAttributeNS(null, 'stroke-width', 2)
+            horizLine.setAttributeNS(null, 'd', `M 0 ${i*10} h${props.size}`);
+            horizLine.setAttributeNS(null, 'stroke', "#bbbbbb");
+            horizLine.setAttributeNS(null, 'stroke-width', 2);
+            vertLine.setAttributeNS(null, 'd', `M ${i*10} 0 v${props.size}`);
+            vertLine.setAttributeNS(null, 'stroke', "#bbbbbb");
+            vertLine.setAttributeNS(null, 'stroke-width', 2);
             grid.appendChild(horizLine)
             grid.appendChild(vertLine)
         }
@@ -84,17 +83,17 @@ const GridWithDrag = (props) => {
     }
     function drawPath(){
         const svgns = "http://www.w3.org/2000/svg"
-        const grid = document.getElementById('modalGrid')
-        const currentPath = document.createElementNS(svgns, 'path')
-        currentPath.setAttributeNS(null, "id", 'path')
-        currentPath.setAttributeNS(null, 'stroke', props.stroke)
-        currentPath.setAttributeNS(null, 'strokeWidth', props.strokeWidth)
-        currentPath.setAttributeNS(null, 'fill', props.fill)
-        currentPath.setAttributeNS(null, 'stroke-opacity', props.strokeOpacity)
-        currentPath.setAttributeNS(null, 'fill-opacity', props.fillOpacity)
-        if(props.command==='Q'){
+        const grid = document.getElementById('pathGroup');
+        const currentPath = document.createElementNS(svgns, 'path');
+        currentPath.setAttributeNS(null, "id", 'path');
+        currentPath.setAttributeNS(null, 'stroke', props.stroke);
+        currentPath.setAttributeNS(null, 'stroke-width', props.strokeWidth);
+        currentPath.setAttributeNS(null, 'stroke-opacity', props.strokeOpacity);
+        currentPath.setAttributeNS(null, 'fill', props.fill);
+        currentPath.setAttributeNS(null, 'fill-opacity', props.fillOpacity);
+        if(props.path.type==='Q'){
             currentPath.setAttributeNS(null, 'd', `M50,100q${props.firstCtrl.x},${props.firstCtrl.y} ${props.endPoint.x},${props.endPoint.y}`)
-        }else if(props.command==='C'){
+        }else if(props.path.type==='C'){
             currentPath.setAttributeNS(null, 'd', `M50,100c${props.firstCtrl.x},${props.firstCtrl.y} ${props.secondCtrl.x},${props.secondCtrl.y} ${props.endPoint.x},${props.endPoint.y}`)
         }
         grid.appendChild(currentPath)
@@ -105,17 +104,17 @@ const GridWithDrag = (props) => {
         drawPath()
     }, [])
 
-    function currentCommand(){
-        if (props.relative){
-            return(
-                <Text>Current Command: "q{props.firstCtrl.x},{props.firstCtrl.y} {props.endPoint.x},{props.endPoint.y}"</Text>
-            )
-        }else{
-            return(
-                <Text>Current Command: "Q{props.firstCtrl.x+props.startPoints[props.pathID]},{props.firstCtrl.y} {props.endPoint.x},{props.endPoint.y}"</Text>
-            )
-        }
-    }
+    // function currentCommand(){
+    //     if (props.relative){
+    //         return(
+    //             <Text>Current Command: "q{props.firstCtrl.x},{props.firstCtrl.y} {props.endPoint.x},{props.endPoint.y}"</Text>
+    //         )
+    //     }else{
+    //         return(
+    //             <Text>Current Command: "Q{props.firstCtrl.x+props.startPoints[props.pathID]},{props.firstCtrl.y} {props.endPoint.x},{props.endPoint.y}"</Text>
+    //         )
+    //     }
+    // }
 
     if(props.command==='Q'){
         const title1 = `Control Point: ${props.firstCtrl.x},${props.firstCtrl.y}`
@@ -135,8 +134,8 @@ const GridWithDrag = (props) => {
                     </circle>   
                 </Svg>
                 <View style={styles.position}>
-                    {/* <Text>Current Command: "q{props.firstCtrl.x},{props.firstCtrl.y} {props.endPoint.x},{props.endPoint.y}"</Text> */}
-                    {currentCommand()}
+                    <Text>Current Command: "q{props.firstCtrl.x},{props.firstCtrl.y} {props.endPoint.x},{props.endPoint.y}"</Text>
+                    {/* {currentCommand()}   */}
                 </View>
             </View>
         )

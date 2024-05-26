@@ -1,11 +1,16 @@
 
 import { StyleSheet, Text, View } from 'react-native';
-import React from 'react';
+import React, { useState } from 'react';
 import FieldSet from 'react-native-fieldset';
 
-const Tables = (props) => {
-    console.log(props.path)
 
+const Tables = (props) => {
+    console.log(props)
+    const [hover, setHover] = useState({dx1: false, dy1:false, dx2:false, dy2:false, endx: false, endy: false})
+
+    function leaveFunc(){
+        setHover({dx1: false, dy1:false, dx2:false, dy2:false, endx: false, endy: false})
+    }
 
     return(
         <View>
@@ -14,13 +19,13 @@ const Tables = (props) => {
                     <FieldSet label="First Control Point" labelColor="#00f" labelFontSize='17.5px' labelStyle={styles.label} mainStyle={styles.fieldSet}>
                         <table style={styles.table}>
                             <tbody style={styles.tbody}>
-                                <tr style={styles.tr}>
+                                <tr style={styles.tr} onMouseOver={()=>{setHover({dx1: true, dy1: false, dx2: false, dy2: false, endx: false, endy: false})}} onMouseLeave={leaveFunc}>
                                     <th style={styles.th}>dx1</th>
-                                    <td style={styles.td}>{props.path.dx1.value}</td>
+                                    <td style={styles.td}>{props.firstCtrl.x}</td>
                                 </tr>
-                                <tr style={styles.tr}>
+                                <tr style={styles.tr} onMouseOver={()=>{setHover({dx1: false, dy1: true, dx2: false, dy2: false, endx: false, endy: false})}} onMouseLeave={leaveFunc}>
                                     <th style={styles.th}>dy1</th>
-                                    <td style={styles.td}>{props.path.dy1.value}</td>
+                                    <td style={styles.td}>{props.firstCtrl.y}</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -32,13 +37,13 @@ const Tables = (props) => {
                     <FieldSet label="Second Control Point" labelColor="#00f" labelFontSize='17.5px' labelStyle={styles.label} mainStyle={styles.fieldSet}>
                         <table style={styles.table}>
                             <tbody style={styles.tbody}>
-                                <tr style={styles.tr}>
+                                <tr style={styles.tr} onMouseOver={()=>{setHover({dx1: false, dy1: false, dx2: true, dy2: false, endx: true, endy: false})}} onMouseLeave={leaveFunc}>
                                     <th style={styles.th}>dx2</th>
-                                    <td style={styles.td}>{props.path.dx2.value}</td>
+                                    <td style={styles.td}>{props.secondCtrl.x}</td>
                                 </tr>
-                                <tr style={styles.tr}>
+                                <tr style={styles.tr} onMouseOver={()=>{setHover({dx1: false, dy1: false, dx2: false, dy2: true, endx: false, endy: false})}} onMouseLeave={leaveFunc}>
                                     <th style={styles.th}>dy2</th>
-                                    <td style={styles.td}>{props.path.dy2.value}</td>
+                                    <td style={styles.td}>{props.secondCtrl.y}</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -49,13 +54,13 @@ const Tables = (props) => {
                     <FieldSet label="End Point" labelColor="#f00" labelFontSize="17.5px" labelStyle={styles.label} mainStyle={styles.fieldSet}>
                         <table style={styles.table}>
                             <tbody style={styles.tbody}>
-                                <tr style={styles.tr}>
+                                <tr style={styles.tr} onMouseOver={()=>{setHover({dx1: false, dy1: false, dx2: false, dy2: false, endx: true, endy: false})}} onMouseLeave={leaveFunc}>
                                     <th style={styles.th}>x</th>
-                                    <td style={styles.end}>{props.path.x.value}</td>
+                                    <td style={styles.end}>{props.endPoint.x}</td>
                                 </tr>
-                                <tr style={styles.tr}>
+                                <tr style={styles.tr} onMouseOver={()=>{setHover({dx1: false, dy1: false, dx2: false, dy2: false, endx: false, endy: true})}} onMouseLeave={leaveFunc}>
                                     <th style={styles.th}>y</th>
-                                    <td style={styles.end}>{props.path.y.value}</td>
+                                    <td style={styles.end}>{props.endPoint.y}</td>
                                 </tr>
                             </tbody>
                         </table>

@@ -1,13 +1,14 @@
 import { useEffect, useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, Modal } from 'react-native';
 import React from 'react';
-import Modal from 'react-modal';
-import EditGrid from './editGrid';
-import FieldSet from 'react-native-fieldset';  
+// import Modal from 'react-modal';
+// import EditGrid from './editGrid';
+import Edit from './edit2CP';
+// import Tables from './commands/tables';
+// import FieldSet from 'react-native-fieldset';  
 
 const Grid = (props) => {
     const viewbox = `0 0 ${props.size} ${props.size}`
-    const [command, setCommand] = useState({});
     const [hover, setHover] = useState({sub: false, can: false});
     const [modalIsOpen, setModalIsOpen] = useState(false)
     const [firstCtrl, setFirstCtrl] = useState({x:props.path[0].dx1.value, y:props.path[0].dy1.value});
@@ -51,15 +52,15 @@ const Grid = (props) => {
         path.style.stroke = props.stroke;
     }
     function clickFunc(path){
-        setCommand(path)
-        props.setEditModalIsOpen(true)
+        props.setEditPath(path)
+        props.setEdit2ModalIsOpen(true)
 
     }
 
     function drawPath(){
             const svgns = "http://www.w3.org/2000/svg"
             const grid = document.getElementById('grid')
-            props.setStartPoints([...props.startPoints, {sx: 200, sy:50}])
+            props.setStartPoints([{sx: 200, sy:50}])
             const currentPath = document.createElementNS(svgns, 'path')
             currentPath.setAttributeNS(null, 'stroke', props.stroke);
             currentPath.setAttributeNS(null, 'stroke-width', props.strokeWidth);
@@ -81,8 +82,6 @@ const Grid = (props) => {
     }, [])
 
     function updatePath(path){
-        const changingPath = props.path;
-        const newPath = changingPath.splice(props.pathID, 1, path)
         const grid = document.getElementById('grid')
         const svgns = "http://www.w3.org/2000/svg"
         const currentPath = document.createElementNS(svgns, 'path')
@@ -111,89 +110,32 @@ const Grid = (props) => {
         return fullPath;
     }
 
-    function showTables(){
-        return(
-            <View>
-                <View style={styles.tableContainer}>
-                    <FieldSet label="First Control Point" labelColor="#00f" labelFontSize='17.5px' labelStyle={styles.label} mainStyle={styles.fieldSet}>
-                        <table style={styles.table}>
-                            <tbody style={styles.tbody}>
-                                <tr style={styles.tr}>
-                                    <th style={styles.th}>dx1</th>
-                                    <td style={styles.td}>{props.path[0].dx1.value}</td>
-                                </tr>
-                                <tr style={styles.tr}>
-                                    <th style={styles.th}>dy1</th>
-                                    <td style={styles.td}>{props.path[0].dy1.value}</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </FieldSet>
-                </View>
-                <View style={styles.tableContainer}>
-                    <FieldSet label="Second Control Point" labelColor="#00f" labelFontSize='17.5px' labelStyle={styles.label} mainStyle={styles.fieldSet}>
-                        <table style={styles.table}>
-                            <tbody style={styles.tbody}>
-                                <tr style={styles.tr}>
-                                    <th style={styles.th}>dx2</th>
-                                    <td style={styles.td}>{props.path[0].dx2.value}</td>
-                                </tr>
-                                <tr style={styles.tr}>
-                                    <th style={styles.th}>dy2</th>
-                                    <td style={styles.td}>{props.path[0].dy2.value}</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </FieldSet>
-                </View>
-                <View style={styles.tableContainer}>
-                    <FieldSet label="End Point" labelColor="#f00" labelFontSize="17.5px" labelStyle={styles.label} mainStyle={styles.fieldSet}>
-                        <table style={styles.table}>
-                            <tbody style={styles.tbody}>
-                                <tr style={styles.tr}>
-                                    <th style={styles.th}>x</th>
-                                    <td style={styles.end}>{props.path[0].x.value}</td>
-                                </tr>
-                                <tr style={styles.tr}>
-                                    <th style={styles.th}>y</th>
-                                    <td style={styles.end}>{props.path[0].y.value}</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </FieldSet>
-                </View>
-            </View>
-        )
-    }
-
-    function editFunc(path){
-        props.setEditModalIsOpen(true)
-        setEditPath(path)
-    }   
-
+    const editPath = writePath();
     return(
         <View style={styles.container}>
             <svg id='grid' height={props.size} width={props.size} viewBox={viewbox} />
             <Text style={styles.position}>Current Path: {writePath()}</Text>
-            <Modal
-                isOpen={modalIsOpen}
-                onRequestClose={closeModal}
-                ariaHideApp={false}
-                style={styles.modal}
+            <Edit relative={props.relative} path={props.path} editPath={props.path[0]} firstCtrl={firstCtrl} setFirstCtrl={setFirstCtrl} secondCtrl={secondCtrl} setSecondCtrl={setSecondCtrl} endPoint={endPoint} setEndPoint={setEndPoint} pathID={props.pathID} strokeWidth={props.strokeWidth} stroke={props.stroke} fill={props.fill} fillOpacity={props.fillOpacity} strokeOpacity={props.strokeOpacity} edit2ModalIsOpen={props.edit2ModalIsOpen} setEdit2ModalIsOpen={props.setEdit2ModalIsOpen} />
+            {/* <Modal
+            animationType="slide"
+            transparent={false}
+            visible={modalIsOpen}
+            onRequestClose={closeModal}
+            style={styles.modal}
                 >
                 <View style={styles.row}>
                     <View style={styles.container}>
-                        <EditGrid size="200" command={command.type} relative={props.relative} path={props.path} firstCtrl={firstCtrl} setFirstCtrl={setFirstCtrl} secondCtrl={secondCtrl} setSecondCtrl={setSecondCtrl} endPoint={endPoint} setEndPoint={setEndPoint} pathID={props.pathID} strokeWidth={props.strokeWidth} stroke={props.stroke} fill={props.fill} fillOpacity={props.fillOpacity} strokeOpacity={props.strokeOpacity} />
+                        <EditGrid size="200" relative={props.relative} path={props.path} firstCtrl={firstCtrl} setFirstCtrl={setFirstCtrl} secondCtrl={secondCtrl} setSecondCtrl={setSecondCtrl} endPoint={endPoint} setEndPoint={setEndPoint} pathID={props.pathID} strokeWidth={props.strokeWidth} stroke={props.stroke} fill={props.fill} fillOpacity={props.fillOpacity} strokeOpacity={props.strokeOpacity} />
                     </View>
                     <View style={styles.container}>
-                        {showTables()}
+                        <Tables path={editPath}  />
                     </View>
                 </View>
                 <View style={styles.subCan}>
                     <button onClick={() => updatePath()} onMouseOver={()=>{setHover({sub: true, can:false})}} onMouseLeave={()=>{setHover({sub: false, can:false})}} style={hover.sub?styles.submitHover:styles.submitButton}>Add to path!</button>
                     <button onClick={closeModal} onMouseOver={()=>{setHover({sub: false, can:true})}} onMouseLeave={()=>{setHover({sub: false, can:false})}} style={hover.can?styles.cancelHover:styles.cancelButton}>Cancel</button>
                 </View>
-            </Modal>
+            </Modal> */}
         </View>
     )
 };

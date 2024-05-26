@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { StyleSheet, Text, View, Modal } from 'react-native';
 import Svg, { Path, Rect, Defs, Pattern, Line } from "react-native-svg";
-import EditGrid from './editGrid';
+import EditGrid from './web/editGrid';
 
 
 const Grid = (props) => {
