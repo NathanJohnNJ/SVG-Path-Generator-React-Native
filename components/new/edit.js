@@ -56,15 +56,81 @@
         
 //             </View>
 //             <Modal
-//             animationType="slide"
-//             transparent={false}
-//             visible={modalIsOpen}
-//             onRequestClose={closeModal}
-//             style={styles.modal}
-//             >
+            // animationType="slide"
+            // transparent={true}
+            // visible={modalIsOpen}
+            // onRequestClose={closeModal}
+            // >
+            //     <View style={styles.edit}>
 
-//             </Modal>
-            
+            //         <View style={styles.titleSection}>
+
+            //             <Text style={styles.modalTitle}>
+            //                 Edit
+            //             </Text>
+            //             <Pressable style={hover.x?styles.closeHover:styles.close} onPress={closeModal} onMouseOver={() => hoverFunc('x')} onMouseLeave={resetHover}>
+            //                 <Text style={hover.x?styles.closeTextHover:styles.closeText}>
+            //                     X
+            //                 </Text>
+            //             </Pressable>
+            //         </View>
+
+            //         <View style={styles.bottom}>
+                    
+            //             <View style={styles.commandSection}>
+            //                 <Text style={styles.title}>
+            //                     Command: {props.path.type}
+            //                 </Text>
+            //                 <Pressable style={hover.change?styles.hover:styles.button} onPress={changeCommand} onMouseOver={() => hoverFunc('change')} onMouseLeave={resetHover}>
+            //                     <Text style={hover.change?styles.textHover:styles.buttonText}>
+            //                         Change
+            //                     </Text>
+            //                 </Pressable>
+            //             </View>
+
+            //             <View style={styles.gridAndTables}>
+            //                 <View style={styles.gridSection}>
+            //                     <GridWithDrag size="200" path={props.path} relative={props.relative} firstCtrl={props.firstCtrl} setFirstCtrl={props.setFirstCtrl} endPoint={props.endPoint} setEndPoint={props.setEndPoint} strokeWidth={props.strokeWidth} stroke={props.stroke} fill={props.fill} fillOpacity={props.fillOpacity} strokeOpacity={props.strokeOpacity} startPoints={props.startPoints}/>
+            //                 </View>
+                        
+            //                 <View style={styles.tableSection}>
+            //                     <ControlTable />
+            //                 </View>
+                        
+            //                 <View style={styles.tableSection}>
+            //                     <FieldSet label="End Point" labelColor="#f00" labelFontSize='17.5px' labelStyle={styles.label} mainStyle={styles.fieldSet}>
+            //                         <table style={styles.table}>
+            //                             <tbody style={styles.tbody}>
+            //                                 <tr style={styles.tr}> 
+            //                                     <th style={styles.th}>x</th>
+            //                                     <th style={styles.th}>y</th>
+            //                                 </tr>
+            //                                 <tr style={styles.tr}>
+            //                                     {/* <td style={styles.end}>{}
+            //                                         <TextInput
+            //                                         onChangeText={setEndX}
+            //                                         value={String(endX)}
+            //                                         inputMode="number"
+            //                                         style={styles.textInput} />
+            //                                     </td>
+            //                                     <td style={styles.end}>
+            //                                         <TextInput
+            //                                         onChangeText={setEndY}
+            //                                         value={String(endY)}
+            //                                         inputMode="number"
+            //                                         style={styles.textInput} />
+            //                                     </td> */}
+            //                                     <td style={styles.end}>{props.path.endPoint.x}</td>
+            //                                     <td style={styles.end}>{props.path.endPoint.y}</td>
+            //                                 </tr>
+            //                             </tbody>
+            //                         </table>
+            //                     </FieldSet>
+            //                 </View>
+            //             </View>
+            //         </View>
+            //     </View>
+            // </Modal>
 //         </View>
 //     )
 // }
