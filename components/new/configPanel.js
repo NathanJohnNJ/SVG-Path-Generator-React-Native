@@ -78,7 +78,7 @@ const ConfigPanel = (props) => {
     return(
         <View style={styles.configPanel}>
                 <Text style={styles.title}>
-                    Config
+                    Styles
                 </Text>
             <View style={styles.bottom}>
                 <View style={styles.strokeSection}>
@@ -280,9 +280,18 @@ const styles = StyleSheet.create({
         margin: 10
     },
     sectionTitle: {
-        fontFamily: 'Quicksand-Medium',
-        fontSize: 18,
+        fontFamily: 'Quicksand-Bold',
+        fontSize: 17.5,
         textAlign: 'center',
+        backgroundColor: 'rgba(255, 255, 255, 0.9)'
+    },
+    fieldSet:{
+        backgroundColor: '#a2a2a2',
+        width: 'fit-content',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'flex-start',
     },
     attSection:{
         display: 'flex',
@@ -302,53 +311,6 @@ const styles = StyleSheet.create({
         width: 30,
         marginLeft: 10
     },
-    button: {
-        display:'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        height:25,
-        width: 'fit-content',
-        backgroundColor: '#6c6c6c',
-        borderRadius: 5,
-        margin: 5,
-        padding: 3,
-        borderColor: '#4e4e4e',
-        borderStyle: 'solid',
-        borderWidth: 2,
-        textAlign: 'center',
-        fontFamily: 'Quicksand-Regular',
-        fontSize: 18,
-        color:'#4e4e4e',
-      },
-    hover: {
-        display:'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        width:'fit-content',
-        height:25,
-        backgroundColor: '#4e4e4e',
-        borderRadius: 5,
-        margin: 5,
-        padding: 3,
-        borderColor: '#fff',
-        borderStyle: 'solid',
-        borderWidth: 2,
-        textAlign: 'center',
-      },
-    buttonText: {
-        textAlign: 'center',
-        fontFamily: 'Quicksand-Regular',
-        fontSize: 18,
-        color:'#4e4e4e',
-    },
-    textHover: {
-        textAlign: 'center',
-        fontFamily: 'Quicksand-Regular',
-        fontSize: 18,
-        color:'#ffffff',
-    },
     close: {
       display:'flex',
       flexDirection: 'column',
@@ -357,11 +319,10 @@ const styles = StyleSheet.create({
       height:25,
       width: 'fit-content',
       backgroundColor: '#6c6c6c',
-      borderRadius: 5,
+      borderRadius: 6,
       margin: 15,
       padding: 5,
       borderColor: '#681402',
-      borderStyle: 'solid',
       borderWidth: 2,
       textAlign: 'center',
       fontFamily: 'Quicksand-Regular',
@@ -369,31 +330,33 @@ const styles = StyleSheet.create({
       color:'#681402',
     },
     closeHover: {
-      display:'flex',
-      flexDirection: 'column',
-      alignItems: 'center',
-      justifyContent: 'center',
-      width:'fit-content',
-      height:25,
-      backgroundColor: '#681402',
-      borderRadius: 5,
-      margin: 15,
-      padding: 5,
-      borderColor: '#fff',
-      borderStyle: 'solid',
-      borderWidth: 2,
-      textAlign: 'center',
+        display:'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        width:'fit-content',
+        height:25,
+        backgroundColor: '#681402',
+        borderRadius: 6,
+        margin: 15,
+        padding: 5,
+        borderColor: '#fff',
+        borderWidth: 2,
+        textAlign: 'center',
+        textShadow: '-1px 1px 1px #fff',
     },
     closeText: {
         textAlign: 'center',
         fontFamily: 'Quicksand-Bold',
         fontSize: 18,
         color:'#681402',
+        textShadow: '-1px 1px 1px #681402'
     },
     closeTextHover: {
         textAlign: 'center',
         fontFamily: 'Quicksand-Bold',
         fontSize: 18,
         color:'#fff',
+        textShadow: '-1px 1px 1px #fff',
     },
 })

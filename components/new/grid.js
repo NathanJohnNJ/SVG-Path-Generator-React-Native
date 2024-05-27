@@ -47,7 +47,7 @@ export default Grid;
 
 const styles = StyleSheet.create({
     grid:{
-        backgroundColor: '#fff',
+        backgroundColor: '#f2f2f2',
         borderColor: '#acf',
         borderWidth: 3,
         borderRadius: 18,

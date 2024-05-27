@@ -1,10 +1,19 @@
 import { Path, G } from "react-native-svg";
-import { useState } from 'react';
 
 const PathFromArray = (props) => {
-    const [hover, setHover] = useState(false);
     const hoverWidth = props.strokeWidth*2;
-    const hoverColour = '#08f';
+    const hoverColour = '#00eeff';
+
+    function hoverFunc(id){
+        const i = document.getElementById(id)
+        i.setAttributeNS(null, 'stroke-width', hoverWidth)
+        i.setAttributeNS(null, 'stroke', hoverColour)
+    }
+    function resetHover(id){
+        const i = document.getElementById(id)
+        i.setAttributeNS(null, 'stroke-width', props.strokeWidth)
+        i.setAttributeNS(null, 'stroke', props.stroke)
+    }
 
     function pressFunc(path){
         props.setInfo(path)
@@ -24,9 +33,9 @@ const PathFromArray = (props) => {
         <G id="pathGroup">
             {
                 props.path.map((currentPath, i) => {
-                    const d = `M50,50${currentPath.command}`
+                    const d = currentPath.fullCommand
                     return(
-                        <Path d={d} id={currentPath.id} key={i} fill={props.fill} fillOpacity={props.fillOpacity} stroke={hover?hoverColour:props.stroke} strokeWidth={hover?hoverWidth:props.strokeWidth} strokeOpacity={props.strokeOpacity} onClick={()=>pressFunc(currentPath)} onMouseOver={() => setHover(hover => !hover)} onMouseLeave={() => setHover(hover => !hover)} />
+                        <Path d={d} id={currentPath.id} key={i} fill={props.fill} fillOpacity={props.fillOpacity} stroke={props.stroke} strokeWidth={props.strokeWidth} strokeOpacity={props.strokeOpacity} onClick={()=>pressFunc(currentPath)} onMouseOver={() => hoverFunc(currentPath.id)} onMouseLeave={() => resetHover(currentPath.id)} />
                     )
                 })
             }

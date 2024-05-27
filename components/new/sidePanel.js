@@ -1,61 +1,31 @@
-import { StyleSheet, View, Modal, Pressable, Text, TextInput } from 'react-native';
-import { useState } from 'react';
+import { StyleSheet, View, Modal, Pressable, Text } from 'react-native';
+import { useState, useEffect } from 'react';
 import FieldSet from 'react-native-fieldset';
-import GridWithDrag from '../web/commands/gridWithDrag';
-
+import Q from './commands/q';
+import C from './commands/c';
 
 const SidePanel = (props) => {
     const [modalIsOpen, setModalIsOpen] = useState(false);
-    const [hover, setHover] = useState({x: false, change: false, edit: false});
-    const [endX, setEndX] = useState();
-    const [endY, setEndY] = useState();
-
+    const [hover, setHover] = useState({x: false, change: false});
 
     function hoverFunc(i){
         const newHover = { ...hover, [i]: true}
         setHover(newHover)
     }
     function resetHover(){
-        setHover({x: false, change: false, edit: false})
+        setHover({x: false, change: false})
     }
     function openModal(){
         setModalIsOpen(true)
-        setEndX(props.endPoint.x)
-        setEndY(props.endPoint.y)
     }
     function closeModal(){
         setModalIsOpen(false)
-        // props.setEndPoint({x: endX, y: endY})
-        // console.log(`${endX}, ${endY}`)
-        // document.getElementById('pathGroup').removeChild(document.getElementById(`${props.path.id}`))
-        // drawPath()
-    }
-    // function drawPath(){
-    //     const svgns = "http://www.w3.org/2000/svg"
-    //     const grid = document.getElementById('pathGroup');
-    //     const currentPath = document.createElementNS(svgns, 'path');
-    //     currentPath.setAttributeNS(null, "id", props.path.id);
-    //     currentPath.setAttributeNS(null, 'stroke', props.stroke);
-    //     currentPath.setAttributeNS(null, 'stroke-width', props.strokeWidth);
-    //     currentPath.setAttributeNS(null, 'stroke-opacity', props.strokeOpacity);
-    //     currentPath.setAttributeNS(null, 'fill', props.fill);
-    //     currentPath.setAttributeNS(null, 'fill-opacity', props.fillOpacity);
-    //     if(props.path.type==='Q'){
-    //         currentPath.setAttributeNS(null, 'd', `M${props.path.startPoint.x},${props.path.startPoint.y}q${props.firstCtrl.x},${props.firstCtrl.y} ${props.endPoint.x},${props.endPoint.y}`)
-    //     }else if(props.path.type==='C'){
-    //         currentPath.setAttributeNS(null, 'd', `M${props.path.startPoint.x},${props.path.startPoint.y}c${props.firstCtrl.x},${props.firstCtrl.y} ${props.secondCtrl.x},${props.secondCtrl.y} ${props.path.endPoint.x},${props.path.endPoint.y}`)
-    //     }
-    //     grid.appendChild(currentPath)
-    // }
-    
-    function changeCommand(){
-
     }
 
     const ControlTable = () => {
         let headerArr = [];
         let dataArr = [];
-        props.path.controlPoints.map((point, i) =>{
+        props.info.controlPoints.map((point, i) =>{
             headerArr.push(point.key)
             dataArr.push(point.value)
         })
@@ -86,18 +56,22 @@ const SidePanel = (props) => {
     return(
         <View style={styles.sidePanel}>
             <View style={styles.top}>
-                <Text style={styles.title}>
+                <Text style={styles.modalTitle}>
                     More Info
                 </Text>
-                    <Pressable onPress={openModal} style={hover.edit?styles.hover:styles.button} onMouseOver={() => hoverFunc('edit')} onMouseLeave={resetHover}>
-                        <Text style={hover.edit?styles.textHover:styles.buttonText}>
-                            Edit
-                        </Text>
-                    </Pressable>
+                    {/* <Edit /> */}
             </View>
             <View style={styles.bottom}>
-                <Text style={styles.title}>Command: {props.path.type}</Text>
-                <Text style={styles.title}>Path ID: {props.path.id}</Text>
+                <View style={styles.changeSection}>
+                    <Text style={styles.title}>Command: {props.info.type}</Text>
+                    <Pressable style={styles.changeButton} onPress={openModal} onMouseOver={() => hoverFunc('change')} onMouseLeave={resetHover}>
+                        <Text style={styles.changeButtonText}>
+                            Change
+                        </Text>
+                    </Pressable>
+                </View>
+                
+                <Text style={styles.title}>Path ID: {props.info.id}</Text>
                 <View style={styles.tableSection}>
                     <ControlTable />
                 </View>
@@ -110,8 +84,8 @@ const SidePanel = (props) => {
                                     <th style={styles.th}>y</th>
                                 </tr>
                                 <tr style={styles.tr}>
-                                    <td style={styles.end}>{props.path.endPoint.x}</td>
-                                    <td style={styles.end}>{props.path.endPoint.y}</td>
+                                    <td style={styles.end}>{props.info.endPoint.x}</td>
+                                    <td style={styles.end}>{props.info.endPoint.y}</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -124,74 +98,19 @@ const SidePanel = (props) => {
             visible={modalIsOpen}
             onRequestClose={closeModal}
             >
-                <View style={styles.edit}>
-
-                    <View style={styles.titleSection}>
-
-                        <Text style={styles.modalTitle}>
-                            Edit
-                        </Text>
-                        <Pressable style={hover.x?styles.closeHover:styles.close} onPress={closeModal} onMouseOver={() => hoverFunc('x')} onMouseLeave={resetHover}>
-                            <Text style={hover.x?styles.closeTextHover:styles.closeText}>
-                                X
-                            </Text>
-                        </Pressable>
-                    </View>
-
-                    <View style={styles.bottom}>
-                    
-                        <View style={styles.commandSection}>
-                            <Text style={styles.title}>
-                                Command: {props.path.type}
-                            </Text>
-                            <Pressable style={hover.change?styles.hover:styles.button} onPress={changeCommand} onMouseOver={() => hoverFunc('change')} onMouseLeave={resetHover}>
-                                <Text style={hover.change?styles.textHover:styles.buttonText}>
-                                    Change
-                                </Text>
-                            </Pressable>
-                        </View>
-
-                        <View style={styles.gridAndTables}>
-                            <View style={styles.gridSection}>
-                                <GridWithDrag size="200" path={props.path} relative={props.relative} firstCtrl={props.firstCtrl} setFirstCtrl={props.setFirstCtrl} endPoint={props.endPoint} setEndPoint={props.setEndPoint} strokeWidth={props.strokeWidth} stroke={props.stroke} fill={props.fill} fillOpacity={props.fillOpacity} strokeOpacity={props.strokeOpacity} startPoints={props.startPoints}/>
-                            </View>
-                        
-                            <View style={styles.tableSection}>
-                                <ControlTable />
-                            </View>
-                        
-                            <View style={styles.tableSection}>
-                                <FieldSet label="End Point" labelColor="#f00" labelFontSize='17.5px' labelStyle={styles.label} mainStyle={styles.fieldSet}>
-                                    <table style={styles.table}>
-                                        <tbody style={styles.tbody}>
-                                            <tr style={styles.tr}> 
-                                                <th style={styles.th}>x</th>
-                                                <th style={styles.th}>y</th>
-                                            </tr>
-                                            <tr style={styles.tr}>
-                                                {/* <td style={styles.end}>{}
-                                                    <TextInput
-                                                    onChangeText={setEndX}
-                                                    value={String(endX)}
-                                                    inputMode="number"
-                                                    style={styles.textInput} />
-                                                </td>
-                                                <td style={styles.end}>
-                                                    <TextInput
-                                                    onChangeText={setEndY}
-                                                    value={String(endY)}
-                                                    inputMode="number"
-                                                    style={styles.textInput} />
-                                                </td> */}
-                                                <td style={styles.end}>{props.path.endPoint.x}</td>
-                                                <td style={styles.end}>{props.path.endPoint.y}</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </FieldSet>
-                            </View>
-                        </View>
-                    </View>
+                <Pressable style={hover.x?styles.closeHover:styles.close} onPress={closeModal} onMouseOver={() => hoverFunc('x')} onMouseLeave={resetHover}>
+                    <Text style={hover.x?styles.closeTextHover:styles.closeText}>
+                        X
+                    </Text>
+                </Pressable>
+                <View style={styles.change}>
+                    <Text style={styles.title}>Change command</Text>
+                    <Text style={styles.normalText}>Please select from one of the following commands:</Text>
+                    <Text style={styles.smallText}>(Please beware that doing so will remove the command you had selected from the path and replace it with this new one.)</Text>
+                </View>
+                <View style={styles.commandSelection}>
+                    <C relative={props.relative} path={props.path} setPath={props.setPath} pathID={props.pathID} setPathID={props.setPathID} startPoints={props.startPoints} setStartPoints={props.setStartPoints} stroke={props.stroke} strokeWidth={props.strokeWidth} strokeOpacity={props.strokeOpacity} fill={props.fill} fillOpacity={props.fillOpacity} info={props.info} setInfo={props.setInfo} />
+                    <Q relative={props.relative} path={props.path} setPath={props.setPath} pathID={props.pathID} setPathID={props.setPathID} startPoints={props.startPoints} setStartPoints={props.setStartPoints} stroke={props.stroke} strokeWidth={props.strokeWidth} strokeOpacity={props.strokeOpacity} fill={props.fill} fillOpacity={props.fillOpacity} info={props.info} setInfo={props.setInfo} />
                 </View>
             </Modal>
         </View>
@@ -202,7 +121,7 @@ export default SidePanel;
 
 const styles = StyleSheet.create({
     sidePanel:{
-        backgroundColor: '#eee',
+        backgroundColor: '#ddd',
         borderColor: '#fdb',
         borderWidth: 3,
         borderRadius: 18,
@@ -226,16 +145,17 @@ const styles = StyleSheet.create({
     title: {
         fontFamily: 'Quicksand-Bold',
         fontSize: 20,
+        marginTop: 5,
+        marginBottom: 5
     },
     modalTitle: {
         fontFamily: 'Quicksand-Bold',
-        fontSize: 40,
+        fontSize: 35,
     },
     gridAndTables: {
         display: 'flex',
         flexDirection:'row'
     },
-    tableSection: {},
     edit: {
         display: 'flex',
         flexDirection: 'column',
@@ -256,17 +176,17 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         height:25,
         width: 'fit-content',
+        color:'#4e4e4e',
         backgroundColor: '#6c6c6c',
-        borderRadius: 5,
-        margin: 5,
-        padding: 3,
-        borderColor: '#4e4e4e',
-        borderStyle: 'solid',
-        borderWidth: 2,
-        textAlign: 'center',
+        textShadow: '-1px 1px 1px #4e4e4e',
         fontFamily: 'Quicksand-Regular',
         fontSize: 18,
-        color:'#4e4e4e',
+        borderColor: '#4e4e4e',
+        borderWidth: 2,
+        borderRadius: 6,
+        margin: 5,
+        textAlign: 'center',
+        padding: 3,
       },
     hover: {
         display:'flex',
@@ -276,13 +196,14 @@ const styles = StyleSheet.create({
         width:'fit-content',
         height:25,
         backgroundColor: '#4e4e4e',
-        borderRadius: 5,
+        borderColor: '#fff',
+        borderWidth: 2,
+        borderRadius: 6,
+        textShadow: '-1px 1px 1px #ffffff',
+        cursor: 'pointer',
         margin: 5,
         padding: 3,
-        borderColor: '#fff',
-        borderStyle: 'solid',
-        borderWidth: 2,
-        textAlign: 'center',
+        
       },
     buttonText: {
         textAlign: 'center',
@@ -292,7 +213,7 @@ const styles = StyleSheet.create({
     },
     textHover: {
         textAlign: 'center',
-        fontFamily: 'Quicksand-Regular',
+        fontFamily: 'Quicksand-Medium',
         fontSize: 18,
         color:'#ffffff',
     },
@@ -304,11 +225,10 @@ const styles = StyleSheet.create({
       height:25,
       width: 'fit-content',
       backgroundColor: '#6c6c6c',
-      borderRadius: 5,
+      borderRadius: 6,
       margin: 15,
       padding: 5,
       borderColor: '#681402',
-      borderStyle: 'solid',
       borderWidth: 2,
       textAlign: 'center',
       fontFamily: 'Quicksand-Regular',
@@ -323,30 +243,32 @@ const styles = StyleSheet.create({
       width:'fit-content',
       height:25,
       backgroundColor: '#681402',
-      borderRadius: 5,
+      borderRadius: 6,
       margin: 15,
       padding: 5,
       borderColor: '#fff',
-      borderStyle: 'solid',
       borderWidth: 2,
       textAlign: 'center',
+      textShadow: '-1px 1px 1px #fff',
     },
     closeText: {
         textAlign: 'center',
-        fontFamily: 'Quicksand-Bold',
+        fontFamily: 'Quicksand-Regular',
         fontSize: 18,
         color:'#681402',
+        textShadow: '-1px 1px 1px #681402'
     },
     closeTextHover: {
         textAlign: 'center',
-        fontFamily: 'Quicksand-Bold',
+        fontFamily: 'Quicksand-Medium',
         fontSize: 18,
         color:'#fff',
+        textShadow: '-1px 1px 1px #fff',
     },
     fieldSet:{
         backgroundColor: '#a2a2a2',
         height: 80,
-        width: 'auto',
+        width: 'fit-content',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
@@ -389,6 +311,7 @@ const styles = StyleSheet.create({
         width: 40,
         height: 25,
         marginTop: -5,
+        padding:2
     },
     td: {
         display: 'flex',
@@ -396,6 +319,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         textAlign: 'center',
         border: '1.5px dashed grey',
+        borderRadius: 5,
         fontFamily: 'Quicksand-Regular',
         fontSize: 18,
         color: '#12f',
@@ -410,11 +334,13 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         textAlign: 'center',
         border: '1.5px dashed grey',
+        borderRadius: 5,
         fontFamily: 'Quicksand-Regular',
         fontSize: 18,
         color: '#f00',
         flex:1,
         width: 40,
         height: 25,
+        padding: 2
     },
 })
