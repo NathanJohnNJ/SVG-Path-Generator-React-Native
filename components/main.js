@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import Grid from './grid';
 import PathFromArray from './pathFromArray';
-import SidePanel from './sidePanel';
-import ConfigPanel from './configPanel';
-import CommandPanel from './commandPanel';
+import SidePanel from './panels/sidePanel';
+import ConfigPanel from './panels/configPanel';
+import CommandPanel from './panels/commandPanel';
 import { StyleSheet, Text, View, Pressable } from 'react-native';
 
 const Main = (props) => {

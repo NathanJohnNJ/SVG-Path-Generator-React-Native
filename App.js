@@ -1,9 +1,7 @@
-import { StyleSheet, SafeAreaView, Platform } from 'react-native';
+import { StyleSheet, SafeAreaView } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import React, { useState } from 'react';
-import WebMain from './components/web/main';
-// import MobMain from './components/mob/main';
-// import Toolbar from './components/toolbar';
+import WebMain from './components/main';
 import * as Font from 'expo-font';
 
 export default function App() {
@@ -36,7 +34,6 @@ export default function App() {
     });
   }
   loadFonts();
-  if (Platform.OS==='web'){
     return (
       <ScrollView>
         <SafeAreaView style={styles.container}>
@@ -45,25 +42,13 @@ export default function App() {
         </SafeAreaView>
       </ScrollView>
     );
-  }
-  // }else{
-  //   return (
-  //     <ScrollView>
-  //       <SafeAreaView style={styles.container}>
-  //         <MobMain stroke={stroke} setStroke={setStroke} strokeWidth={strokeWidth} setStrokeWidth={setStrokeWidth} strokeOpacity={strokeOpacity} setStrokeOpacity={setStrokeOpacity} fill={fill} setFill={setFill} fillOpacity={fillOpacity} setFillOpacity={setFillOpacity} />
-  //       </SafeAreaView>
-  //     </ScrollView>
-  //   );
-  // }
 }
 
 const styles = StyleSheet.create({
   container: {
-    // marginTop: 150,
-    margin:50,
+    margin:25,
     flex: 1,
     display: 'flex',
-    // backgroundColor: '#7b7b7b',
     alignItems: 'center',
     justifyContent: 'space-evenly',
   },

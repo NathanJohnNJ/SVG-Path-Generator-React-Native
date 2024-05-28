@@ -5,7 +5,7 @@ import GridWithDrag from './commands/gridWithDrag';
 import Change from './change';
 
 
-const SidePanel = (props) => {
+const Edit = (props) => {
     const [modalIsOpen, setModalIsOpen] = useState(false);
     const [hover, setHover] = useState({sub: false, can: false, edit:false, change:false, x:false});
 
@@ -39,115 +39,102 @@ const SidePanel = (props) => {
 
     return(
         <View style={styles.outerContainer}>
-            <Text onClick={openModal} onMouseOver={() => hoverFunc('edit')} onMouseLeave={resetHover} style={hover.edit?styles.hover:styles.button}>Edit</Text>
+            <Text onClick={openModal} onMouseOver={() => hoverFunc('edit')} onMouseLeave={resetHover} style={hover.edit?styles.hover:styles.button}>
+                Edit
+            </Text>
             <Modal
             animationType="slide"
             transparent={false}
             visible={modalIsOpen}
             onRequestClose={closeModal}
             >
-                    <View style={styles.titleSection}>
-                        <Text style={styles.title}>
-                            Edit
+                <View style={styles.titleSection}>
+                    <Text style={styles.title}>
+                        Edit
+                    </Text>
+                    <Pressable style={hover.x?styles.closeHover:styles.close} onPress={closeModal} onMouseOver={() => hoverFunc('x')} onMouseLeave={resetHover}>
+                        <Text style={hover.x?styles.closeTextHover:styles.closeText}>
+                            X
                         </Text>
-                        <Pressable style={hover.x?styles.closeHover:styles.close} onPress={closeModal} onMouseOver={() => hoverFunc('x')} onMouseLeave={resetHover}>
-                            <Text style={hover.x?styles.closeTextHover:styles.closeText}>
-                                X
-                            </Text>
-                        </Pressable>
-                    </View>
+                    </Pressable>
+                </View>
 
-                    <View style={styles.bottom}>
-                    
-                        <View style={styles.commandSection}>
-                            <Text style={styles.title}>
-                                Command: {props.info.type}
-                            </Text>
-                           <Change relative={props.relative} path={props.path} setPath={props.setPath} pathID={props.pathID} setPathID={props.setPathID} startPoints={props.startPoints} setStartPoints={props.setStartPoints} stroke={props.stroke} strokeWidth={props.strokeWidth} strokeOpacity={props.strokeOpacity} fill={props.fill} fillOpacity={props.fillOpacity} iinfo={props.info} setInfo={props.setInfo} endPoint={props.endPoint} setEndPoint={props.setEndPoint} firstCtrl={props.firstCtrl} setFirstCtrl={props.setFirstCtrl} secondCtrl={props.secondCtrl} setSecondCtrl={props.setSecondCtrl} />
-                        </View>
-                        <View style={styles.gridAndTables}>
-                            <View style={styles.gridSection}>
-                                <GridWithDrag size="350" command={props.info.type} path={props.info} setPath={props.setPath} relative={props.relative} firstCtrl={props.firstCtrl} setFirstCtrl={props.setFirstCtrl} secondCtrl={props.secondCtrl} setSecondCtrl={props.setSecondCtrl} endPoint={props.endPoint} setEndPoint={props.setEndPoint} strokeWidth={props.strokeWidth} stroke={props.stroke} fill={props.fill} fillOpacity={props.fillOpacity} strokeOpacity={props.strokeOpacity} startPoints={props.startPoints}/>
-                            </View>
-                        
-                            <View style={styles.tableSection}>
-                            <FieldSet label="Control Points" labelColor="#00f" labelStyle={styles.label} mainStyle={styles.fieldSet}>
-                <table style={styles.table}>
-                    <tbody style={styles.tbody}>
-                        <tr style={styles.tr}>
-                                    <th style={styles.th}>dx1</th>
-                                    <th style={styles.th}>dy1</th>
-                                    {(props.info.type.toUpperCase()==="C")
-                                    ?
-                                    <>
-                                    <th style={styles.th}>dx2</th>
-                                    <th style={styles.th}>dy2</th>
-                                    </>
-                                    :
-                                    <></>
-                                    }
-                        </tr>
-                        <tr style={styles.tr}>
-                            <td style={styles.td}>{props.firstCtrl.x}</td>
-                            <td style={styles.td}>{props.firstCtrl.y}</td>
-                                    {(props.info.type.toUpperCase()==="C")
-                                    ?
-                                    <>
-                                    <td style={styles.td}>{props.secondCtrl.x}</td>
-                                    <td style={styles.td}>{props.secondCtrl.y}</td>
-                                    </>
-                                    :
-                                    <></>
-                                    }
-                        </tr>
-                    </tbody>
-                </table>
-            </FieldSet>
-                            </View>
-                        
-                            <View style={styles.tableSection}>
-                                <FieldSet label="End Point" labelColor="#f00" labelStyle={styles.label} mainStyle={styles.fieldSet}>
-                                    <table style={styles.table}>
-                                        <tbody style={styles.tbody}>
-                                            <tr style={styles.tr}> 
-                                                <th style={styles.th}>x</th>
-                                                <th style={styles.th}>y</th>
-                                            </tr>
-                                            <tr style={styles.tr}>
-                                                {/* <td style={styles.end}>{}
-                                                    <TextInput
-                                                    onChangeText={value => props.setEndPoint({...endPoint, x:Number(value)})}
-                                                    value={props.endPoint.x}
-                                                    inputMode="number"
-                                                    style={styles.textInput} />
-                                                </td>
-                                                <td style={styles.end}>
-                                                    <TextInput
-                                                    onChangeText={value => props.setEndPoint({...endPoint, y:value})}
-                                                    value={props.endPoint.y}
-                                                    inputMode="number"
-                                                    style={styles.textInput} />
-                                                </td> */}
-                                                <td style={styles.end}>{props.endPoint.x}</td>
-                                                <td style={styles.end}>{props.endPoint.y}</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </FieldSet>
-                            </View>
-                        </View>
-                        <View style={styles.subCan}>
-                            <Text onClick={addToPath} onMouseOver={() => hoverFunc('sub')} onMouseLeave={resetHover} style={hover.sub?styles.submitHover:styles.submitButton}>Add to path!</Text>
-                            <Text onClick={closeModal} onMouseOver={() => hoverFunc('can')} onMouseLeave={resetHover} style={hover.can?styles.cancelHover:styles.cancelButton}>Cancel</Text>
-                        </View>
+                <View style={styles.bottom}>
+                
+                    <View style={styles.commandSection}>
+                        <Text style={styles.title}>
+                            Command: {props.info.type}
+                        </Text>
+                        <Change relative={props.relative} path={props.path} setPath={props.setPath} pathID={props.pathID} setPathID={props.setPathID} startPoints={props.startPoints} setStartPoints={props.setStartPoints} stroke={props.stroke} strokeWidth={props.strokeWidth} strokeOpacity={props.strokeOpacity} fill={props.fill} fillOpacity={props.fillOpacity} iinfo={props.info} setInfo={props.setInfo} endPoint={props.endPoint} setEndPoint={props.setEndPoint} firstCtrl={props.firstCtrl} setFirstCtrl={props.setFirstCtrl} secondCtrl={props.secondCtrl} setSecondCtrl={props.setSecondCtrl} />
                     </View>
-                {/* </View> */}
-            </Modal>
-        </View>
+                    <View style={styles.gridAndTables}>
+                        <View style={styles.gridSection}>
+                            <GridWithDrag size="350" command={props.info.type} path={props.info} setPath={props.setPath} relative={props.relative} firstCtrl={props.firstCtrl} setFirstCtrl={props.setFirstCtrl} secondCtrl={props.secondCtrl} setSecondCtrl={props.setSecondCtrl} endPoint={props.endPoint} setEndPoint={props.setEndPoint} strokeWidth={props.strokeWidth} stroke={props.stroke} fill={props.fill} fillOpacity={props.fillOpacity} strokeOpacity={props.strokeOpacity} startPoints={props.startPoints}/>
+                        </View>
+                    
+                        <View style={styles.tableSection}>
+                        <FieldSet label="Control Points" labelColor="#00f" labelStyle={styles.label} mainStyle={styles.fieldSet}>
+                            <table style={styles.table}>
+                                <tbody style={styles.tbody}>
+                                    <tr style={styles.tr}>
+                                        <th style={styles.th}>dx1</th>
+                                        <th style={styles.th}>dy1</th>
+                                        {(props.info.type.toUpperCase()==="C")
+                                        ?
+                                        <>
+                                            <th style={styles.th}>dx2</th>
+                                            <th style={styles.th}>dy2</th>
+                                        </>
+                                        :
+                                        <></>
+                                        }
+                                    </tr>
+                                    <tr style={styles.tr}>
+                                        <td style={styles.td}>{props.firstCtrl.x}</td>
+                                        <td style={styles.td}>{props.firstCtrl.y}</td>
+                                        {(props.info.type.toUpperCase()==="C")
+                                        ?
+                                        <>
+                                            <td style={styles.td}>{props.secondCtrl.x}</td>
+                                            <td style={styles.td}>{props.secondCtrl.y}</td>
+                                        </>
+                                        :
+                                        <></>
+                                        }
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </FieldSet>
+                    </View>
+                        
+                    <View style={styles.tableSection}>
+                        <FieldSet label="End Point" labelColor="#f00" labelStyle={styles.label} mainStyle={styles.fieldSet}>
+                            <table style={styles.table}>
+                                <tbody style={styles.tbody}>
+                                    <tr style={styles.tr}> 
+                                        <th style={styles.th}>x</th>
+                                        <th style={styles.th}>y</th>
+                                    </tr>
+                                    <tr style={styles.tr}>
+                                        <td style={styles.end}>{props.endPoint.x}</td>
+                                        <td style={styles.end}>{props.endPoint.y}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </FieldSet>
+                    </View>
+                </View>
+                <View style={styles.subCan}>
+                    <Text onClick={addToPath} onMouseOver={() => hoverFunc('sub')} onMouseLeave={resetHover} style={hover.sub?styles.submitHover:styles.submitButton}>Add to path!</Text>
+                    <Text onClick={closeModal} onMouseOver={() => hoverFunc('can')} onMouseLeave={resetHover} style={hover.can?styles.cancelHover:styles.cancelButton}>Cancel</Text>
+                </View>
+            </View>
+        </Modal>
+    </View>
     )
 }
 
-export default SidePanel;
+export default Edit;
 
 const styles = StyleSheet.create({
     outerContainer:{
