@@ -12,6 +12,14 @@ export default function App() {
   const [fill, setFill] = useState('#000');
   const [strokeOpacity, setStrokeOpacity] = useState(1.0);
   const [fillOpacity, setFillOpacity] = useState(0);
+  const [controlCol, setControlCol] = useState('#00f');
+  const [ctrlOpacity, setCtrlOpacity] = useState(0.9);
+  const [controlSize, setControlSize] = useState(5);
+  const [endCol, setEndCol] = useState('#f00');
+  const [endOpacity, setEndOpacity] = useState(0.9);
+  const [endSize, setEndSize] = useState(5);
+  const [highlight, setHighlight] = useState('#00eeff');
+
 
   async function loadFonts() {
     await Font.loadAsync({
@@ -20,6 +28,11 @@ export default function App() {
       'Quicksand-Medium': require('./assets/fonts/Quicksand-Medium.ttf'),
       'Quicksand-SemiBold': require('./assets/fonts/Quicksand-SemiBold.ttf'),
       'Quicksand-Bold': require('./assets/fonts/Quicksand-Bold.ttf'),
+      'Geologica-Light': require('./assets/fonts/Geologica-Light.ttf'),
+      'Geologica-Regular': require('./assets/fonts/Geologica-Regular.ttf'),
+      'Geologica-Medium': require('./assets/fonts/Geologica-Medium.ttf'),
+      'Geologica-SemiBold': require('./assets/fonts/Geologica-SemiBold.ttf'),
+      'Geologica-Bold': require('./assets/fonts/Geologica-Bold.ttf'),
     });
   }
   loadFonts();
@@ -28,7 +41,7 @@ export default function App() {
       <ScrollView>
         <SafeAreaView style={styles.container}>
           {/* <Toolbar /> */}
-          <WebMain stroke={stroke} setStroke={setStroke} strokeWidth={strokeWidth} setStrokeWidth={setStrokeWidth} strokeOpacity={strokeOpacity} setStrokeOpacity={setStrokeOpacity} fill={fill} setFill={setFill} fillOpacity={fillOpacity} setFillOpacity={setFillOpacity} />
+          <WebMain stroke={stroke} setStroke={setStroke} strokeWidth={strokeWidth} setStrokeWidth={setStrokeWidth} strokeOpacity={strokeOpacity} setStrokeOpacity={setStrokeOpacity} fill={fill} setFill={setFill} fillOpacity={fillOpacity} setFillOpacity={setFillOpacity} controlCol={controlCol} setControlCol={setControlCol} ctrlOpacity={ctrlOpacity} setCtrlOpacity={setCtrlOpacity} controlSize={controlSize} setControlSize={setControlSize} endCol={endCol} setEndCol={setEndCol} endOpacity={endOpacity} setEndOpacity={setEndOpacity} endSize={endSize} setEndSize={setEndSize} highlight={highlight} setHighlight={setHighlight} />
         </SafeAreaView>
       </ScrollView>
     );

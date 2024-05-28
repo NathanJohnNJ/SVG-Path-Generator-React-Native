@@ -2,96 +2,111 @@ import { useState, useEffect } from 'react';
 import GridWithDrag from './gridWithDrag';
 import { StyleSheet, Text, View, Modal } from 'react-native';
 import React from 'react';
-import Tables from './tables';
+import FieldSet from 'react-native-fieldset';
 
-const Q = (props) => {
-    const [absRel, setAbsRel] = useState("q");
+const L = (props) => {
+    const [absRel, setAbsRel] = useState("l");
     const [modalIsOpen, setModalIsOpen] = useState(false);
-    const [hover, setHover] = useState({sub: false, can: false, q:false});
-    const [firstCtrl, setFirstCtrl] = useState({x:25, y:50})
-    const [endPoint, setEndPoint] = useState({x:50, y:0})
+    const [hover, setHover] = useState({sub: false, can: false, l:false, x:false, y:false});
+    const [endPoint, setEndPoint] = useState({x:50, y:50})
 
-    function openModal(){
-        setFirstCtrl({x:25, y:50})  
-        setEndPoint({x:50, y:0})
+    function openModal(){ 
+        setEndPoint({x:50, y:50})
         setModalIsOpen(true)
     }
     function closeModal(){
         setModalIsOpen(false)
     }
 
+    function hoverFunc(i){
+        const newHover = { ...hover, [i]: true}
+        setHover(newHover)
+    }
+    function resetHover(){
+        setHover({sub: false, can: false, l:false, x:false, y:false})
+    }
+
     const defaultPath = {
-        type: props.relative?'q':'Q',
+        type: props.relative?'l':'L',
         id: props.pathID+1,
-        dx1: {key: 'dx', value: props.relative?25:75},
-        dy1: {key: 'dy', value: props.relative?50:100},
         x:  {key: 'x',value: props.relative?50:100},
-        y: {key: 'y', value: props.relative?0:50},
+        y: {key: 'y', value: props.relative?50:100},
         absX: {value: 100},
-        absY: {value: 50},
+        absY: {value: 100},
         startPoint: {x: 50, y: 50},
-        controlPoints: props.relative?[{key: 'dx1', value:25}, {key: 'dy1', value:50}]:[{key: 'dx1', value:75}, {key: 'dy1', value:100}],
         endPoint: props.relative?{x:50, y: 0}:{x: 100, y: 50},
-        command: props.relative?'q25,50 50,0':'Q75,100 100,50',
-        absCommand: 'Q75,100 100,50',
-        relCommand: 'q25,50 50,0'
+        command: props.relative?'l50,50':'L100,100',
+        absCommand: 'L100,100',
+        relCommand: 'l50,50'
     }
     
     function addToPath(){
         const startX = props.path[props.pathID].absX.value;
         const startY = props.path[props.pathID].absY.value;
-        const qPath = {
-            type: props.relative?'q':'Q',
+        const lPath = {
+            type: props.relative?'l':'L',
             id: props.pathID+1,
             absX: {value: endPoint.x+startX},
             absY: {value: endPoint.y+startY},
             startPoint: {x: startX, y: startY},
-            controlPoints: props.relative?[{key: 'dx1', value:`${firstCtrl.x}`}, {key: 'dy1', value:`${firstCtrl.y}`}]:[{key: 'dx1', value:`${firstCtrl.x}+${startX}`}, {key: 'dy1', value:`${firstCtrl.y}+${startY}`}],
             endPoint: props.relative?{x: endPoint.x,y: endPoint.y}:{x: endPoint.x+startX,y: endPoint.y+startY},
-            command: props.relative?`q${firstCtrl.x},${firstCtrl.y} ${endPoint.x},${endPoint.y}`:`Q${startX+firstCtrl.x},${startY+firstCtrl.y} ${startX+endPoint.x},${startY+endPoint.y}`,
-            absCommand: `Q${startX+firstCtrl.x},${startY+firstCtrl.y} ${startX+endPoint.x},${startY+endPoint.y}`,
-            relCommand: `q${firstCtrl.x},${firstCtrl.y} ${endPoint.x},${endPoint.y}`,
-            fullCommand: `M${startX},${startY}Q${startX+firstCtrl.x},${startY+firstCtrl.y} ${startX+endPoint.x},${startY+endPoint.y}`
+            command: props.relative?`l${endPoint.x},${endPoint.y}`:`L${startX+endPoint.x},${startY+endPoint.y}`,
+            absCommand: `L${startX+endPoint.x},${startY+endPoint.y}`,
+            relCommand: `l${endPoint.x},${endPoint.y}`,
+            fullCommand: `M${startX},${startY}L${startX+endPoint.x},${startY+endPoint.y}`
         } 
-        const newPath = [...props.path, qPath]
+        const newPath = [...props.path, lPath]
         props.setPath(newPath)
         props.setPathID(props.pathID+1)  
         setModalIsOpen(false)
     }
     useEffect(()=>{
         if (props.relative){
-            setAbsRel("q")
+            setAbsRel("l")
         } else {
-            setAbsRel("Q")
+            setAbsRel("L")
         }
     }, [props.relative])
 
     return (
         <View style={styles.outerContainer}>
-            <Text onClick={openModal} onMouseOver={()=>{setHover({sub: false, can:false, q: true})}} onMouseLeave={()=>{setHover({sub: false, can:false, q: false})}} style={hover.q?styles.hover:styles.button}>{absRel}</Text>
+            <Text onClick={openModal} onMouseOver={()=>{setHover({sub: false, can:false, l: true})}} onMouseLeave={()=>{setHover({sub: false, can:false, l: false})}} style={hover.l?styles.hover:styles.button}>{absRel}</Text>
             <Modal
             animationType="slide"
             transparent={false}
             visible={modalIsOpen}
-            onRequestClose={closeModal}
+            onReluestClose={closeModal}
             >
                 <Text style={styles.title}>New {absRel} Command</Text>
                 
                 <View style={styles.row}>
                    
                     <View style={styles.container}>
-                        <GridWithDrag size="250" command="Q" path={defaultPath}  relative={props.relative} firstCtrl={firstCtrl} setFirstCtrl={setFirstCtrl} endPoint={endPoint} setEndPoint={setEndPoint} strokeWidth={props.strokeWidth} stroke={props.stroke} fill={props.fill} fillOpacity={props.fillOpacity} strokeOpacity={props.strokeOpacity} />
+                        <GridWithDrag size="250" command="L" path={defaultPath}  relative={props.relative} endPoint={endPoint} setEndPoint={setEndPoint} strokeWidth={props.strokeWidth} stroke={props.stroke} fill={props.fill} fillOpacity={props.fillOpacity} strokeOpacity={props.strokeOpacity} />
                     </View>
                    
-                    <View style={styles.container}>
-                        <Tables path={defaultPath} firstCtrl={firstCtrl} setFirstCtrl={setFirstCtrl} endPoint={endPoint} setEndPoint={setEndPoint} />
-                    </View>
+                    <View style={styles.tableContainer}>
+                    <FieldSet label="End Point" labelColor="#f00" labelStyle={styles.label} mainStyle={styles.fieldSet}>
+                        <table style={styles.table}>
+                            <tbody style={styles.tbody}>
+                                <tr style={styles.tr}> 
+                                    <th style={styles.th}>x</th>
+                                    <th style={styles.th}>y</th>
+                                </tr>
+                                <tr style={styles.tr}>
+                                    <td style={hover.x?styles.hoverEnd:styles.end} onMouseEnter={()=>{hoverFunc('x')}} onMouseLeave={resetHover}>{props.endPoint.x}</td>
+                                    <td style={hover.y?styles.hoverEnd:styles.end} onMouseEnter={()=>{hoverFunc('y')}} onMouseLeave={resetHover}>{props.endPoint.y}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </FieldSet>
+                </View>
                 
                 </View>
                 
                 <View style={styles.subCan}>
-                    <Text onClick={addToPath} onMouseOver={()=>{setHover({sub: true, can:false, q: false})}} onMouseLeave={()=>{setHover({sub: false, can:false, q: false})}} style={hover.sub?styles.submitHover:styles.submitButton}>Add to path!</Text>
-                    <Text onClick={closeModal} onMouseOver={()=>{setHover({sub: false, can:true, q: false})}} onMouseLeave={()=>{setHover({sub: false, can:false, q: false})}} style={hover.can?styles.cancelHover:styles.cancelButton}>Cancel</Text>
+                    <Text onClick={addToPath} onMouseOver={()=>{setHover({sub: true, can:false, l: false})}} onMouseLeave={()=>{setHover({sub: false, can:false, l: false})}} style={hover.sub?styles.submitHover:styles.submitButton}>Add to path!</Text>
+                    <Text onClick={closeModal} onMouseOver={()=>{setHover({sub: false, can:true, l: false})}} onMouseLeave={()=>{setHover({sub: false, can:false, l: false})}} style={hover.can?styles.cancelHover:styles.cancelButton}>Cancel</Text>
                 </View>
 
             </Modal>
@@ -99,7 +114,7 @@ const Q = (props) => {
     )
 };
 
-export default Q;
+export default L;
 
 const styles = StyleSheet.create({
     outerContainer:{
@@ -121,7 +136,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
     },
     title:{
-        fontFamily:'Quicksand-Bold',
+        fontFamily:'Luicksand-Bold',
         fontSize: 30,
         textAlign: 'center',
         margin: 15
@@ -145,12 +160,12 @@ const styles = StyleSheet.create({
         color:'#4e4e4e',
         backgroundColor: '#6c6c6c',
         textShadow: '-1px 1px 1px #4e4e4e',
-        fontFamily: 'Quicksand-Regular',
+        fontFamily: 'Luicksand-Regular',
         fontSize: 18,
         borderColor: '#4e4e4e',
         borderWidth: 2,
         borderRadius: 6,
-        paddingBottom: 5,
+        // paddingBottom: 5,
         margin: 5,
         textAlign: 'center',
       },
@@ -169,10 +184,10 @@ const styles = StyleSheet.create({
         fontSize: 18,
         cursor: 'pointer',
         textAlign: 'center',
-        paddingBottom: 5,
+        // paddingBottom: 5,
         margin: 5,   
         color:'#ffffff',
-        fontFamily: 'Quicksand-Medium',
+        fontFamily: 'Luicksand-Medium',
       },
         submitButton: {
         display:'flex',
@@ -185,7 +200,7 @@ const styles = StyleSheet.create({
         color:'#4e4e4e',
         backgroundColor: '#6c6c6c',
         textShadow: '-1px 1px 1px #4e4e4e',
-        fontFamily: 'Quicksand-Regular',
+        fontFamily: 'Luicksand-Regular',
         fontSize: 18,
         borderColor: '#4e4e4e',
         borderWidth: 2,
@@ -207,7 +222,7 @@ const styles = StyleSheet.create({
         borderRadius: 6,
         backgroundColor: '#4e4e4e',
         textShadow: '-1px 1px 1px #ffffff',
-        fontFamily: 'Quicksand-Medium',
+        fontFamily: 'Luicksand-Medium',
         fontSize: 18,
         cursor: 'pointer',
         margin:5,
@@ -224,7 +239,7 @@ const styles = StyleSheet.create({
         color:'#681402',
         backgroundColor: '#6c6c6c',
         textShadow: '-1px 1px 1px #681402',
-        fontFamily: 'Quicksand-Regular',
+        fontFamily: 'Luicksand-Regular',
         fontSize: 18,
         borderColor: '#681402',
         borderWidth: 2,
@@ -246,7 +261,7 @@ const styles = StyleSheet.create({
         borderRadius: 6,
         backgroundColor: '#681402',
         textShadow: '-1px 1px 1px #fff',
-        fontFamily: 'Quicksand-Medium',
+        fontFamily: 'Luicksand-Medium',
         fontSize: 18,
         cursor: 'pointer',
         margin:5,

@@ -12,6 +12,8 @@ const ConfigPanel = (props) => {
     const [hover, setHover] = useState({x: false, change: false, edit: false});
     const [showStroke, setShowStroke] = useState(false);
     const [showFill, setShowFill] = useState(false);
+    const [showControl, setShowControl] = useState(false);
+    const [showEndPoints, setShowEndPoints] = useState(false);
 
     function hoverFunc(i){
         const newHover = { ...hover, [i]: true}
@@ -37,8 +39,14 @@ const ConfigPanel = (props) => {
             props.setStroke(hex)
         } else if (attributeToChange==='Fill'){
             props.setFill(hex)
-        }
-      };
+        } else if (attributeToChange==='Control Points'){
+            props.setControlCol(hex)
+        } else if (attributeToChange==='End Points'){
+        props.setEndCol(hex)
+        } else if (attributeToChange==='Highlight'){
+            props.setHighlight(hex)
+      }
+}
 
     function up(){
         if(props.strokeOpacity<1){
@@ -72,7 +80,70 @@ const ConfigPanel = (props) => {
             props.setFillOpacity(0)
         }
     }
-   
+    function upSize(){
+        if(props.controlSize<10){
+            const newSize = props.controlSize + 1
+            props.setControlSize(newSize)       
+        } else {
+            props.setControlSize(10)
+        }
+    }
+    function downSize(){
+        if(props.controlSize>0){
+            const newSize = props.controlSize - 1
+            props.setControlSize(newSize)       
+        } else {
+            props.setControlSize(0)
+        }
+    }
+    function upCtrlOpacity(){
+        if(props.ctrlOpacity<1){
+            const newOpacity = props.ctrlOpacity + 0.05
+            props.setCtrlOpacity(newOpacity)       
+        } else {
+            props.setCtrlOpacity(1)
+        }
+    }
+    function downCtrlOpacity(){
+        if(props.ctrlOpacity>0){
+            const newOpacity = props.ctrlOpacity - 0.05
+            props.setCtrlOpacity(newOpacity)       
+        } else {
+            props.setCtrlOpacity(0)
+        }
+    }
+    function upEnd(){
+        if(props.endSize<10){
+            const newSize = props.endSize + 1
+            props.setEndSize(newSize)       
+        } else {
+            props.setEndSize(10)
+        }
+    }
+    function downEnd(){
+        if(props.endSize>0){
+            const newSize = props.endSize - 1
+            props.setEndSize(newSize)       
+        } else {
+            props.setEndSize(0)
+        }
+    }
+    function upEndOpacity(){
+        if(props.endOpacity<1){
+            const newOpacity = props.endOpacity + 0.05
+            props.setEndOpacity(newOpacity)       
+        } else {
+            props.setEndOpacity(1)
+        }
+    }
+    function downEndOpacity(){
+        if(props.endOpacity>0){
+            const newOpacity = props.endOpacity - 0.05
+            props.setEndOpacity(newOpacity)       
+        } else {
+            props.setEndOpacity(0)
+        }
+    }
     
 
     return(
@@ -80,9 +151,13 @@ const ConfigPanel = (props) => {
                 <Text style={styles.title}>
                     Styles
                 </Text>
+            {/* ******** FIRST ROW ******** */}
             <View style={styles.bottom}>
+
+                {/****** STROKE SECTION ******/}
                 <View style={styles.strokeSection}>
-                    <FieldSet label="Stroke" labelColor={props.stroke} labelFontSize='17.5px' labelStyle={styles.sectionTitle} mainStyle={styles.fieldSet}>
+
+                    <FieldSet label="Stroke" labelColor={props.stroke} labelStyle={styles.sectionTitle} mainStyle={styles.fieldSet}>
                     {
                     showStroke
                     ?
@@ -92,6 +167,12 @@ const ConfigPanel = (props) => {
                                 Colour:
                             </Text>
                             <Pressable style={[styles.color, {backgroundColor:props.stroke}]} onPress={() => openModal('Stroke')}></Pressable>
+                        </View>
+                        <View style={styles.attSection}>
+                            <Text style={styles.attribute}>
+                                Highlight Colour:
+                            </Text>
+                            <Pressable style={[styles.color, {backgroundColor:props.highlight}]} onPress={() => openModal('Highlight')}></Pressable>
                         </View>
                         <View style={styles.attSection}>
                             <Text style={styles.attribute}>
@@ -136,8 +217,11 @@ const ConfigPanel = (props) => {
                     }
                     </FieldSet>
                 </View>
+                    {/****** END OF STROKE SECTION ******/}
+
+                {/****** FILL SECTION ******/}
                 <View style={styles.strokeSection}>
-                    <FieldSet label="Fill" labelColor={props.fill} labelFontSize='17.5px' labelStyle={styles.sectionTitle} mainStyle={styles.fieldSet}>
+                    <FieldSet label="Fill" labelColor={props.fill} labelStyle={styles.sectionTitle} mainStyle={styles.fieldSet}>
                     {
                         showFill
                         ?
@@ -183,8 +267,147 @@ const ConfigPanel = (props) => {
                     }
                     </FieldSet>
                 </View>
+                {/****** END OF FILL SECTION ******/}
             </View>
+            {/****** END OF FIRST ROW ******/}
 
+            {/****** SECOND ROW ******/}
+            <View style={styles.bottom}>
+
+                {/****** CONTROL SECTION ******/}
+            <View style={styles.strokeSection}>
+                    <FieldSet label="Control Points" labelColor={props.stroke} labelStyle={styles.sectionTitle} mainStyle={styles.fieldSet}>
+                    {
+                    showControl
+                    ?
+                    <View>
+                        <View style={styles.attSection}>
+                            <Text style={styles.attribute}>
+                                Colour:
+                            </Text>
+                            <Pressable style={[styles.color, {backgroundColor:props.controlCol}]} onPress={() => openModal('Control Points')}></Pressable>
+                        </View>
+                        <View style={styles.attSection}>
+                            <Text style={styles.attribute}>
+                                Opacity: 
+                            </Text>
+                            <Pressable style={styles.upDown} onPress={downCtrlOpacity}>
+                                <Image
+                                style={styles.icon}
+                                source={require('../images/down.svg')} />
+                            </Pressable>
+                            <Text style={styles.opacity}>{Math.round( ( props.ctrlOpacity + Number.EPSILON ) * 100 ) / 100}</Text>
+                            <Pressable style={styles.upDown} onPress={upCtrlOpacity}>
+                                <Image
+                                style={styles.icon}
+                                source={require('../images/up.svg')} />
+                            </Pressable>
+                        </View>
+                        <View style={styles.attSection}>
+                            <Text style={styles.attribute}>
+                                Size: 
+                            </Text>
+                            <Pressable style={styles.upDown} onPress={downSize}>
+                                <Image
+                                style={styles.icon}
+                                source={require('../images/down.svg')} />
+                            </Pressable>
+                            <Text style={styles.opacity}>{Math.round( ( props.controlSize + Number.EPSILON ) * 100 ) / 100}</Text>
+                            <Pressable style={styles.upDown} onPress={upSize}>
+                                <Image
+                                style={styles.icon}
+                                source={require('../images/up.svg')} />
+                            </Pressable>
+                        </View>
+                        <Pressable style={styles.upDown} onPress={() => setShowControl(showControl => !showControl)}>
+                            <Image
+                            style={styles.icon}
+                            source={require('../images/up.svg')} />
+                        </Pressable>
+                    </View>
+                    :
+                    <View>
+                        <Pressable style={styles.upDown} onPress={() => setShowControl(showControl => !showControl)}>
+                            <Image
+                            style={styles.icon}
+                            source={require('../images/down.svg')} />
+                        </Pressable>
+                    </View>
+                    }
+                    </FieldSet>
+                </View>
+                {/****** END OF CONTROL SECTION ******/}
+                    </View>
+                    <View style={styles.bottom}>
+                {/****** END POINT SECTION ******/}
+                <View style={styles.strokeSection}>
+                    <FieldSet label="End Points" labelColor={props.endPointCol} labelStyle={styles.sectionTitle} mainStyle={styles.fieldSet}>
+                    {
+                        showEndPoints
+                        ?
+                        <View>
+                        <View style={styles.attSection}>
+                        <Text style={styles.attribute}>
+                            Colour:
+                        </Text>
+                        <Pressable style={[styles.color, {backgroundColor:props.endPointCol}]} onPress={() => openModal('End Points')}></Pressable>
+                    </View>
+                    <View style={styles.attSection}>
+                        <Text style={styles.attribute}>
+                            Opacity: 
+                        </Text>
+                        <Pressable style={styles.upDown} onPress={downEndOpacity}>
+                            <Image
+                            style={styles.icon}
+                            source={require('../images/down.svg')} />
+                        </Pressable>
+                        <Text style={styles.opacity}>{Math.round( ( props.endOpacity + Number.EPSILON ) * 100 ) / 100}</Text>
+                        <Pressable style={styles.upDown} onPress={upEndOpacity}>
+                            <Image
+                            style={styles.icon}
+                            source={require('../images/up.svg')} />
+                        </Pressable>
+                    </View>
+                    <View style={styles.attSection}>
+                        <Text style={styles.attribute}>
+                            Size: 
+                        </Text>
+                        <Pressable style={styles.upDown} onPress={downEnd}>
+                            <Image
+                            style={styles.icon}
+                            source={require('../images/down.svg')} />
+                        </Pressable>
+                        <Text style={styles.opacity}>{Math.round( ( props.endSize + Number.EPSILON ) * 100 ) / 100}</Text>
+                        <Pressable style={styles.upDown} onPress={upEnd}>
+                            <Image
+                            style={styles.icon}
+                            source={require('../images/up.svg')} />
+                        </Pressable>
+                    </View>
+
+
+                    <View>
+                        <Pressable style={styles.upDown} onPress={() => setShowEndPoints(showEndPoints => !showEndPoints)}>
+                            <Image
+                            style={styles.icon}
+                            source={require('../images/up.svg')} />
+                        </Pressable>
+                    </View>
+                    </View>
+                    :
+                    <View>
+                        <Pressable style={styles.upDown} onPress={() => setShowEndPoints(showEndPoints => !showEndPoints)}>
+                            <Image
+                            style={styles.icon}
+                            source={require('../images/down.svg')} />
+                        </Pressable>
+                    </View>
+                    }
+                    </FieldSet>
+                    </View>
+                    {/****** END OF END POINT SECTION ******/}
+            </View>
+                    {/****** END OF SECOND ROW ******/}
             <Modal
             animationType="slide"
             transparent={true}
@@ -221,14 +444,15 @@ export default ConfigPanel;
 
 const styles = StyleSheet.create({
     icon: {
-        width: 21,
-        height: 21
+        width: 20,
+        height: 20,
     },
     upDown: {
-        width: 21,
-        height: 22,
+        width: 23,
+        height: 23,
         marginLeft: 4,
-        marginRight: 4
+        marginRight: 4,
+        padding: 1
     },
     opacity: {
         width: 25,
@@ -245,7 +469,8 @@ const styles = StyleSheet.create({
         padding: 30,
         boxShadow: '-2px 2px 8px #9c9c9c',
         margin: 10,    
-        height: 250                                            
+        height: 400,
+        width: 250                                           
     },
     titleSection: {
         display: 'flex',
@@ -254,6 +479,7 @@ const styles = StyleSheet.create({
     title: {
         fontFamily: 'Quicksand-Bold',
         fontSize: 20,
+        marginBottom: 15
     },
     bottom: {
         display: 'flex',
@@ -281,9 +507,11 @@ const styles = StyleSheet.create({
     },
     sectionTitle: {
         fontFamily: 'Quicksand-Bold',
-        fontSize: 17.5,
+        fontSize: 17,
         textAlign: 'center',
-        backgroundColor: 'rgba(255, 255, 255, 0.9)'
+        backgroundColor: 'rgba(255, 255, 255, 0.9)',
+        borderRadius: 6,
+        marginBottom: 10
     },
     fieldSet:{
         backgroundColor: '#a2a2a2',
