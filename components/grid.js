@@ -5,7 +5,6 @@ import Svg, { G, Rect, Defs, Pattern, Line } from "react-native-svg";
 const Grid = (props) => {
 
     const viewBox = `0 0 ${props.size} ${props.size}`
-    // const child = Object.keys(children).map((key) => [key, children[key]]);
     return(
         <View style={styles.grid}>
             <Svg id={props.id} width={props.size} height={props.size} viewBox={viewBox} x="0" y="0" onMouseMove={props.onMouseMove?props.onMouseMove:null} onMouseLeave={props.onMouseLeave?props.onMouseLeave:null}>

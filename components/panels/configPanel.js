@@ -1,9 +1,7 @@
 import { StyleSheet, View, Modal, Pressable, Text, TextInput, Image } from 'react-native';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import ColorPicker, { Panel1, Swatches, Preview, OpacitySlider, HueSlider } from 'reanimated-color-picker';
 import FieldSet from 'react-native-fieldset';
-
-
 
 const ConfigPanel = (props) => {
     const [modalIsOpen, setModalIsOpen] = useState(false);

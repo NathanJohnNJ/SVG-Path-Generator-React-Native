@@ -1,7 +1,7 @@
 import { StyleSheet, View, Pressable, Text } from 'react-native';
-import Q from './commands/q';
-import C from './commands/c';
-import L from './commands/l';
+import Q from '../commands/q';
+import C from '../commands/c';
+import L from '../commands/l';
 
 const CommandPanel = (props) => {
 

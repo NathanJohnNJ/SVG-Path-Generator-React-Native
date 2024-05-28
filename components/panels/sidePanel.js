@@ -1,9 +1,9 @@
 import { StyleSheet, View, Modal, Pressable, Text } from 'react-native';
 import { useState } from 'react';
 import FieldSet from 'react-native-fieldset';
-import Q from './commands/q';
-import C from './commands/c';
-import Edit from './edit';
+import Q from '../commands/q';
+import C from '../commands/c';
+import Edit from '../edit';
 
 const SidePanel = (props) => {
     const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -90,10 +90,11 @@ const SidePanel = (props) => {
             </View>
             <Modal
             animationType="slide"
-            transparent={true}
+            transparent={false}
             visible={modalIsOpen}
             onRequestClose={closeModal}
             >
+                <View style="styles.modal">
                 <Pressable style={hover.x?styles.closeHover:styles.close} onPress={closeModal} onMouseOver={() => hoverFunc('x')} onMouseLeave={resetHover}>
                     <Text style={hover.x?styles.closeTextHover:styles.closeText}>
                         X
@@ -107,6 +108,7 @@ const SidePanel = (props) => {
                 <View style={styles.commandSelection}>
                     <C relative={props.relative} path={props.path} setPath={props.setPath} pathID={props.pathID} setPathID={props.setPathID} startPoints={props.startPoints} setStartPoints={props.setStartPoints} stroke={props.stroke} strokeWidth={props.strokeWidth} strokeOpacity={props.strokeOpacity} fill={props.fill} fillOpacity={props.fillOpacity} info={props.info} setInfo={props.setInfo} />
                     <Q relative={props.relative} path={props.path} setPath={props.setPath} pathID={props.pathID} setPathID={props.setPathID} startPoints={props.startPoints} setStartPoints={props.setStartPoints} stroke={props.stroke} strokeWidth={props.strokeWidth} strokeOpacity={props.strokeOpacity} fill={props.fill} fillOpacity={props.fillOpacity} info={props.info} setInfo={props.setInfo} />
+                </View>
                 </View>
             </Modal>
         </View>
@@ -154,13 +156,12 @@ const styles = StyleSheet.create({
         display: 'flex',
         flexDirection:'row'
     },
-    edit: {
+    modal: {
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
         textAlign: 'center',
-        backgroundColor: 'rgba(200, 200, 200, 0.95)',
         marginTop: 100
     },
     commandSection: {
