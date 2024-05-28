@@ -8,7 +8,7 @@ const Grid = (props) => {
     // const child = Object.keys(children).map((key) => [key, children[key]]);
     return(
         <View style={styles.grid}>
-            <Svg id={props.id} width={props.size} height={props.size} viewBox={viewBox} x="0" y="0">
+            <Svg id={props.id} width={props.size} height={props.size} viewBox={viewBox} x="0" y="0" onMouseMove={props.onMouseMove?props.onMouseMove:null} onMouseLeave={props.onMouseLeave?props.onMouseLeave:null}>
                 <Defs>
                     <Pattern
                     id="LinePattern"

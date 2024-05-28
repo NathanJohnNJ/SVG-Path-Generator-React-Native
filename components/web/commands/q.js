@@ -8,87 +8,62 @@ const Q = (props) => {
     const [absRel, setAbsRel] = useState("q");
     const [modalIsOpen, setModalIsOpen] = useState(false);
     const [hover, setHover] = useState({sub: false, can: false, q:false});
-    const [firstCtrl, setFirstCtrl] = useState({x:25, y:50})
-    const [endPoint, setEndPoint] = useState({x:50, y:0})
+    // const [firstCtrl, setFirstCtrl] = useState({x:25, y:50})
+    // const [endPoint, setEndPoint] = useState({x:50, y:0})
 
     function openModal(){
-        setFirstCtrl({x:25, y:50})  
-        setEndPoint({x:50, y:0})
+        props.setFirstCtrl({x:25, y:50})  
+        props.setEndPoint({x:50, y:0})
         setModalIsOpen(true)
     }
     function closeModal(){
         setModalIsOpen(false)
+        props.setFirstCtrl({})  
+        props.setEndPoint({})
     }
-    function hoverFunc(path){
-        path.style.strokeWidth = props.strokeWidth*2;
-        path.style.stroke = '#0000ff';
+    function hoverFunc(i){
+        const newHover = { ...hover, [i]: true}
+        setHover(newHover)
     }
-    function leaveFunc(path){
-        path.style.strokeWidth = props.strokeWidth;
-        path.style.stroke = props.stroke;
-    }
-    function clickFunc(path){
-        props.setEditPath(path)
-        props.setEditModalIsOpen(true)
+    function resetHover(){
+        setHover({x: false, change: false})
     }
 
     const defaultPath = {
-        type: 'Q',
+        type: props.relative?'q':'Q',
         id: props.pathID+1,
-        sx: {key: 'Start x', value: 50},
-        sy: {key: 'Start y', value: 50},
         dx1: {key: 'dx', value: props.relative?25:75},
         dy1: {key: 'dy', value: props.relative?50:100},
         x:  {key: 'x',value: props.relative?50:100},
         y: {key: 'y', value: props.relative?0:50},
         absX: {value: 100},
         absY: {value: 50},
+        startPoint: {x: 50, y: 50},
+        controlPoints: props.relative?[{key: 'dx1', value:25}, {key: 'dy1', value:50}]:[{key: 'dx1', value:75}, {key: 'dy1', value:100}],
+        endPoint: props.relative?{x:50, y: 0}:{x: 100, y: 50},
         command: props.relative?'q25,50 50,0':'Q75,100 100,50',
         absCommand: 'Q75,100 100,50',
         relCommand: 'q25,50 50,0'
     }
     
     function addToPath(){
-        const i = props.pathID+1
-        const startX = props.path[i-1].absX.value;
-        const startY = props.path[i-1].absY.value;
+        const startX = props.path[props.pathID].absX.value;
+        const startY = props.path[props.pathID].absY.value;
         const qPath = {
-            type: 'Q',
+            type: props.relative?'q':'Q',
             id: props.pathID+1,
-            sx: {key: 'Start x', value: startX},
-            sy: {key: 'Start y', value: startY},
-            dx1: {key: 'dx', value: props.relative?firstCtrl.x:firstCtrl.x+startX},
-            dy1: {key: 'dy', value: props.relative?firstCtrl.y:firstCtrl.y+startY},
-            x:  {key: 'x',value: props.relative?endPoint.x:endPoint.x+startX},
-            y: {key: 'y', value: props.relative?endPoint.y:endPoint.y+startY},
-            absX: {value: endPoint.x+startX},
-            absY: {value: endPoint.y+startY},
-            command: props.relative?`q${firstCtrl.x},${firstCtrl.y} ${endPoint.x},${endPoint.y}`:`Q${startX+firstCtrl.x},${startY+firstCtrl.y} ${startX+endPoint.x},${startY+endPoint.y}`,
-            absCommand: `Q${startX+firstCtrl.x},${startY+firstCtrl.y} ${startX+endPoint.x},${startY+endPoint.y}`,
-            relCommand: `q${firstCtrl.x},${firstCtrl.y} ${endPoint.x},${endPoint.y}`
+            absX: {value: props.endPoint.x+startX},
+            absY: {value: props.endPoint.y+startY},
+            startPoint: {x: startX, y: startY},
+            controlPoints: props.relative?[{key: 'dx1', value:`${props.firstCtrl.x}`}, {key: 'dy1', value:`${props.firstCtrl.y}`}]:[{key: 'dx1', value:`${props.firstCtrl.x}+${startX}`}, {key: 'dy1', value:`${props.firstCtrl.y}+${startY}`}],
+            endPoint: props.relative?{x: props.endPoint.x,y: props.endPoint.y}:{x: props.endPoint.x+startX,y: props.endPoint.y+startY},
+            command: props.relative?`q${props.firstCtrl.x},${props.firstCtrl.y} ${props.endPoint.x},${props.endPoint.y}`:`Q${startX+props.firstCtrl.x},${startY+props.firstCtrl.y} ${startX+props.endPoint.x},${startY+props.endPoint.y}`,
+            absCommand: `Q${startX+props.firstCtrl.x},${startY+props.firstCtrl.y} ${startX+props.endPoint.x},${startY+props.endPoint.y}`,
+            relCommand: `q${props.firstCtrl.x},${props.firstCtrl.y} ${props.endPoint.x},${props.endPoint.y}`,
+            fullCommand: `M${startX},${startY}Q${startX+props.firstCtrl.x},${startY+props.firstCtrl.y} ${startX+props.endPoint.x},${startY+props.endPoint.y}`
         } 
         const newPath = [...props.path, qPath]
         props.setPath(newPath)
-        const grid = document.getElementById('grid')
-        grid.removeChild(grid.lastChild)
-        const svgns = "http://www.w3.org/2000/svg"
-        newPath.map((path, i) => {
-            const currentPath = document.createElementNS(svgns, 'path')
-            const fullPath = `M${path.sx.value},${path.sy.value}${path.command}`
-            currentPath.setAttributeNS(null, 'd', fullPath);
-            currentPath.setAttributeNS(null, 'stroke', props.stroke);
-            currentPath.setAttributeNS(null, 'stroke-width', props.strokeWidth);
-            currentPath.setAttributeNS(null, 'stroke-opacity', props.strokeOpacity);
-            currentPath.setAttributeNS(null, 'fill', props.fill);
-            currentPath.setAttributeNS(null, 'fill-opacity', props.fillOpacity);
-            currentPath.setAttributeNS(null, 'style', 'styles.path');
-            currentPath.setAttributeNS(null, 'id', `path${path.id}`);
-            grid.appendChild(currentPath);
-            let thisPath = document.getElementById(`path${path.id}`);
-            thisPath.addEventListener('mouseover', ()=>hoverFunc(thisPath))
-            thisPath.addEventListener('mouseleave', ()=>leaveFunc(thisPath))
-            thisPath.addEventListener('click', () =>clickFunc(path))
-        })    
         props.setPathID(props.pathID+1)  
         setModalIsOpen(false)
     }
@@ -98,36 +73,34 @@ const Q = (props) => {
         } else {
             setAbsRel("Q")
         }
-    })
-    
+    }, [props.relative])
 
     return (
         <View style={styles.outerContainer}>
-            <Text onClick={openModal} onMouseOver={()=>{setHover({sub: false, can:false, q: true})}} onMouseLeave={()=>{setHover({sub: false, can:false, q: false})}} style={hover.q?styles.hover:styles.button}>{absRel}</Text>
+            <Text onClick={openModal} onMouseOver={() => hoverFunc('q')} onMouseLeave={resetHover} style={hover.q?styles.hover:styles.button}>{absRel}</Text>
             <Modal
             animationType="slide"
             transparent={false}
             visible={modalIsOpen}
             onRequestClose={closeModal}
-            style={styles.modal}
             >
-                <Text style={styles.title}>{absRel} Command</Text>
+                <Text style={styles.title}>New {absRel} Command</Text>
                 
                 <View style={styles.row}>
                    
                     <View style={styles.container}>
-                        <GridWithDrag size="200" command="Q" relative={props.relative} firstCtrl={firstCtrl} setFirstCtrl={setFirstCtrl} endPoint={endPoint} setEndPoint={setEndPoint} strokeWidth={props.strokeWidth} stroke={props.stroke} fill={props.fill} fillOpacity={props.fillOpacity} strokeOpacity={props.strokeOpacity} startPoints={props.startPoints}/>
+                        <GridWithDrag size="250" command="Q" path={defaultPath}  relative={props.relative} firstCtrl={props.firstCtrl} setFirstCtrl={props.setFirstCtrl} endPoint={props.endPoint} setEndPoint={props.setEndPoint} strokeWidth={props.strokeWidth} stroke={props.stroke} fill={props.fill} fillOpacity={props.fillOpacity} strokeOpacity={props.strokeOpacity} />
                     </View>
                    
                     <View style={styles.container}>
-                        <Tables path={defaultPath} />
+                        <Tables path={defaultPath} firstCtrl={props.firstCtrl} setFirstCtrl={props.setFirstCtrl} endPoint={props.endPoint} setEndPoint={props.setEndPoint} />
                     </View>
                 
                 </View>
                 
                 <View style={styles.subCan}>
-                    <Text onClick={addToPath} onMouseOver={()=>{setHover({sub: true, can:false, q: false})}} onMouseLeave={()=>{setHover({sub: false, can:false, q: false})}} style={hover.sub?styles.submitHover:styles.submitButton}>Add to path!</Text>
-                    <Text onClick={closeModal} onMouseOver={()=>{setHover({sub: false, can:true, q: false})}} onMouseLeave={()=>{setHover({sub: false, can:false, q: false})}} style={hover.can?styles.cancelHover:styles.cancelButton}>Cancel</Text>
+                    <Text onClick={addToPath} onMouseOver={() => hoverFunc('sub')} onMouseLeave={resetHover} style={hover.sub?styles.submitHover:styles.submitButton}>Add to path!</Text>
+                    <Text onClick={closeModal} onMouseOver={() => hoverFunc('can')} onMouseLeave={resetHover} style={hover.can?styles.cancelHover:styles.cancelButton}>Cancel</Text>
                 </View>
 
             </Modal>
@@ -143,14 +116,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flexDirection:'column',
     justifyContent: 'center'
-    },
-    modal: {
-      display: 'flex',
-      flexDirection:'column',
-      marginTop: 40,
-      backgroundColor: '#fff',
-      alignItems: 'center',
-      justifyContent: 'center',
     },
     container: {
       display: 'flex',
@@ -174,115 +139,11 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: 'center',
-        marginTop: 10,
+        justifyContent: 'space-around',
+        alignSelf: 'center',
+        marginTop: -150,
+        width: 350
       },
-    tableContainer: {
-        display: "flex",
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center',
-        flex:1
-    },
-    fieldSet:{
-        backgroundColor: '#a2a2a2',
-        height: 80,
-        width: 'auto',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'flex-start',
-    },
-    label: {
-        fontFamily: 'Geologica',
-        fontWeight: 600,
-        fontSize: 17.5
-    },
-    table: {
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        color: '#fff',
-        marginTop: 5,
-        marginLeft: 10,
-        flex:1
-    },
-    tbody:{
-        flex:1,
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    tr: {
-        flex: 1,
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        borderRadius: '5px',
-    },
-    th: {
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        border: '1.8px solid black',
-        fontFamily: 'Geologica',
-        fontWeight: 500,
-        fontSize: 18,
-        flex:1,
-        width: 40,
-        height: 25,
-        marginTop: -5,
-        marginBottom: -5,
-    },
-    td: {
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        textAlign: 'center',
-        border: '1.5px dashed grey',
-        fontFamily: 'Geologica',
-        fontWeight: 400,
-        fontSize: 18,
-        color: '#12f',
-        flex:1,
-        width: 60,
-        height: 25,
-        margin: 2
-    },
-    start: {
-        display: 'flex',
-        textAlign: 'center',
-        alignItems: 'center',
-        justifyContent: 'center',
-        border: '1.5px dashed grey',
-        fontFamily: 'Geologica',
-        fontWeight: 400,
-        fontSize: 18,
-        color: '#159c06',
-        flex:1,
-        width: 60,
-        height: 25,
-        margin: 2
-    },
-    end: {
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        textAlign: 'center',
-        border: '1.5px dashed grey',
-        fontFamily: 'Geologica',
-        fontWeight: 400,
-        fontSize: 18,
-        color: '#f00',
-        flex:1,
-        width: 60,
-        height: 25,
-        margin: 2
-    },
-    path:{
-        cursor: 'pointer'
-    },
     button: {
         display:'flex',
         flexDirection: 'column',
@@ -293,11 +154,14 @@ const styles = StyleSheet.create({
         color:'#4e4e4e',
         backgroundColor: '#6c6c6c',
         textShadow: '-1px 1px 1px #4e4e4e',
-        fontFamily: 'Quicksand-Medium',
+        fontFamily: 'Quicksand-Regular',
         fontSize: 18,
-        border: 'none',
-        borderRadius: '5px',
-        margin: 5
+        borderColor: '#4e4e4e',
+        borderWidth: 2,
+        borderRadius: 6,
+        paddingBottom: 5,
+        margin: 5,
+        textAlign: 'center',
       },
     hover: {
         display:'flex',
@@ -305,92 +169,96 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         width:25,
-        height:25,   
-        color:'#ffffff',
-        fontFamily: 'Quicksand-Medium',
+        height:25,
         backgroundColor: '#4e4e4e',
+        borderColor: '#fff',
+        borderWidth: 2,
+        borderRadius: 6,
         textShadow: '-1px 1px 1px #ffffff',
         fontSize: 18,
         cursor: 'pointer',
-        boxShadow: '-1px -1px 1px 1px #ffffff, -1px 1px 1px 1px #ffffff, 1px 1px 1px 1px #ffffff, 1px -1px 1px 1px #ffffff',
-        border: 'none',
-        borderRadius: '5px',
-        margin: 5
+        textAlign: 'center',
+        paddingBottom: 5,
+        margin: 5,   
+        color:'#ffffff',
+        fontFamily: 'Quicksand-Medium',
       },
         submitButton: {
         display:'flex',
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        width:'auto',
-        height:22,
-        padding:'2px',    
+        width:'fit-content',
+        height:25,
+        padding:3,
         color:'#4e4e4e',
-        backgroundColor: '#fff',
+        backgroundColor: '#6c6c6c',
         textShadow: '-1px 1px 1px #4e4e4e',
-        fontFamily: 'Quicksand-light',
-        fontSize: 15,
+        fontFamily: 'Quicksand-Regular',
+        fontSize: 18,
         borderColor: '#4e4e4e',
-        borderStyle: 'solid',
-        borderWidth: '1.5px',
-        borderRadius: '5px',
-        margin: 10
+        borderWidth: 2,
+        borderRadius: 6,
+        margin: 5,
+        textAlign: 'center'
       },
       submitHover: {
         display:'flex',
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        width:'auto',
-        height:22,
-        padding:'2px', 
+        width:'fit-content',
+        height:25,
+        padding:3, 
         color:'#ffffff',
-        borderRadius: '5px',
-        border: 'none',
+        borderColor: '#fff',
+        borderWidth: 2,
+        borderRadius: 6,
         backgroundColor: '#4e4e4e',
         textShadow: '-1px 1px 1px #ffffff',
-        fontFamily: 'Quicksand-Bold',
-        fontSize: 15,
+        fontFamily: 'Quicksand-Medium',
+        fontSize: 18,
         cursor: 'pointer',
-        boxShadow: '-1px -1px 1px 2px #4e4e4e, -1px 1px 1px 2px #4e4e4e, 1px 1px 1px 2px #4e4e4e, 1px -1px 1px 2px #4e4e4e',
-        margin:10
+        margin:5,
+        textAlign: 'center'
       },
     cancelButton: {
         display:'flex',
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        width:'auto',
-        height:22,
-        padding:'2px',  
-        color:'#f00',
-        backgroundColor: '#fff',
-        textShadow: '-1px 1px 1px #ffffff',
-        fontFamily: 'Quicksand-Medium',
-        fontSize: 15,
-        borderColor: '#f00',
-        borderStyle: 'solid',
-        borderWidth: '1.5px',
-        borderRadius: '5px',
-        margin:10
+        width:'fit-content',
+        height:25,
+        padding:3,  
+        color:'#681402',
+        backgroundColor: '#6c6c6c',
+        textShadow: '-1px 1px 1px #681402',
+        fontFamily: 'Quicksand-Regular',
+        fontSize: 18,
+        borderColor: '#681402',
+        borderWidth: 2,
+        borderRadius: 6,
+        margin:5,
+        textAlign: 'center'
       },
       cancelHover: {
         display:'flex',
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        width:'auto',
-        height:22,
-        padding:'2px', 
+        width:'fit-content',
+        height:25,
+        padding:3, 
         color:'#fff',
-        borderRadius: '5px',
-        border: 'none',
-        backgroundColor: '#f00',
+        borderColor: '#fff',
+        borderWidth: 2,
+        borderRadius: 6,
+        backgroundColor: '#681402',
         textShadow: '-1px 1px 1px #fff',
-        fontFamily: 'Quicksand-Bold',
-        fontSize: 15,
+        fontFamily: 'Quicksand-Medium',
+        fontSize: 18,
         cursor: 'pointer',
-        boxShadow: '-1px -1px 1px 2px #f00, -1px 1px 1px 2px #f00, 1px 1px 1px 2px #f00, 1px -1px 1px 2px #f00',
-        margin:10
+        margin:5,
+        textAlign: 'center'
       }
 })

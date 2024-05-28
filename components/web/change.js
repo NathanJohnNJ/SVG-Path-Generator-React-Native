@@ -1,5 +1,5 @@
 import { StyleSheet, View, Modal, Pressable, Text } from 'react-native';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import FieldSet from 'react-native-fieldset';
 import Q from './commands/q';
 import C from './commands/c';
@@ -30,7 +30,7 @@ const SidePanel = (props) => {
             dataArr.push(point.value)
         })
         return(
-            <FieldSet label="Control Points" labelColor="#00f" labelFontSize='17.5px' labelStyle={styles.label} mainStyle={styles.fieldSet}>
+            <FieldSet label="Control Points" labelColor="#00f" labelStyle={styles.label} mainStyle={styles.fieldSet}>
                 <table style={styles.table}>
                     <tbody style={styles.tbody}>
                         <tr style={styles.tr}>
@@ -55,43 +55,12 @@ const SidePanel = (props) => {
 
     return(
         <View style={styles.sidePanel}>
-            <View style={styles.top}>
-                <Text style={styles.modalTitle}>
-                    More Info
+            
+            <Pressable style={hover.change?styles.  hover:styles.button} onPress={openModal} onMouseOver={() => hoverFunc('change')} onMouseLeave={resetHover}>
+                <Text style={hover.change?styles.textHover:styles.buttonText}>
+                    Change
                 </Text>
-                    {/* <Edit /> */}
-            </View>
-            <View style={styles.bottom}>
-                <View style={styles.changeSection}>
-                    <Text style={styles.title}>Command: {props.info.type}</Text>
-                    <Pressable style={styles.changeButton} onPress={openModal} onMouseOver={() => hoverFunc('change')} onMouseLeave={resetHover}>
-                        <Text style={styles.changeButtonText}>
-                            Change
-                        </Text>
-                    </Pressable>
-                </View>
-                
-                <Text style={styles.title}>Path ID: {props.info.id}</Text>
-                <View style={styles.tableSection}>
-                    <ControlTable />
-                </View>
-                <View style={styles.tableSection}>
-                    <FieldSet label="End Point" labelColor="#f00" labelFontSize='17.5px' labelStyle={styles.label} mainStyle={styles.fieldSet}>
-                        <table style={styles.table}>
-                            <tbody style={styles.tbody}>
-                                <tr style={styles.tr}>
-                                    <th style={styles.th}>x</th>
-                                    <th style={styles.th}>y</th>
-                                </tr>
-                                <tr style={styles.tr}>
-                                    <td style={styles.end}>{props.info.endPoint.x}</td>
-                                    <td style={styles.end}>{props.info.endPoint.y}</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </FieldSet>
-                </View>
-            </View>
+            </Pressable>
             <Modal
             animationType="slide"
             transparent={true}
@@ -109,8 +78,8 @@ const SidePanel = (props) => {
                     <Text style={styles.smallText}>(Please beware that doing so will remove the command you had selected from the path and replace it with this new one.)</Text>
                 </View>
                 <View style={styles.commandSelection}>
-                    <C relative={props.relative} path={props.path} setPath={props.setPath} pathID={props.pathID} setPathID={props.setPathID} startPoints={props.startPoints} setStartPoints={props.setStartPoints} stroke={props.stroke} strokeWidth={props.strokeWidth} strokeOpacity={props.strokeOpacity} fill={props.fill} fillOpacity={props.fillOpacity} info={props.info} setInfo={props.setInfo} />
-                    <Q relative={props.relative} path={props.path} setPath={props.setPath} pathID={props.pathID} setPathID={props.setPathID} startPoints={props.startPoints} setStartPoints={props.setStartPoints} stroke={props.stroke} strokeWidth={props.strokeWidth} strokeOpacity={props.strokeOpacity} fill={props.fill} fillOpacity={props.fillOpacity} info={props.info} setInfo={props.setInfo} />
+                    <C relative={props.relative} path={props.path} setPath={props.setPath} pathID={props.pathID} setPathID={props.setPathID} startPoints={props.startPoints} setStartPoints={props.setStartPoints} stroke={props.stroke} strokeWidth={props.strokeWidth} strokeOpacity={props.strokeOpacity} fill={props.fill} fillOpacity={props.fillOpacity} iinfo={props.info} setInfo={props.setInfo} endPoint={props.endPoint} setEndPoint={props.setEndPoint} firstCtrl={props.firstCtrl} setFirstCtrl={props.setFirstCtrl} secondCtrl={props.secondCtrl} setSecondCtrl={props.setSecondCtrl} controlCol={props.controlCol} ctrlOpacity={props.ctrlOpacity} controlSize={props.controlSize} endCol={props.endCol} endOpacity={props.endOpacity}  endSize={props.endSize} highlight={props.highlight}  />
+                    <Q relative={props.relative} path={props.path} setPath={props.setPath} pathID={props.pathID} setPathID={props.setPathID} startPoints={props.startPoints} setStartPoints={props.setStartPoints} stroke={props.stroke} strokeWidth={props.strokeWidth} strokeOpacity={props.strokeOpacity} fill={props.fill} fillOpacity={props.fillOpacity} info={props.info} setInfo={props.setInfo} endPoint={props.endPoint} setEndPoint={props.setEndPoint} firstCtrl={props.firstCtrl} setFirstCtrl={props.setFirstCtrl} controlCol={props.controlCol} ctrlOpacity={props.ctrlOpacity} controlSize={props.controlSize} endCol={props.endCol} endOpacity={props.endOpacity}  endSize={props.endSize} highlight={props.highlight}  />
                 </View>
             </Modal>
         </View>
@@ -137,6 +106,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-around',
+        marginTop: -60
     },
     titleSection: {
         display: 'flex',
@@ -265,6 +235,9 @@ const styles = StyleSheet.create({
         color:'#fff',
         textShadow: '-1px 1px 1px #fff',
     },
+    tableSection: {
+        margin: 10
+    },
     fieldSet:{
         backgroundColor: '#a2a2a2',
         height: 80,
@@ -273,11 +246,14 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'flex-start',
+        marginTop: 20
     },
     label: {
         fontFamily: 'Quicksand-Bold',
-        fontSize: 17.5,
-        backgroundColor: 'rgba(255, 255, 255, 0.9)'
+        fontSize: 17,
+        backgroundColor: 'rgba(255, 255, 255, 0.9)',
+        borderRadius: 6,
+        marginBottom: 10,
     },
     table: {
         display: 'flex',
@@ -310,7 +286,6 @@ const styles = StyleSheet.create({
         flex:1,
         width: 40,
         height: 25,
-        marginTop: -5,
         padding:2
     },
     td: {
@@ -326,7 +301,8 @@ const styles = StyleSheet.create({
         flex:1,
         width: 40,
         height: 25,
-        padding:2
+        padding:2,
+        margin:1
     },
     end: {
         display: 'flex',
@@ -341,6 +317,7 @@ const styles = StyleSheet.create({
         flex:1,
         width: 40,
         height: 25,
-        padding: 2
+        padding: 2,
+        margin: 1
     },
 })
