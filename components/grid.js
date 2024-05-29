@@ -54,9 +54,9 @@ const styles =  (props) => StyleSheet.create({
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        padding: 22,
+        padding: 16,
         boxShadow: '-2px 2px 8px #9c9c9c',
         margin: 10,
-        width: 600                                           
+        width: 530                                           
     }
 })

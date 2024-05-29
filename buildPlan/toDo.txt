@@ -1,5 +1,5 @@
 To Do:
- - Add A command
+  - Add A command
   - Add S and C commands
   - Add links to help pages > make a component that takes an argument of type, can be placed on the main page for general docs and then each commands page to link to their respective sections in the docs.
   - Finish functionality of edit modal

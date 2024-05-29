@@ -128,9 +128,9 @@ const styles = (props) => StyleSheet.create({
         justifyContent: 'center',
         padding: 22,
         boxShadow: '-2px 2px 8px #9c9c9c',
-        margin: 8,
-        height: 475,
-        width: 225
+        margin: 6,
+        height: 485,
+        width: 245  
     },
     top: {
         display: 'flex',
