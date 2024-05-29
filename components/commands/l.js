@@ -80,7 +80,7 @@ const L = (props) => {
                 <View style={styles(props).row}>
                    
                     <View style={styles(props).container}>
-                        <GridWithDrag size="250" command="L" path={defaultPath}  relative={props.relative} endPoint={endPoint} setEndPoint={setEndPoint} strokeWidth={props.strokeWidth} stroke={props.stroke} fill={props.fill} fillOpacity={props.fillOpacity} strokeOpacity={props.strokeOpacity} endCol={props.endCol} endOpacity={props.endOpacity} endSize={props.endSize} highlight={props.highlight} startX={startX} startY={startY}  />
+                        <GridWithDrag size="250" path={defaultPath} endPoint={endPoint} setEndPoint={setEndPoint} strokeWidth={props.strokeWidth} stroke={props.stroke} fill={props.fill} fillOpacity={props.fillOpacity} strokeOpacity={props.strokeOpacity} endCol={props.endCol} endOpacity={props.endOpacity} endSize={props.endSize} highlight={props.highlight} startX={startX} startY={startY}  />
                     </View>
                    
                    <View style={styles(props).mainContainer}>

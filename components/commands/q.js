@@ -3,13 +3,16 @@ import GridWithDrag from './gridWithDrag';
 import { StyleSheet, Text, View, Modal } from 'react-native';
 import React from 'react';
 import Tables from './tables';
+import { Svg, Path, Rect, G } from 'react-native-svg';
 
 const Q = (props) => {
     const [modalIsOpen, setModalIsOpen] = useState(false);
     const [hover, setHover] = useState({sub: false, can: false, q: false, dx1: false, dy1: false, x: false, y:false});
+    
 
     const startX = props.path[props.pathID].absX;
     const startY = props.path[props.pathID].absY;
+    
 
     function openModal(){
         props.setFirstCtrl({x:25, y:50})  
@@ -45,6 +48,58 @@ const Q = (props) => {
         fullCommand: 'M50,50q25,50 50,0',
         fullAbsCommand: 'M50,50Q75,100 100,50'
     }
+    // const secondDefault = {
+    //     type: 'q',
+    //     absType: 'Q',
+    //     id: props.pathID+1,
+    //     absX: 100,
+    //     absY: 50,
+    //     startPoint: {x: 50, y: 50},
+    //     controlPoints: [{key: 'dx1', value:25}, {key: 'dy1', value:-50}],
+    //     absControlPoints: [{key: 'dx1', value:75}, {key: 'dy1', value:0}],
+    //     endPoint: {x:50, y: 0},
+    //     absEndPoint: {x: 100, y: 50},
+    //     command: 'q25,-50 50,0',
+    //     absCommand: 'Q75,0 100,50',
+    //     fullCommand: 'M50,50q25,-50 50,0',
+    //     fullAbsCommand: 'M50,50Q75,0 100,50'
+    // }
+    // const thirdDefault = {
+    //     type: 'q',
+    //     absType: 'Q',
+    //     id: props.pathID+1,
+    //     absX: 50,
+    //     absY: 100,
+    //     startPoint: {x: 50, y: 50},
+    //     controlPoints: [{key: 'dx1', value:50}, {key: 'dy1', value:-25}],
+    //     absControlPoints: [{key: 'dx1', value:100}, {key: 'dy1', value:25}],
+    //     endPoint: {x:0, y: 50},
+    //     absEndPoint: {x: 50, y: 100},
+    //     command: 'q50,-25 0,50',
+    //     absCommand: '100,25 50,100',
+    //     fullCommand: 'M50,50q50,-25 0,50',
+    //     fullAbsCommand: 'M50,50Q100,25 50,100'
+    // }
+    // const fourthDefault = {
+    //     type: 'q',
+    //     absType: 'Q',
+    //     id: props.pathID+1,
+    //     absX: 75,
+    //     absY: 150,
+    //     startPoint: {x: 50, y: 50},
+    //     controlPoints: [{key: 'dx1', value:-50}, {key: 'dy1', value:-50}],
+    //     absControlPoints: [{key: 'dx1', value:75}, {key: 'dy1', value:100}],
+    //     endPoint: {x:25, y: 100},
+    //     absEndPoint: {x: 75, y: 150},
+    //     command: 'q-50,-50 25,100',
+    //     absCommand: 'Q0,0 75,150',
+    //     fullCommand: 'M50,50q-50,-50 25,100',
+    //     fullAbsCommand: 'M50,50Q0,0 75,150'
+    // }
+    // // setDefaultPath(firstDefault)
+    // const [defaultPath, setDefaultPath] = useState(firstDefault)
+
+
     
     function addToPath(){
         const startX = props.path[props.pathID].absX;
@@ -84,9 +139,38 @@ const Q = (props) => {
                 <Text style={styles(props).title}>New Q Command</Text>
                 
                 <View style={styles(props).row}>
-                   
+                   {/* <View style={styles(props).defaultSection}>
+                    <Svg height="100" width="100" viewBox='0 0 100 100'>
+                    <G>
+                    <Rect height="100" width="100" fill="none" stroke="#bbb" strokeWidth="3">
+                        <Path d={defaultPath.fullCommand} height="100" width="100" viewBox='0 0 300 300' fill="none" stroke="#f00" /> 
+                    </Rect>
+                    </G>
+                    </Svg>
+                    <Svg height="100" width="100" viewBox='0 0 100 100'>
+                    <G>
+                    <Rect height="100" width="100" fill="none" stroke="#bbb" strokeWidth="3">
+                        <Path d={secondDefault.fullCommand} height="100" width="100" viewBox='0 0 300 300' fill="none" stroke="#f00" /> 
+                    </Rect>
+                    </G>
+                    </Svg>
+                    <Svg height="100" width="100" viewBox='0 0 100 100'>
+                    <G>
+                    <Rect height="100" width="100" fill="none" stroke="#bbb" strokeWidth="3">
+                        <Path d={thirdDefault.fullCommand} height="100" width="100" viewBox='0 0 300 300' fill="none" stroke="#f00" /> 
+                    </Rect>
+                    </G>
+                    </Svg>
+                    <Svg height="100" width="100" viewBox='0 0 100 100'>
+                    <G>
+                    <Rect height="100" width="100" fill="none" stroke="#bbb" strokeWidth="3">
+                        <Path d={fourthDefault.fullCommand} height="100" width="100" viewBox='0 0 300 300' fill="none" stroke="#f00" /> 
+                    </Rect>
+                    </G>
+                    </Svg>
+                   </View> */}
                     <View style={styles(props).container}>
-                        <GridWithDrag size="250" command="Q" path={defaultPath}  relative={props.relative} firstCtrl={props.firstCtrl} setFirstCtrl={props.setFirstCtrl} endPoint={props.endPoint} setEndPoint={props.setEndPoint} strokeWidth={props.strokeWidth} stroke={props.stroke} fill={props.fill} fillOpacity={props.fillOpacity} strokeOpacity={props.strokeOpacity} controlCol={props.controlCol} ctrlOpacity={props.ctrlOpacity} controlSize={props.controlSize} endCol={props.endCol} endOpacity={props.endOpacity} endSize={props.endSize} highlight={props.highlight} startX={startX} startY={startY} resetHover={resetHover} hoverFunc={hoverFunc} />
+                        <GridWithDrag size="250" path={defaultPath} firstCtrl={props.firstCtrl} setFirstCtrl={props.setFirstCtrl} endPoint={props.endPoint} setEndPoint={props.setEndPoint} strokeWidth={props.strokeWidth} stroke={props.stroke} fill={props.fill} fillOpacity={props.fillOpacity} strokeOpacity={props.strokeOpacity} controlCol={props.controlCol} ctrlOpacity={props.ctrlOpacity} controlSize={props.controlSize} endCol={props.endCol} endOpacity={props.endOpacity} endSize={props.endSize} highlight={props.highlight} startX={startX} startY={startY} resetHover={resetHover} hoverFunc={hoverFunc} />
                     </View>
                    
                     <View style={styles(props).container}>
@@ -257,5 +341,19 @@ const styles = (props) => StyleSheet.create({
         cursor: 'pointer',
         margin:5,
         textAlign: 'center'
+      },
+      defaultSection:{
+        width: 150,
+        backgroundColor: '#ddd',
+        borderColor: '#fdb',
+        borderWidth: 3,
+        borderRadius: 18,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: 22,
+        boxShadow: '-2px 2px 8px #9c9c9c',
+        margin: 8,
+        height: 450,
       }
 })

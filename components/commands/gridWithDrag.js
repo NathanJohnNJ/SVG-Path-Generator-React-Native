@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import Svg from "react-native-svg"
 import { StyleSheet, Text, View } from 'react-native';
 import Grid from '../grid';
 
@@ -23,14 +22,14 @@ const GridWithDrag = (props) => {
             let coord = getMousePosition(evt);
             let xCoord = Math.round( ( coord.x - offsetX ))
             let yCoord = Math.round( ( coord.y - offsetY ))
-            if(props.command==='H'){
+            if(props.path.absType==='H'){
                 selectedElement.setAttributeNS(null, "cx", xCoord);
                 selectedElement.setAttributeNS(null, 'r', props.endSize*1.5) 
                 props.setEndPoint({x:xCoord-50, y:0})
                 props.hoverFunc('x');
                 document.getElementById('createGrid').removeChild(document.getElementById('path'))
                 drawPath()
-            }else if (props.command==="V"){
+            }else if (props.path.absType==="V"){
                 selectedElement.setAttributeNS(null, "cy", yCoord);
                 selectedElement.setAttributeNS(null, 'r', props.endSize*1.5) 
                 props.setEndPoint({x:0, y:yCoord-100})
@@ -58,8 +57,8 @@ const GridWithDrag = (props) => {
                 else{
                     props.setEndPoint({x:xCoord-50, y:yCoord-100})
                     selectedElement.setAttributeNS(null, 'r', props.endSize*1.5) 
-                    props.hoverfunc?props.hoverFunc('x'):null;
-                    props.hoverFunc?props.hoverFunc('y'):null;
+                    props.hoverFunc('x');
+                    props.hoverFunc('y');
                     document.getElementById('createGrid').removeChild(document.getElementById('path'))
                     drawPath()
                 }
@@ -96,15 +95,15 @@ const GridWithDrag = (props) => {
         currentPath.setAttributeNS(null, 'stroke-opacity', props.strokeOpacity);
         currentPath.setAttributeNS(null, 'fill', props.fill);
         currentPath.setAttributeNS(null, 'fill-opacity', props.fillOpacity);
-        if(props.path.type.toUpperCase()==='Q'){
+        if(props.path.absType==='Q'){
             currentPath.setAttributeNS(null, 'd', `M50,100q${props.firstCtrl.x},${props.firstCtrl.y} ${props.endPoint.x},${props.endPoint.y}`)
-        }else if(props.path.type.toUpperCase()==='C'){
+        }else if(props.path.absType==='C'){
             currentPath.setAttributeNS(null, 'd', `M50,100c${props.firstCtrl.x},${props.firstCtrl.y} ${props.secondCtrl.x},${props.secondCtrl.y} ${props.endPoint.x},${props.endPoint.y}`)
-        }else if(props.path.type.toUpperCase()==='L'){
+        }else if(props.path.absType==='L'){
             currentPath.setAttributeNS(null, 'd', `M50,100l${props.endPoint.x},${props.endPoint.y}`)
-        }else if(props.path.type.toUpperCase()==='V'){
+        }else if(props.path.absType==='V'){
             currentPath.setAttributeNS(null, 'd', `M50,100v${props.endPoint.y}`)
-        }else if(props.path.type.toUpperCase()==='H'){
+        }else if(props.path.absType==='H'){
             currentPath.setAttributeNS(null, 'd', `M50,100h${props.endPoint.x}`)
         }
         grid.appendChild(currentPath)
@@ -115,7 +114,7 @@ const GridWithDrag = (props) => {
     }, [])
 
 
-    if(props.command.toUpperCase()==='Q'){
+    if(props.path.absType==='Q'){
         const title1 = `Control Point: ${props.firstCtrl.x},${props.firstCtrl.y}`
         const title2 = `End Point: ${props.endPoint.x},${props.endPoint.y}`
         return(
@@ -138,12 +137,12 @@ const GridWithDrag = (props) => {
                 </View>
             </View>
         )
-    }else if(props.command.toUpperCase()==='L'){
+    }else if(props.path.absType==='L'){
         const title = `End Point: ${props.endPoint.x},${props.endPoint.y}`
         return(
             <View style={styles(props).container}>
                 <Grid id='createGrid' size={props.size} viewBox={viewbox} onMouseMove={(evt) => drag(evt)} onMouseLeave={endDrag} >
-                    <circle className="draggable" cx={props.endPoint.x+50} cy={props.endPoint.y+100} onMouseDown={(evt) => startDrag(evt)}  onMouseUp={endDrag} style={styles(props).end} fill={props.endCol} fillOpacity={props.endOpacity} r={props.endSize} >
+                    <circle className="draggable" id="endPoint" cx={props.endPoint.x+50} cy={props.endPoint.y+100} onMouseDown={(evt) => startDrag(evt)}  onMouseUp={endDrag} style={styles(props).end} fill={props.endCol} fillOpacity={props.endOpacity} r={props.endSize} >
                         <title>
                             {title}
                         </title>
@@ -155,12 +154,12 @@ const GridWithDrag = (props) => {
                 </View>
             </View>
         )
-    }else if(props.command.toUpperCase()==='V'){
+    }else if(props.path.absType==='V'){
         const title = `End Point: ${props.endPoint.x},${props.endPoint.y}`
         return(
             <View style={styles(props).container}>
                 <Grid id='createGrid' size={props.size} viewBox={viewbox} onMouseMove={(evt) => drag(evt)} onMouseLeave={endDrag} >
-                    <circle className="draggable" cx="50" cy={props.endPoint.y+100} onMouseDown={(evt) => startDrag(evt)}  onMouseUp={endDrag} style={styles(props).end} fill={props.endCol} fillOpacity={props.endOpacity} r={props.endSize} >
+                    <circle className="draggable" id="endPoint" cx="50" cy={props.endPoint.y+100} onMouseDown={(evt) => startDrag(evt)}  onMouseUp={endDrag} style={styles(props).end} fill={props.endCol} fillOpacity={props.endOpacity} r={props.endSize} >
                         <title>
                             {title}
                         </title>
@@ -172,12 +171,12 @@ const GridWithDrag = (props) => {
                 </View>
             </View>
         )
-    }else if(props.command.toUpperCase()==='H'){
+    }else if(props.path.absType==='H'){
         const title = `End Point: ${props.endPoint.x},100`
         return(
             <View style={styles(props).container}>
                 <Grid id='createGrid' size={props.size} viewBox={viewbox} onMouseMove={(evt) => drag(evt)} onMouseLeave={endDrag} >
-                    <circle className="draggable" cx={props.endPoint.x+50} cy="100" onMouseDown={(evt) => startDrag(evt)}  onMouseUp={endDrag} style={styles(props).end} fill={props.endCol} fillOpacity={props.endOpacity} r={props.endSize} >
+                    <circle className="draggable" id="endPoint" cx={props.endPoint.x+50} cy="100" onMouseDown={(evt) => startDrag(evt)}  onMouseUp={endDrag} style={styles(props).end} fill={props.endCol} fillOpacity={props.endOpacity} r={props.endSize} >
                         <title>
                             {title}
                         </title>
@@ -189,7 +188,7 @@ const GridWithDrag = (props) => {
                 </View>
             </View>
         )
-    }else if(props.command.toUpperCase()==='C'){
+    }else if(props.path.absType==='C'){
         const title1 = `First Control Point: ${props.firstCtrl.x},${props.firstCtrl.y}`
         const title2 = `Second Control Point: ${props.secondCtrl.x},${props.secondCtrl.y}`
         const title3 = `End Point: ${props.endPoint.x},${props.endPoint.y}`
@@ -239,14 +238,8 @@ const styles = (props) => StyleSheet.create({
       cursor: "move",
       zIndex: 999
     },
-    start: {
-        fill: '#159c06',
-        opacity: 0.7
-    },
     end: {
-        fill: '#f00',
         cursor: "move",
-        opacity: 0.7,
         zIndex:999
     }
 })      
