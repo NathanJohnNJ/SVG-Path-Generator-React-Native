@@ -1,7 +1,41 @@
+To Do:
+ - Add A command
+  - Add S and C commands
+  - Add links to help pages > make a component that takes an argument of type, can be placed on the main page for general docs and then each commands page to link to their respective sections in the docs.
+  - Finish functionality of edit modal
+  - Add functionality to change command component
+  - Add branding and link to njtd.xyz
+  - Add opening animation 
+  - Record video introducing and demonstrating the appendChild
+  - Command underneath path to show both relative and absolute
+  - Add output options
+  - Different default options for each command
+  - Add limits so that path cannot go outside grid, and make the default points more user friendly when at certain positions on the grid. (i.e. when on the right hand side, have the path start on the right and come to the left)
+
+
 Each section of path needs:
   - starting point (q/c/s/t/a/l/v/h) - always absolute - always the same as the previous sections end point
   - end point (q/c/s/t/a/l/v/h) - absolute/relative
   - first control (q/c/) - absolute/relative
   - second control (c/t) - absolute/relative
   
-Need to make table fields editable so path can be updated by typing as well as click and drag
+Possible Extra's:
+  - Make table fields editable so path can be updated by typing as well as click and drag
+  - Add a switch to add control points to main screen so the whole path can be edited together
+  - Make mobile version
+  - Movable grid for larger svgs
+
+
+Done:
+  - Create individual panels for components
+  - Create tables to display the points information
+  - Add Q command
+  - Add C command
+  - Add L, V, H commands
+  - Add configurable styles for:
+    - path {colour, width, opacity, highlight colour}
+    - fill {colour, opacity}
+    - control and end points for tables and gridWithDrag
+  - Add hover effects for control points and path
+  - Finish alligning C, Q, L commands to all worth responsively with gridWithDrag and Tables
+  

@@ -3,6 +3,9 @@ import { ScrollView } from 'react-native-gesture-handler';
 import React, { useState } from 'react';
 import WebMain from './components/main';
 import * as Font from 'expo-font';
+import { inject } from '@vercel/analytics';
+ 
+inject();
 
 export default function App() {
   const [strokeWidth, setStrokeWidth] = useState(3);
@@ -41,6 +44,7 @@ export default function App() {
           <WebMain stroke={stroke} setStroke={setStroke} strokeWidth={strokeWidth} setStrokeWidth={setStrokeWidth} strokeOpacity={strokeOpacity} setStrokeOpacity={setStrokeOpacity} fill={fill} setFill={setFill} fillOpacity={fillOpacity} setFillOpacity={setFillOpacity} controlCol={controlCol} setControlCol={setControlCol} ctrlOpacity={ctrlOpacity} setCtrlOpacity={setCtrlOpacity} controlSize={controlSize} setControlSize={setControlSize} endCol={endCol} setEndCol={setEndCol} endOpacity={endOpacity} setEndOpacity={setEndOpacity} endSize={endSize} setEndSize={setEndSize} highlight={highlight} setHighlight={setHighlight} />
         </SafeAreaView>
       </ScrollView>
+      
     );
 }
 

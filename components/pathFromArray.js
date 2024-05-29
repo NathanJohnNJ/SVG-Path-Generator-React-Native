@@ -2,7 +2,7 @@ import { Path, G } from "react-native-svg";
 
 const PathFromArray = (props) => {
     const hoverWidth = props.strokeWidth*2;
-    const hoverColour = '#00eeff';
+    const hoverColour = props.highlight;
 
     function hoverFunc(id){
         const i = document.getElementById(id)

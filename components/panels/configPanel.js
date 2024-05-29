@@ -13,6 +13,30 @@ const ConfigPanel = (props) => {
     const [showControl, setShowControl] = useState(false);
     const [showEndPoints, setShowEndPoints] = useState(false);
 
+    function openEndPoints(){
+        setShowStroke(false);
+        setShowFill(false);
+        setShowControl(false);
+        setShowEndPoints(true);
+    }
+    function openControl(){
+        setShowStroke(false);
+        setShowFill(false);
+        setShowControl(true);
+        setShowEndPoints(false);
+    }
+    function openFill(){
+        setShowStroke(false);
+        setShowFill(true);
+        setShowControl(false);
+        setShowEndPoints(false);
+    }
+    function openStroke(){
+        setShowStroke(true);
+        setShowFill(false);
+        setShowControl(false);
+        setShowEndPoints(false);
+    }
     function hoverFunc(i){
         const newHover = { ...hover, [i]: true}
         setHover(newHover)
@@ -145,70 +169,70 @@ const ConfigPanel = (props) => {
     
 
     return(
-        <View style={styles.configPanel}>
-                <Text style={styles.title}>
+        <View style={styles(props).configPanel}>
+                <Text style={styles(props).title}>
                     Styles
                 </Text>
             {/* ******** FIRST ROW ******** */}
-            <View style={styles.bottom}>
+            <View style={styles(props).bottom}>
 
                 {/****** STROKE SECTION ******/}
-                <View style={styles.strokeSection}>
+                <View style={styles(props).strokeSection}>
 
-                    <FieldSet label="Stroke" labelColor={props.stroke} labelStyle={styles.sectionTitle} mainStyle={styles.fieldSet}>
+                    <FieldSet label="Stroke" labelColor={props.stroke} labelStyle={styles(props).sectionTitle} mainStyle={styles(props).fieldSet}>
                     {
                     showStroke
                     ?
                     <View>
-                        <View style={styles.attSection}>
-                            <Text style={styles.attribute}>
+                        <View style={styles(props).attSection}>
+                            <Text style={styles(props).attribute}>
                                 Colour:
                             </Text>
-                            <Pressable style={[styles.color, {backgroundColor:props.stroke}]} onPress={() => openModal('Stroke')}></Pressable>
+                            <Pressable style={[styles(props).color, {backgroundColor:props.stroke}]} onPress={() => openModal('Stroke')}></Pressable>
                         </View>
-                        <View style={styles.attSection}>
-                            <Text style={styles.attribute}>
+                        <View style={styles(props).attSection}>
+                            <Text style={styles(props).attribute}>
                                 Highlight Colour:
                             </Text>
-                            <Pressable style={[styles.color, {backgroundColor:props.highlight}]} onPress={() => openModal('Highlight')}></Pressable>
+                            <Pressable style={[styles(props).color, {backgroundColor:props.highlight}]} onPress={() => openModal('Highlight')}></Pressable>
                         </View>
-                        <View style={styles.attSection}>
-                            <Text style={styles.attribute}>
+                        <View style={styles(props).attSection}>
+                            <Text style={styles(props).attribute}>
                                 Width: 
                             </Text>
                             <TextInput
                             onChangeText={props.setStrokeWidth}
                             value={String(props.strokeWidth)}
                             inputMode="numeric"
-                            style={styles.textInput} />
+                            style={styles(props).textInput} />
                         </View>
-                        <View style={styles.attSection}>
-                            <Text style={styles.attribute}>
+                        <View style={styles(props).attSection}>
+                            <Text style={styles(props).attribute}>
                                 Opacity: 
                             </Text>
-                            <Pressable style={styles.upDown} onPress={down}>
+                            <Pressable style={styles(props).upDown} onPress={down}>
                                 <Image
-                                style={styles.icon}
+                                style={styles(props).icon}
                                 source={require('../images/down.svg')} />
                             </Pressable>
-                            <Text style={styles.opacity}>{Math.round( ( props.strokeOpacity + Number.EPSILON ) * 100 ) / 100}</Text>
-                            <Pressable style={styles.upDown} onPress={up}>
+                            <Text style={styles(props).opacity}>{Math.round( ( props.strokeOpacity + Number.EPSILON ) * 100 ) / 100}</Text>
+                            <Pressable style={styles(props).upDown} onPress={up}>
                                 <Image
-                                style={styles.icon}
+                                style={styles(props).icon}
                                 source={require('../images/up.svg')} />
                             </Pressable>
                         </View>
-                        <Pressable style={styles.upDown} onPress={() => setShowStroke(showStroke => !showStroke)}>
+                        <Pressable style={styles(props).upDown} onPress={() => setShowStroke(showStroke => !showStroke)}>
                             <Image
-                            style={styles.icon}
+                            style={styles(props).icon}
                             source={require('../images/up.svg')} />
                         </Pressable>
                     </View>
                     :
                     <View>
-                        <Pressable style={styles.upDown} onPress={() => setShowStroke(showStroke => !showStroke)}>
+                        <Pressable style={styles(props).upDown} onPress={openStroke}>
                             <Image
-                            style={styles.icon}
+                            style={styles(props).icon}
                             source={require('../images/down.svg')} />
                         </Pressable>
                     </View>
@@ -216,49 +240,52 @@ const ConfigPanel = (props) => {
                     </FieldSet>
                 </View>
                     {/****** END OF STROKE SECTION ******/}
-
+                    </View>
+                    
+                    {/****** END OF FIRST ROW START OF SECOND ******/}
+                    <View style={styles(props).bottom}>
                 {/****** FILL SECTION ******/}
-                <View style={styles.strokeSection}>
-                    <FieldSet label="Fill" labelColor={props.fill} labelStyle={styles.sectionTitle} mainStyle={styles.fieldSet}>
+                <View style={styles(props).strokeSection}>
+                    <FieldSet label="Fill" labelColor={props.fill} labelStyle={styles(props).sectionTitle} mainStyle={styles(props).fieldSet}>
                     {
                         showFill
                         ?
                         <View>
-                        <View style={styles.attSection}>
-                        <Text style={styles.attribute}>
+                        <View style={styles(props).attSection}>
+                        <Text style={styles(props).attribute}>
                             Colour:
                         </Text>
-                        <Pressable style={[styles.color, {backgroundColor:props.fill}]} onPress={() => openModal('Fill')}></Pressable>
+                        <Pressable style={[styles(props).color, {backgroundColor:props.fill}]} onPress={() => openModal('Fill')}></Pressable>
                     </View>
-                    <View style={styles.attSection}>
-                        <Text style={styles.attribute}>
+                    <View style={styles(props).attSection}>
+                        <Text style={styles(props).attribute}>
                             Opacity: 
                         </Text>
-                        <Pressable style={styles.upDown} onPress={downFill}>
+                        <Pressable style={styles(props).upDown} onPress={downFill}>
                             <Image
-                            style={styles.icon}
+                            style={styles(props).icon}
                             source={require('../images/down.svg')} />
                         </Pressable>
-                        <Text style={styles.opacity}>{Math.round( ( props.fillOpacity + Number.EPSILON ) * 100 ) / 100}</Text>
-                        <Pressable style={styles.upDown} onPress={upFill}>
+                        <Text style={styles(props).opacity}>{Math.round( ( props.fillOpacity + Number.EPSILON ) * 100 ) / 100}</Text>
+                        <Pressable style={styles(props).upDown} onPress={upFill}>
                             <Image
-                            style={styles.icon}
+                            style={styles(props).icon}
                             source={require('../images/up.svg')} />
                         </Pressable>
                     </View>
                     <View>
-                        <Pressable style={styles.upDown} onPress={() => setShowFill(showFill => !showFill)}>
+                        <Pressable style={styles(props).upDown} onPress={() => setShowFill(showFill => !showFill)}>
                             <Image
-                            style={styles.icon}
+                            style={styles(props).icon}
                             source={require('../images/up.svg')} />
                         </Pressable>
                     </View>
                     </View>
                     :
                     <View>
-                        <Pressable style={styles.upDown} onPress={() => setShowFill(showFill => !showFill)}>
+                        <Pressable style={styles(props).upDown} onPress={openFill}>
                             <Image
-                            style={styles.icon}
+                            style={styles(props).icon}
                             source={require('../images/down.svg')} />
                         </Pressable>
                     </View>
@@ -267,67 +294,66 @@ const ConfigPanel = (props) => {
                 </View>
                 {/****** END OF FILL SECTION ******/}
             </View>
-            {/****** END OF FIRST ROW ******/}
+            {/****** END OF SECOND ROW START OF THIRD ******/}
 
-            {/****** SECOND ROW ******/}
-            <View style={styles.bottom}>
+            <View style={styles(props).bottom}>
 
                 {/****** CONTROL SECTION ******/}
-            <View style={styles.strokeSection}>
-                    <FieldSet label="Control Points" labelColor={props.stroke} labelStyle={styles.sectionTitle} mainStyle={styles.fieldSet}>
+            <View style={styles(props).strokeSection}>
+                    <FieldSet label="Control Points" labelColor={props.stroke} labelStyle={styles(props).sectionTitle} mainStyle={styles(props).fieldSet}>
                     {
                     showControl
                     ?
                     <View>
-                        <View style={styles.attSection}>
-                            <Text style={styles.attribute}>
+                        <View style={styles(props).attSection}>
+                            <Text style={styles(props).attribute}>
                                 Colour:
                             </Text>
-                            <Pressable style={[styles.color, {backgroundColor:props.controlCol}]} onPress={() => openModal('Control Points')}></Pressable>
+                            <Pressable style={[styles(props).color, {backgroundColor:props.controlCol}]} onPress={() => openModal('Control Points')}></Pressable>
                         </View>
-                        <View style={styles.attSection}>
-                            <Text style={styles.attribute}>
+                        <View style={styles(props).attSection}>
+                            <Text style={styles(props).attribute}>
                                 Opacity: 
                             </Text>
-                            <Pressable style={styles.upDown} onPress={downCtrlOpacity}>
+                            <Pressable style={styles(props).upDown} onPress={downCtrlOpacity}>
                                 <Image
-                                style={styles.icon}
+                                style={styles(props).icon}
                                 source={require('../images/down.svg')} />
                             </Pressable>
-                            <Text style={styles.opacity}>{Math.round( ( props.ctrlOpacity + Number.EPSILON ) * 100 ) / 100}</Text>
-                            <Pressable style={styles.upDown} onPress={upCtrlOpacity}>
+                            <Text style={styles(props).opacity}>{Math.round( ( props.ctrlOpacity + Number.EPSILON ) * 100 ) / 100}</Text>
+                            <Pressable style={styles(props).upDown} onPress={upCtrlOpacity}>
                                 <Image
-                                style={styles.icon}
+                                style={styles(props).icon}
                                 source={require('../images/up.svg')} />
                             </Pressable>
                         </View>
-                        <View style={styles.attSection}>
-                            <Text style={styles.attribute}>
+                        <View style={styles(props).attSection}>
+                            <Text style={styles(props).attribute}>
                                 Size: 
                             </Text>
-                            <Pressable style={styles.upDown} onPress={downSize}>
+                            <Pressable style={styles(props).upDown} onPress={downSize}>
                                 <Image
-                                style={styles.icon}
+                                style={styles(props).icon}
                                 source={require('../images/down.svg')} />
                             </Pressable>
-                            <Text style={styles.opacity}>{Math.round( ( props.controlSize + Number.EPSILON ) * 100 ) / 100}</Text>
-                            <Pressable style={styles.upDown} onPress={upSize}>
+                            <Text style={styles(props).opacity}>{Math.round( ( props.controlSize + Number.EPSILON ) * 100 ) / 100}</Text>
+                            <Pressable style={styles(props).upDown} onPress={upSize}>
                                 <Image
-                                style={styles.icon}
+                                style={styles(props).icon}
                                 source={require('../images/up.svg')} />
                             </Pressable>
                         </View>
-                        <Pressable style={styles.upDown} onPress={() => setShowControl(showControl => !showControl)}>
+                        <Pressable style={styles(props).upDown} onPress={() => setShowControl(showControl => !showControl)}>
                             <Image
-                            style={styles.icon}
+                            style={styles(props).icon}
                             source={require('../images/up.svg')} />
                         </Pressable>
                     </View>
                     :
                     <View>
-                        <Pressable style={styles.upDown} onPress={() => setShowControl(showControl => !showControl)}>
+                        <Pressable style={styles(props).upDown} onPress={openControl}>
                             <Image
-                            style={styles.icon}
+                            style={styles(props).icon}
                             source={require('../images/down.svg')} />
                         </Pressable>
                     </View>
@@ -336,67 +362,70 @@ const ConfigPanel = (props) => {
                 </View>
                 {/****** END OF CONTROL SECTION ******/}
                     </View>
-                    <View style={styles.bottom}>
+
+
+                    {/****** END OF THIRD ROW START OF FOURTH ******/}
+                    <View style={styles(props).bottom}>
                 {/****** END POINT SECTION ******/}
-                <View style={styles.strokeSection}>
-                    <FieldSet label="End Points" labelColor={props.endPointCol} labelStyle={styles.sectionTitle} mainStyle={styles.fieldSet}>
+                <View style={styles(props).strokeSection}>
+                    <FieldSet label="End Points" labelColor={props.endPointCol} labelStyle={styles(props).sectionTitle} mainStyle={styles(props).fieldSet}>
                     {
                         showEndPoints
                         ?
                         <View>
-                        <View style={styles.attSection}>
-                        <Text style={styles.attribute}>
+                        <View style={styles(props).attSection}>
+                        <Text style={styles(props).attribute}>
                             Colour:
                         </Text>
-                        <Pressable style={[styles.color, {backgroundColor:props.endPointCol}]} onPress={() => openModal('End Points')}></Pressable>
+                        <Pressable style={[styles(props).color, {backgroundColor:props.endCol}]} onPress={() => openModal('End Points')}></Pressable>
                     </View>
-                    <View style={styles.attSection}>
-                        <Text style={styles.attribute}>
+                    <View style={styles(props).attSection}>
+                        <Text style={styles(props).attribute}>
                             Opacity: 
                         </Text>
-                        <Pressable style={styles.upDown} onPress={downEndOpacity}>
+                        <Pressable style={styles(props).upDown} onPress={downEndOpacity}>
                             <Image
-                            style={styles.icon}
+                            style={styles(props).icon}
                             source={require('../images/down.svg')} />
                         </Pressable>
-                        <Text style={styles.opacity}>{Math.round( ( props.endOpacity + Number.EPSILON ) * 100 ) / 100}</Text>
-                        <Pressable style={styles.upDown} onPress={upEndOpacity}>
+                        <Text style={styles(props).opacity}>{Math.round( ( props.endOpacity + Number.EPSILON ) * 100 ) / 100}</Text>
+                        <Pressable style={styles(props).upDown} onPress={upEndOpacity}>
                             <Image
-                            style={styles.icon}
+                            style={styles(props).icon}
                             source={require('../images/up.svg')} />
                         </Pressable>
                     </View>
-                    <View style={styles.attSection}>
-                        <Text style={styles.attribute}>
+                    <View style={styles(props).attSection}>
+                        <Text style={styles(props).attribute}>
                             Size: 
                         </Text>
-                        <Pressable style={styles.upDown} onPress={downEnd}>
+                        <Pressable style={styles(props).upDown} onPress={downEnd}>
                             <Image
-                            style={styles.icon}
+                            style={styles(props).icon}
                             source={require('../images/down.svg')} />
                         </Pressable>
-                        <Text style={styles.opacity}>{Math.round( ( props.endSize + Number.EPSILON ) * 100 ) / 100}</Text>
-                        <Pressable style={styles.upDown} onPress={upEnd}>
+                        <Text style={styles(props).opacity}>{Math.round( ( props.endSize + Number.EPSILON ) * 100 ) / 100}</Text>
+                        <Pressable style={styles(props).upDown} onPress={upEnd}>
                             <Image
-                            style={styles.icon}
+                            style={styles(props).icon}
                             source={require('../images/up.svg')} />
                         </Pressable>
                     </View>
 
 
                     <View>
-                        <Pressable style={styles.upDown} onPress={() => setShowEndPoints(showEndPoints => !showEndPoints)}>
+                        <Pressable style={styles(props).upDown} onPress={() => setShowEndPoints(showEndPoints => !showEndPoints)}>
                             <Image
-                            style={styles.icon}
+                            style={styles(props).icon}
                             source={require('../images/up.svg')} />
                         </Pressable>
                     </View>
                     </View>
                     :
                     <View>
-                        <Pressable style={styles.upDown} onPress={() => setShowEndPoints(showEndPoints => !showEndPoints)}>
+                        <Pressable style={styles(props).upDown} onPress={openEndPoints}>
                             <Image
-                            style={styles.icon}
+                            style={styles(props).icon}
                             source={require('../images/down.svg')} />
                         </Pressable>
                     </View>
@@ -412,13 +441,13 @@ const ConfigPanel = (props) => {
             visible={modalIsOpen}
             onRequestClose={closeModal}
             >
-                <View style={styles.colorModal}>
-                    <View style={styles.titleSection}>
-                        <Text style={styles.modalTitle}>
+                <View style={styles(props).colorModal}>
+                    <View style={styles(props).titleSection}>
+                        <Text style={styles(props).modalTitle}>
                             Colour Picker - {modalTitle}
                         </Text>
-                        <Pressable style={hover.x?styles.closeHover:styles.close} onPress={closeModal} onMouseOver={() => hoverFunc('x')} onMouseLeave={resetHover}>
-                            <Text style={hover.x?styles.closeTextHover:styles.closeText}>
+                        <Pressable style={hover.x?styles(props).closeHover:styles(props).close} onPress={closeModal} onMouseOver={() => hoverFunc('x')} onMouseLeave={resetHover}>
+                            <Text style={hover.x?styles(props).closeTextHover:styles(props).closeText}>
                                 X
                             </Text>
                         </Pressable>
@@ -440,7 +469,7 @@ const ConfigPanel = (props) => {
 
 export default ConfigPanel;
 
-const styles = StyleSheet.create({
+const styles = (props) => StyleSheet.create({
     icon: {
         width: 20,
         height: 20,
@@ -466,9 +495,9 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         padding: 30,
         boxShadow: '-2px 2px 8px #9c9c9c',
-        margin: 10,    
-        height: 400,
-        width: 250                                           
+        margin: 8,    
+        height: 460,
+        width: 200                                           
     },
     titleSection: {
         display: 'flex',
@@ -476,8 +505,9 @@ const styles = StyleSheet.create({
     },
     title: {
         fontFamily: 'Quicksand-Bold',
-        fontSize: 20,
-        marginBottom: 15
+        fontSize: 18.5,
+        marginBottom: 15,
+        marginTop: -20
     },
     bottom: {
         display: 'flex',
@@ -501,11 +531,11 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        margin: 10
+        margin: 5
     },
     sectionTitle: {
         fontFamily: 'Quicksand-Bold',
-        fontSize: 17,
+        fontSize: 15,
         textAlign: 'center',
         backgroundColor: 'rgba(255, 255, 255, 0.9)',
         borderRadius: 6,
@@ -535,7 +565,13 @@ const styles = StyleSheet.create({
     },
     textInput:{
         width: 30,
-        marginLeft: 10
+        marginLeft: 10,
+        backgroundColor: '#fff',
+        fontFamily: 'Quicksand-Light',
+        fontSize: 16,
+        borderRadius: 6,
+        textAlign: 'center',
+        marginBottom: 5
     },
     close: {
       display:'flex',

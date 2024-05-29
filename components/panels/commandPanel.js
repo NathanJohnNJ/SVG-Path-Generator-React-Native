@@ -1,19 +1,25 @@
-import { StyleSheet, View, Pressable, Text } from 'react-native';
+import { StyleSheet, View, Text } from 'react-native';
 import Q from '../commands/q';
 import C from '../commands/c';
 import L from '../commands/l';
+import H from '../commands/h';
+import V from '../commands/v';
 
 const CommandPanel = (props) => {
 
     return(
-        <View style={styles.commandPanel}>
-                <Text style={styles.title}>
+        <View style={styles(props).commandPanel}>
+                <Text style={styles(props).title}>
                     Commands
                 </Text>
-            <View style={styles.bottom}>
+            <View style={styles(props).top}>
                 <C relative={props.relative} path={props.path} setPath={props.setPath} pathID={props.pathID} setPathID={props.setPathID} stroke={props.stroke} strokeWidth={props.strokeWidth} strokeOpacity={props.strokeOpacity} fill={props.fill} fillOpacity={props.fillOpacity} info={props.info} setInfo={props.setInfo} endPoint={props.endPoint} setEndPoint={props.setEndPoint} firstCtrl={props.firstCtrl} setFirstCtrl={props.setFirstCtrl} secondCtrl={props.secondCtrl} setSecondCtrl={props.setSecondCtrl} controlCol={props.controlCol} ctrlOpacity={props.ctrlOpacity} controlSize={props.controlSize} endCol={props.endCol} endOpacity={props.endOpacity}  endSize={props.endSize} highlight={props.highlight} />
-                <L relative={props.relative} path={props.path} setPath={props.setPath} pathID={props.pathID} setPathID={props.setPathID} stroke={props.stroke} strokeWidth={props.strokeWidth} strokeOpacity={props.strokeOpacity} fill={props.fill} fillOpacity={props.fillOpacity} info={props.info} setInfo={props.setInfo} endPoint={props.endPoint} setEndPoint={props.setEndPoint} controlCol={props.controlCol} ctrlOpacity={props.ctrlOpacity} controlSize={props.controlSize} endCol={props.endCol} endOpacity={props.endOpacity}  endSize={props.endSize} highlight={props.highlight} />
                 <Q relative={props.relative} path={props.path} setPath={props.setPath} pathID={props.pathID} setPathID={props.setPathID} stroke={props.stroke} strokeWidth={props.strokeWidth} strokeOpacity={props.strokeOpacity} fill={props.fill} fillOpacity={props.fillOpacity} info={props.info} setInfo={props.setInfo} endPoint={props.endPoint} setEndPoint={props.setEndPoint} firstCtrl={props.firstCtrl} setFirstCtrl={props.setFirstCtrl} controlCol={props.controlCol} ctrlOpacity={props.ctrlOpacity} controlSize={props.controlSize} endCol={props.endCol} endOpacity={props.endOpacity}  endSize={props.endSize} highlight={props.highlight}  />
+            </View>
+            <View style={styles(props).bottom}>
+                <H relative={props.relative} path={props.path} setPath={props.setPath} pathID={props.pathID} setPathID={props.setPathID} stroke={props.stroke} strokeWidth={props.strokeWidth} strokeOpacity={props.strokeOpacity} fill={props.fill} fillOpacity={props.fillOpacity} info={props.info} setInfo={props.setInfo} endPoint={props.endPoint} setEndPoint={props.setEndPoint} firstCtrl={props.firstCtrl} setFirstCtrl={props.setFirstCtrl} secondCtrl={props.secondCtrl} setSecondCtrl={props.setSecondCtrl} controlCol={props.controlCol} ctrlOpacity={props.ctrlOpacity} controlSize={props.controlSize} endCol={props.endCol} endOpacity={props.endOpacity}  endSize={props.endSize} highlight={props.highlight} />
+                <L relative={props.relative} path={props.path} setPath={props.setPath} pathID={props.pathID} setPathID={props.setPathID} stroke={props.stroke} strokeWidth={props.strokeWidth} strokeOpacity={props.strokeOpacity} fill={props.fill} fillOpacity={props.fillOpacity} info={props.info} setInfo={props.setInfo} endPoint={props.endPoint} setEndPoint={props.setEndPoint} controlCol={props.controlCol} ctrlOpacity={props.ctrlOpacity} controlSize={props.controlSize} endCol={props.endCol} endOpacity={props.endOpacity}  endSize={props.endSize} highlight={props.highlight} />
+                <V relative={props.relative} path={props.path} setPath={props.setPath} pathID={props.pathID} setPathID={props.setPathID} stroke={props.stroke} strokeWidth={props.strokeWidth} strokeOpacity={props.strokeOpacity} fill={props.fill} fillOpacity={props.fillOpacity} info={props.info} setInfo={props.setInfo} endPoint={props.endPoint} setEndPoint={props.setEndPoint} firstCtrl={props.firstCtrl} setFirstCtrl={props.setFirstCtrl} controlCol={props.controlCol} ctrlOpacity={props.ctrlOpacity} controlSize={props.controlSize} endCol={props.endCol} endOpacity={props.endOpacity}  endSize={props.endSize} highlight={props.highlight}  />
             </View>
         </View>
     )
@@ -21,7 +27,7 @@ const CommandPanel = (props) => {
 
 export default CommandPanel;
 
-const styles = StyleSheet.create({
+const styles = (props) => StyleSheet.create({
     commandPanel:{
         backgroundColor: '#ccc',
         borderColor: '#ecd',
@@ -32,9 +38,9 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         padding: 30,
         boxShadow: '-2px 2px 8px #9c9c9c',
-        margin: 10,    
-        height: 150,
-        width: 250                                           
+        margin: 8,    
+        height: 100,
+        width: 200                                           
     },
     titleSection: {
         display: 'flex',
@@ -43,11 +49,18 @@ const styles = StyleSheet.create({
     title: {
         fontFamily: 'Quicksand-Bold',
         fontSize: 20,
-        marginBottom: 15
+        marginBottom: 15,
+        marginTop: -20
+    },
+    top: {
+        display: 'flex',
+        flexDirection: 'row',
+        marginTop: -20
     },
     bottom: {
         display: 'flex',
-        flexDirection: 'row'
+        flexDirection: 'row',
+        marginTop: -5
     },
     button: {
         display:'flex',

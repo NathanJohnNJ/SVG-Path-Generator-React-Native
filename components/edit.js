@@ -38,8 +38,8 @@ const Edit = (props) => {
     }
 
     return(
-        <View style={styles.outerContainer}>
-            <Text onClick={openModal} onMouseOver={() => hoverFunc('edit')} onMouseLeave={resetHover} style={hover.edit?styles.hover:styles.button}>
+        <View style={styles(props).outerContainer}>
+            <Text onClick={openModal} onMouseOver={() => hoverFunc('edit')} onMouseLeave={resetHover} style={hover.edit?styles(props).hover:styles(props).button}>
                 Edit
             </Text>
             <Modal
@@ -48,55 +48,55 @@ const Edit = (props) => {
             visible={modalIsOpen}
             onRequestClose={closeModal}
             >
-                <View style={styles.titleSection}>
-                    <Text style={styles.title}>
+                <View style={styles(props).titleSection}>
+                    <Text style={styles(props).title}>
                         Edit
                     </Text>
-                    <Pressable style={hover.x?styles.closeHover:styles.close} onPress={closeModal} onMouseOver={() => hoverFunc('x')} onMouseLeave={resetHover}>
-                        <Text style={hover.x?styles.closeTextHover:styles.closeText}>
+                    <Pressable style={hover.x?styles(props).closeHover:styles(props).close} onPress={closeModal} onMouseOver={() => hoverFunc('x')} onMouseLeave={resetHover}>
+                        <Text style={hover.x?styles(props).closeTextHover:styles(props).closeText}>
                             X
                         </Text>
                     </Pressable>
                 </View>
 
-                <View style={styles.bottom}>
+                <View style={styles(props).bottom}>
                 
-                    <View style={styles.commandSection}>
-                        <Text style={styles.title}>
+                    <View style={styles(props).commandSection}>
+                        <Text style={styles(props).title}>
                             Command: {props.info.type}
                         </Text>
                         <Change relative={props.relative} path={props.path} setPath={props.setPath} pathID={props.pathID} setPathID={props.setPathID} startPoints={props.startPoints} setStartPoints={props.setStartPoints} stroke={props.stroke} strokeWidth={props.strokeWidth} strokeOpacity={props.strokeOpacity} fill={props.fill} fillOpacity={props.fillOpacity} iinfo={props.info} setInfo={props.setInfo} endPoint={props.endPoint} setEndPoint={props.setEndPoint} firstCtrl={props.firstCtrl} setFirstCtrl={props.setFirstCtrl} secondCtrl={props.secondCtrl} setSecondCtrl={props.setSecondCtrl} />
                     </View>
-                    <View style={styles.gridAndTables}>
-                        <View style={styles.gridSection}>
+                    <View style={styles(props).gridAndTables}>
+                        <View style={styles(props).gridSection}>
                             <GridWithDrag size="350" command={props.info.type} path={props.info} setPath={props.setPath} relative={props.relative} firstCtrl={props.firstCtrl} setFirstCtrl={props.setFirstCtrl} secondCtrl={props.secondCtrl} setSecondCtrl={props.setSecondCtrl} endPoint={props.endPoint} setEndPoint={props.setEndPoint} strokeWidth={props.strokeWidth} stroke={props.stroke} fill={props.fill} fillOpacity={props.fillOpacity} strokeOpacity={props.strokeOpacity} startPoints={props.startPoints}/>
                         </View>
                     
-                        <View style={styles.tableSection}>
-                        <FieldSet label="Control Points" labelColor="#00f" labelStyle={styles.label} mainStyle={styles.fieldSet}>
-                            <table style={styles.table}>
-                                <tbody style={styles.tbody}>
-                                    <tr style={styles.tr}>
-                                        <th style={styles.th}>dx1</th>
-                                        <th style={styles.th}>dy1</th>
+                        <View style={styles(props).tableSection}>
+                        <FieldSet label="Control Points" labelColor="#00f" labelStyle={styles(props).label} mainStyle={styles(props).fieldSet}>
+                            <table style={styles(props).table}>
+                                <tbody style={styles(props).tbody}>
+                                    <tr style={styles(props).tr}>
+                                        <th style={styles(props).th}>dx1</th>
+                                        <th style={styles(props).th}>dy1</th>
                                         {(props.info.type.toUpperCase()==="C")
                                         ?
                                         <>
-                                            <th style={styles.th}>dx2</th>
-                                            <th style={styles.th}>dy2</th>
+                                            <th style={styles(props).th}>dx2</th>
+                                            <th style={styles(props).th}>dy2</th>
                                         </>
                                         :
                                         <></>
                                         }
                                     </tr>
-                                    <tr style={styles.tr}>
-                                        <td style={styles.td}>{props.firstCtrl.x}</td>
-                                        <td style={styles.td}>{props.firstCtrl.y}</td>
+                                    <tr style={styles(props).tr}>
+                                        <td style={styles(props).td}>{props.firstCtrl.x}</td>
+                                        <td style={styles(props).td}>{props.firstCtrl.y}</td>
                                         {(props.info.type.toUpperCase()==="C")
                                         ?
                                         <>
-                                            <td style={styles.td}>{props.secondCtrl.x}</td>
-                                            <td style={styles.td}>{props.secondCtrl.y}</td>
+                                            <td style={styles(props).td}>{props.secondCtrl.x}</td>
+                                            <td style={styles(props).td}>{props.secondCtrl.y}</td>
                                         </>
                                         :
                                         <></>
@@ -107,26 +107,26 @@ const Edit = (props) => {
                         </FieldSet>
                     </View>
                         
-                    <View style={styles.tableSection}>
-                        <FieldSet label="End Point" labelColor="#f00" labelStyle={styles.label} mainStyle={styles.fieldSet}>
-                            <table style={styles.table}>
-                                <tbody style={styles.tbody}>
-                                    <tr style={styles.tr}> 
-                                        <th style={styles.th}>x</th>
-                                        <th style={styles.th}>y</th>
+                    <View style={styles(props).tableSection}>
+                        <FieldSet label="End Point" labelColor="#f00" labelStyle={styles(props).label} mainStyle={styles(props).fieldSet}>
+                            <table style={styles(props).table}>
+                                <tbody style={styles(props).tbody}>
+                                    <tr style={styles(props).tr}> 
+                                        <th style={styles(props).th}>x</th>
+                                        <th style={styles(props).th}>y</th>
                                     </tr>
-                                    <tr style={styles.tr}>
-                                        <td style={styles.end}>{props.endPoint.x}</td>
-                                        <td style={styles.end}>{props.endPoint.y}</td>
+                                    <tr style={styles(props).tr}>
+                                        <td style={styles(props).end}>{props.endPoint.x}</td>
+                                        <td style={styles(props).end}>{props.endPoint.y}</td>
                                     </tr>
                                 </tbody>
                             </table>
                         </FieldSet>
                     </View>
                 </View>
-                <View style={styles.subCan}>
-                    <Text onClick={addToPath} onMouseOver={() => hoverFunc('sub')} onMouseLeave={resetHover} style={hover.sub?styles.submitHover:styles.submitButton}>Add to path!</Text>
-                    <Text onClick={closeModal} onMouseOver={() => hoverFunc('can')} onMouseLeave={resetHover} style={hover.can?styles.cancelHover:styles.cancelButton}>Cancel</Text>
+                <View style={styles(props).subCan}>
+                    <Text onClick={addToPath} onMouseOver={() => hoverFunc('sub')} onMouseLeave={resetHover} style={hover.sub?styles(props).submitHover:styles(props).submitButton}>Add to path!</Text>
+                    <Text onClick={closeModal} onMouseOver={() => hoverFunc('can')} onMouseLeave={resetHover} style={hover.can?styles(props).cancelHover:styles(props).cancelButton}>Cancel</Text>
                 </View>
             </View>
         </Modal>
@@ -136,7 +136,7 @@ const Edit = (props) => {
 
 export default Edit;
 
-const styles = StyleSheet.create({
+const styles = (props) => StyleSheet.create({
     outerContainer:{
     display: 'flex',
     alignItems: 'center',
@@ -203,7 +203,8 @@ const styles = StyleSheet.create({
         borderRadius: 6,
         padding: 5,
         margin: 5,
-        marginLeft: 10,
+        marginLeft: 20,
+        marginBottom: 15,
         textAlign: 'center',
       },
     hover: {
