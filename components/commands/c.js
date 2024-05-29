@@ -1,16 +1,15 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import GridWithDrag from './gridWithDrag';
 import { StyleSheet, Text, View, Modal} from 'react-native';
 import React from 'react';
 import Tables from './tables';
 
 const C = (props) => {
-    const [absRel, setAbsRel] = useState("c");
     const [modalIsOpen, setModalIsOpen] = useState(false);
-    const [hover, setHover] = useState({sub: false, can: false, c:false});
-    // const [firstCtrl, setFirstCtrl] = useState({x:25, y:50})
-    // const [secondCtrl, setSecondCtrl] = useState({x:75, y:50})
-    // const [endPoint, setEndPoint] = useState({x:100, y:0})
+    const [hover, setHover] = useState({sub: false, can: false, c: false, dx1:false, dy1: false, dx2: false, dy2: false, x: false, y:false});
+
+    const startX = props.path[props.pathID].absX;
+    const startY = props.path[props.pathID].absY;
 
     function openModal(){
         setModalIsOpen(true)
@@ -29,37 +28,44 @@ const C = (props) => {
         setHover(newHover)
     }
     function resetHover(){
-        setHover({x: false, change: false})
+        setHover({sub: false, can: false, c: false, dx1:false, dy1: false, dx2: false, dy2: false, x: false, y:false})
     }
 
     const defaultPath = {
-        type: props.relative?'c':'C',
+        type:'c',
+        absType: 'C',
         id: props.pathID+1,
-        absX: {value: 150},
-        absY: {value: 50},
+        absX: 150,
+        absY: 50,
         startPoint: {x: 50, y: 50},
-        controlPoints: props.relative?[{key: 'dx1', value:25}, {key: 'dy1', value:50}, {key: 'dx2', value:75}, {key: 'dy2', value:50}]:[{key: 'dx1', value:75}, {key: 'dy1', value:100}, {key: 'dx2', value:125}, {key: 'dy2', value:100}],
-        endPoint: props.relative?{x: 100, y: 0}:{x: 150, y: 50},
-        command: props.relative?'c25,50 75,50 100,0':'C75,100 125,100 150,50',
+        controlPoints: [{key: 'dx1', value:25}, {key: 'dy1', value:50}, {key: 'dx2', value:75}, {key: 'dy2', value:50}],
+        absControlPoints: [{key: 'dx1', value:75}, {key: 'dy1', value:100}, {key: 'dx2', value:125}, {key: 'dy2', value:100}],
+        endPoint: {x: 100, y: 0},
+        absEndPoint: {x: 150, y: 50},
+        command: 'c25,50 75,50 100,0',
         absCommand: 'C75,100 125,100 150,50',
-        relCommand: 'c25,50 75,50 100,0'
+        fullCommand: 'M50,50c25,50 75,50 100,0',
+        fullAbsCommand: 'M50,50C75,100 125,100 150,50'
     }
     
     function addToPath(){
-        const startX = props.path[props.pathID].absX.value;
-        const startY = props.path[props.pathID].absY.value;
+        const startX = props.path[props.pathID].absX;
+        const startY = props.path[props.pathID].absY;
         const cPath = {
-        type: props.relative?'c':'C',
+        type: 'c',
+        absType: 'C',
         id: props.pathID+1,
-        absX: {value: props.endPoint.x+startX},
-        absY: {value: props.endPoint.y+startY},
+        absX: props.endPoint.x+startX,
+        absY: props.endPoint.y+startY,
         startPoint: {x: startX, y: startY},
-        controlPoints: props.relative?[{key: 'dx1', value:`${props.firstCtrl.x}`}, {key: 'dy1', value:`${props.firstCtrl.y}`}, {key: 'dx2', value:`${props.secondCtrl.x}`}, {key: 'dy2', value:`${props.secondCtrl.y}`}]:[{key: 'dx1', value:`${props.firstCtrl.x+startX}`}, {key: 'dy1', value:`${props.firstCtrl.y+startY}`}, {key: 'dx2', value:`${props.secondCtrl.x+startX}`}, {key: 'dy2', value:`${props.secondCtrl.y+startY}`}],
-        endPoint: props.relative?{x: props.endPoint.x,y: props.endPoint.y}:{x: props.endPoint.x+startX,y: props.endPoint.y+startY},
-        command: props.relative?`c${props.firstCtrl.x},${props.firstCtrl.y} ${props.secondCtrl.x},${props.secondCtrl.y} ${props.endPoint.x},${props.endPoint.y}`:`C${startX+props.firstCtrl.x},${startY+props.firstCtrl.y} ${startX+props.secondCtrl.x},${startY+props.secondCtrl.y} ${startX+props.endPoint.x},${startY+props.endPoint.y}`,
+        controlPoints: [{key: 'dx1', value:`${props.firstCtrl.x}`}, {key: 'dy1', value:`${props.firstCtrl.y}`}, {key: 'dx2', value:`${props.secondCtrl.x}`}, {key: 'dy2', value:`${props.secondCtrl.y}`}],
+        absControlPoints: [{key: 'dx1', value:`${props.firstCtrl.x+startX}`}, {key: 'dy1', value:`${props.firstCtrl.y+startY}`}, {key: 'dx2', value:`${props.secondCtrl.x+startX}`}, {key: 'dy2', value:`${props.secondCtrl.y+startY}`}],
+        endPoint: {x: props.endPoint.x,y: props.endPoint.y},
+        absEndPoint: {x: props.endPoint.x+startX,y: props.endPoint.y+startY},
+        command: `c${props.firstCtrl.x},${props.firstCtrl.y} ${props.secondCtrl.x},${props.secondCtrl.y} ${props.endPoint.x},${props.endPoint.y}`,
         absCommand: `C${startX+props.firstCtrl.x},${startY+props.firstCtrl.y} ${startX+props.secondCtrl.x},${startY+props.secondCtrl.y} ${startX+props.endPoint.x},${startY+props.endPoint.y}`,
-        relCommand: `c${props.firstCtrl.x},${props.firstCtrl.y} ${props.secondCtrl.x},${props.secondCtrl.y} ${props.endPoint.x},${props.endPoint.y}`,
-        fullCommand: `M${startX},${startY}C${startX+props.firstCtrl.x},${startY+props.firstCtrl.y} ${startX+props.secondCtrl.x},${startY+props.secondCtrl.y} ${startX+props.endPoint.x},${startY+props.endPoint.y}`
+        fullCommand: `M${startX},${startY}c${props.firstCtrl.x},${props.firstCtrl.y} ${props.secondCtrl.x},${props.secondCtrl.y} ${props.endPoint.x},${props.endPoint.y}`,
+        fullAbsCommand: `M${startX},${startY}C${startX+props.firstCtrl.x},${startY+props.firstCtrl.y} ${startX+props.secondCtrl.x},${startY+props.secondCtrl.y} ${startX+props.endPoint.x},${startY+props.endPoint.y}`
         }
         const newPath = [...props.path, cPath]
         props.setPath(newPath)
@@ -67,40 +73,32 @@ const C = (props) => {
         setModalIsOpen(false) 
     }
 
-    useEffect(()=>{
-        if (props.relative){
-            setAbsRel("c")
-        } else {
-            setAbsRel("C")
-        }
-    }, [props.relative])
-
     return (
-        <View style={styles.outerContainer}>
-            <Text onClick={openModal} onMouseOver={() => hoverFunc('c')} onMouseLeave={resetHover} style={hover.c?styles.hover:styles.button}>{absRel}</Text>
+        <View style={styles(props).outerContainer}>
+            <Text onClick={openModal} onMouseOver={() => hoverFunc('c')} onMouseLeave={resetHover} style={hover.c?styles(props).hover:styles(props).button}>C</Text>
             <Modal
             animationType="slide"
             transparent={false}
             visible={modalIsOpen}
             onRequestClose={closeModal}
             >
-                <Text style={styles.title}>New {absRel} Command</Text>
+                <Text style={styles(props).title}>New C Command</Text>
                
-                <View style={styles.row}>
+                <View style={styles(props).row}>
                     
-                    <View style={styles.container}>
-                        <GridWithDrag size="250" command="C" path={defaultPath} relative={props.relative} firstCtrl={props.firstCtrl} setFirstCtrl={props.setFirstCtrl} secondCtrl={props.secondCtrl} setSecondCtrl={props.setSecondCtrl} endPoint={props.endPoint} setEndPoint={props.setEndPoint} strokeWidth={props.strokeWidth} stroke={props.stroke} fill={props.fill} fillOpacity={props.fillOpacity} strokeOpacity={props.strokeOpacity} />
+                    <View style={styles(props).container}>
+                        <GridWithDrag size="250" command="C" path={defaultPath} relative={props.relative} firstCtrl={props.firstCtrl} setFirstCtrl={props.setFirstCtrl} secondCtrl={props.secondCtrl} setSecondCtrl={props.setSecondCtrl} endPoint={props.endPoint} setEndPoint={props.setEndPoint} strokeWidth={props.strokeWidth} stroke={props.stroke} fill={props.fill} fillOpacity={props.fillOpacity} strokeOpacity={props.strokeOpacity} controlCol={props.controlCol} ctrlOpacity={props.ctrlOpacity} controlSize={props.controlSize} endCol={props.endCol} endOpacity={props.endOpacity} endSize={props.endSize} highlight={props.highlight} startX={startX} startY={startY} resetHover={resetHover} hoverFunc={hoverFunc}/>
                     </View>
                    
-                    <View style={styles.container}>
-                        <Tables firstCtrl={props.firstCtrl} setFirstCtrl={props.setFirstCtrl} secondCtrl={props.secondCtrl} setSecondCtrl={props.setSecondCtrl} endPoint={props.endPoint} setEndPoint={props.setEndPoint} />
+                    <View style={styles(props).container}>
+                        <Tables firstCtrl={props.firstCtrl} setFirstCtrl={props.setFirstCtrl} secondCtrl={props.secondCtrl} setSecondCtrl={props.setSecondCtrl} endPoint={props.endPoint} setEndPoint={props.setEndPoint} controlCol={props.controlCol} ctrlOpacity={props.ctrlOpacity} controlSize={props.controlSize} endCol={props.endCol} endOpacity={props.endOpacity} endSize={props.endSize} highlight={props.highlight} startX={startX} startY={startY} resetHover={resetHover} hoverFunc={hoverFunc} hover={hover}/>
                     </View>
                 
                 </View>
                 
-                <View style={styles.subCan}>
-                    <Text onClick={addToPath} onMouseOver={() => hoverFunc('sub')} onMouseLeave={resetHover} style={hover.sub?styles.submitHover:styles.submitButton}>Add to path!</Text>
-                    <Text onClick={closeModal} onMouseOver={() => hoverFunc('can')} onMouseLeave={resetHover} style={hover.can?styles.cancelHover:styles.cancelButton}>Cancel</Text>
+                <View style={styles(props).subCan}>
+                    <Text onClick={addToPath} onMouseOver={() => hoverFunc('sub')} onMouseLeave={resetHover} style={hover.sub?styles(props).submitHover:styles(props).submitButton}>Add to path!</Text>
+                    <Text onClick={closeModal} onMouseOver={() => hoverFunc('can')} onMouseLeave={resetHover} style={hover.can?styles(props).cancelHover:styles(props).cancelButton}>Cancel</Text>
                 </View>
 
             </Modal>
@@ -110,7 +108,7 @@ const C = (props) => {
 
 export default C;
 
-const styles = StyleSheet.create({
+const styles = (props) => StyleSheet.create({
     outerContainer:{
         display: 'flex',
         alignItems: 'center',

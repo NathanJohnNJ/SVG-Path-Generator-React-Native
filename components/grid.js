@@ -3,10 +3,11 @@ import Svg, { G, Rect, Defs, Pattern, Line } from "react-native-svg";
 
 
 const Grid = (props) => {
+    
 
     const viewBox = `0 0 ${props.size} ${props.size}`
     return(
-        <View style={styles.grid}>
+        <View style={styles(props).grid}>
             <Svg id={props.id} width={props.size} height={props.size} viewBox={viewBox} x="0" y="0" onMouseMove={props.onMouseMove?props.onMouseMove:null} onMouseLeave={props.onMouseLeave?props.onMouseLeave:null}>
                 <Defs>
                     <Pattern
@@ -44,7 +45,7 @@ const Grid = (props) => {
 
 export default Grid;
 
-const styles = StyleSheet.create({
+const styles =  (props) => StyleSheet.create({
     grid:{
         backgroundColor: '#f2f2f2',
         borderColor: '#acf',
@@ -55,6 +56,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         padding: 22,
         boxShadow: '-2px 2px 8px #9c9c9c',
-        margin: 10                                             
+        margin: 10,
+        width: 600                                           
     }
 })

@@ -30,20 +30,20 @@ const SidePanel = (props) => {
             dataArr.push(point.value)
         })
         return(
-            <FieldSet label="Control Points" labelColor="#00f" labelStyle={styles.label} mainStyle={styles.fieldSet}>
-                <table style={styles.table}>
-                    <tbody style={styles.tbody}>
-                        <tr style={styles.tr}>
+            <FieldSet label="Control Points" labelColor="#00f" labelStyle={styles(props).label} mainStyle={styles(props).fieldSet}>
+                <table style={styles(props).table}>
+                    <tbody style={styles(props).tbody}>
+                        <tr style={styles(props).tr}>
                             {headerArr.map((header, i) => {
                                 return(
-                                    <th style={styles.th} key={i}>{header}</th>
+                                    <th style={styles(props).th} key={i}>{header}</th>
                                 )
                             })}
                         </tr>
-                        <tr style={styles.tr}>
+                        <tr style={styles(props).tr}>
                             {dataArr.map((data, i) => {
                                 return(
-                                    <td style={styles.td} key={i}>{data}</td>
+                                    <td style={styles(props).td} key={i}>{data}</td>
                                 )
                             })}
                         </tr>
@@ -54,10 +54,10 @@ const SidePanel = (props) => {
     }
 
     return(
-        <View style={styles.sidePanel}>
+        <View style={styles(props).sidePanel}>
             
-            <Pressable style={hover.change?styles.  hover:styles.button} onPress={openModal} onMouseOver={() => hoverFunc('change')} onMouseLeave={resetHover}>
-                <Text style={hover.change?styles.textHover:styles.buttonText}>
+            <Pressable style={hover.change?styles(props).  hover:styles(props).button} onPress={openModal} onMouseOver={() => hoverFunc('change')} onMouseLeave={resetHover}>
+                <Text style={hover.change?styles(props).textHover:styles(props).buttonText}>
                     Change
                 </Text>
             </Pressable>
@@ -67,17 +67,17 @@ const SidePanel = (props) => {
             visible={modalIsOpen}
             onRequestClose={closeModal}
             >
-                <Pressable style={hover.x?styles.closeHover:styles.close} onPress={closeModal} onMouseOver={() => hoverFunc('x')} onMouseLeave={resetHover}>
-                    <Text style={hover.x?styles.closeTextHover:styles.closeText}>
+                <Pressable style={hover.x?styles(props).closeHover:styles(props).close} onPress={closeModal} onMouseOver={() => hoverFunc('x')} onMouseLeave={resetHover}>
+                    <Text style={hover.x?styles(props).closeTextHover:styles(props).closeText}>
                         X
                     </Text>
                 </Pressable>
-                <View style={styles.change}>
-                    <Text style={styles.title}>Change command</Text>
-                    <Text style={styles.normalText}>Please select from one of the following commands:</Text>
-                    <Text style={styles.smallText}>(Please beware that doing so will remove the command you had selected from the path and replace it with this new one.)</Text>
+                <View style={styles(props).change}>
+                    <Text style={styles(props).title}>Change command</Text>
+                    <Text style={styles(props).normalText}>Please select from one of the following commands:</Text>
+                    <Text style={styles(props).smallText}>(Please beware that doing so will remove the command you had selected from the path and replace it with this new one.)</Text>
                 </View>
-                <View style={styles.commandSelection}>
+                <View style={styles(props).commandSelection}>
                     <C relative={props.relative} path={props.path} setPath={props.setPath} pathID={props.pathID} setPathID={props.setPathID} startPoints={props.startPoints} setStartPoints={props.setStartPoints} stroke={props.stroke} strokeWidth={props.strokeWidth} strokeOpacity={props.strokeOpacity} fill={props.fill} fillOpacity={props.fillOpacity} iinfo={props.info} setInfo={props.setInfo} endPoint={props.endPoint} setEndPoint={props.setEndPoint} firstCtrl={props.firstCtrl} setFirstCtrl={props.setFirstCtrl} secondCtrl={props.secondCtrl} setSecondCtrl={props.setSecondCtrl} controlCol={props.controlCol} ctrlOpacity={props.ctrlOpacity} controlSize={props.controlSize} endCol={props.endCol} endOpacity={props.endOpacity}  endSize={props.endSize} highlight={props.highlight}  />
                     <Q relative={props.relative} path={props.path} setPath={props.setPath} pathID={props.pathID} setPathID={props.setPathID} startPoints={props.startPoints} setStartPoints={props.setStartPoints} stroke={props.stroke} strokeWidth={props.strokeWidth} strokeOpacity={props.strokeOpacity} fill={props.fill} fillOpacity={props.fillOpacity} info={props.info} setInfo={props.setInfo} endPoint={props.endPoint} setEndPoint={props.setEndPoint} firstCtrl={props.firstCtrl} setFirstCtrl={props.setFirstCtrl} controlCol={props.controlCol} ctrlOpacity={props.ctrlOpacity} controlSize={props.controlSize} endCol={props.endCol} endOpacity={props.endOpacity}  endSize={props.endSize} highlight={props.highlight}  />
                 </View>
@@ -88,7 +88,7 @@ const SidePanel = (props) => {
 
 export default SidePanel;
 
-const styles = StyleSheet.create({
+const styles = (props) => StyleSheet.create({
     sidePanel:{
         backgroundColor: '#ddd',
         borderColor: '#fdb',

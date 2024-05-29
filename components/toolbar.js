@@ -42,14 +42,14 @@ const Toolbar = (props) => {
     }
 
     return(
-        <View style={styles.toolbar}>
-            <button onMouseOver={()=>mouseOver('file')} onMouseLeave={mouseLeave} style={hover.file?styles.toolbarButtonHover:styles.toolbarButton} onClick={file}>File</button>
+        <View style={styles(props).toolbar}>
+            <button onMouseOver={()=>mouseOver('file')} onMouseLeave={mouseLeave} style={hover.file?styles(props).toolbarButtonHover:styles(props).toolbarButton} onClick={file}>File</button>
             <View>
-                <Text style={hover?styles.listHover:styles.list} onMouseOver={listMouse} onMouseLeave={listLeave} onClick={newDoc}>New</Text>
+                <Text style={hover?styles(props).listHover:styles(props).list} onMouseOver={listMouse} onMouseLeave={listLeave} onClick={newDoc}>New</Text>
             </View>
-            <button onMouseOver={()=>mouseOver('help')} onMouseLeave={mouseLeave} style={hover.help?styles.toolbarButtonHover:styles.toolbarButton}>Help</button>
+            <button onMouseOver={()=>mouseOver('help')} onMouseLeave={mouseLeave} style={hover.help?styles(props).toolbarButtonHover:styles(props).toolbarButton}>Help</button>
             <View>
-                <Text style={hover?styles.listHover:styles.list}><a href="" rel="noreferrer" target="_blank">View MDN documentation</a></Text>
+                <Text style={hover?styles(props).listHover:styles(props).list}><a href="" rel="noreferrer" target="_blank">View MDN documentation</a></Text>
             </View>
         </View>
     )
@@ -58,7 +58,7 @@ const Toolbar = (props) => {
 export default Toolbar;
 
 
-const styles = StyleSheet.create({
+const styles = (props) => StyleSheet.create({
     toolbar: {
       flex: 1,
       width: '100vw',

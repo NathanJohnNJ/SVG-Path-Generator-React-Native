@@ -31,20 +31,20 @@ const SidePanel = (props) => {
             dataArr.push(point.value)
         })
         return(
-            <FieldSet label="Control Points" labelColor="#00f" labelStyle={styles.label} mainStyle={styles.fieldSet}>
-                <table style={styles.table}>
-                    <tbody style={styles.tbody}>
-                        <tr style={styles.tr}>
+            <FieldSet label="Control Points" labelColor={props.controlCol} labelStyle={styles(props).label} mainStyle={styles(props).fieldSet}>
+                <table style={styles(props).table}>
+                    <tbody style={styles(props).tbody}>
+                        <tr style={styles(props).tr}>
                             {headerArr.map((header, i) => {
                                 return(
-                                    <th style={styles.th} key={i}>{header}</th>
+                                    <th style={styles(props).th} key={i}>{header}</th>
                                 )
                             })}
                         </tr>
-                        <tr style={styles.tr}>
+                        <tr style={styles(props).tr}>
                             {dataArr.map((data, i) => {
                                 return(
-                                    <td style={styles.td} key={i}>{data}</td>
+                                    <td style={styles(props).td} key={i}>{data}</td>
                                 )
                             })}
                         </tr>
@@ -55,33 +55,33 @@ const SidePanel = (props) => {
     }
 
     return(
-        <View style={styles.sidePanel}>
-            <View style={styles.top}>
-                <Text style={styles.modalTitle}>
+        <View style={styles(props).sidePanel}>
+            <View style={styles(props).top}>
+                <Text style={styles(props).modalTitle}>
                     More Info
                 </Text>
                     <Edit info={props.info} setInfo={props.setInfo} path={props.path} setPath={props.setPath} relative={props.relative} pathID={props.pathID} setPathID={props.setPathID} stroke={props.stroke} strokeWidth={props.strokeWidth} strokeOpacity={props.strokeOpacity} fill={props.fill} fillOpacity={props.fillOpacity} firstCtrl={props.firstCtrl} setFirstCtrl={props.setFirstCtrl} secondCtrl={props.secondCtrl} setSecondCtrl={props.setSecondCtrl} endPoint={props.endPoint} setEndPoint={props.setEndPoint}/>
             </View>
-            <View style={styles.bottom}>
-                <View style={styles.changeSection}>
-                    <Text style={styles.title}>Command: {props.info.type}</Text>
+            <View style={styles(props).bottom}>
+                <View style={styles(props).changeSection}>
+                    <Text style={styles(props).title}>Command: {props.info.type}</Text>
                 </View>
                 
-                <Text style={styles.title}>Path ID: {props.info.id}</Text>
-                <View style={styles.tableSection}>
+                <Text style={styles(props).title}>Path ID: {props.info.id}</Text>
+                <View style={styles(props).tableSection}>
                     <ControlTable />
                 </View>
-                <View style={styles.tableSection}>
-                    <FieldSet label="End Point" labelColor="#f00" labelStyle={styles.label} mainStyle={styles.fieldSet}>
-                        <table style={styles.table}>
-                            <tbody style={styles.tbody}>
-                                <tr style={styles.tr}>
-                                    <th style={styles.th}>x</th>
-                                    <th style={styles.th}>y</th>
+                <View style={styles(props).tableSection}>
+                    <FieldSet label="End Point" labelColor={props.endCol} labelStyle={styles(props).label} mainStyle={styles(props).fieldSet}>
+                        <table style={styles(props).table}>
+                            <tbody style={styles(props).tbody}>
+                                <tr style={styles(props).tr}>
+                                    <th style={styles(props).th}>x</th>
+                                    <th style={styles(props).th}>y</th>
                                 </tr>
-                                <tr style={styles.tr}>
-                                    <td style={styles.end}>{props.info.endPoint.x}</td>
-                                    <td style={styles.end}>{props.info.endPoint.y}</td>
+                                <tr style={styles(props).tr}>
+                                    <td style={styles(props).end}>{props.info.endPoint.x}</td>
+                                    <td style={styles(props).end}>{props.info.endPoint.y}</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -94,18 +94,18 @@ const SidePanel = (props) => {
             visible={modalIsOpen}
             onRequestClose={closeModal}
             >
-                <View style="styles.modal">
-                <Pressable style={hover.x?styles.closeHover:styles.close} onPress={closeModal} onMouseOver={() => hoverFunc('x')} onMouseLeave={resetHover}>
-                    <Text style={hover.x?styles.closeTextHover:styles.closeText}>
+                <View style="styles(props).modal">
+                <Pressable style={hover.x?styles(props).closeHover:styles(props).close} onPress={closeModal} onMouseOver={() => hoverFunc('x')} onMouseLeave={resetHover}>
+                    <Text style={hover.x?styles(props).closeTextHover:styles(props).closeText}>
                         X
                     </Text>
                 </Pressable>
-                <View style={styles.change}>
-                    <Text style={styles.title}>Change command</Text>
-                    <Text style={styles.normalText}>Please select from one of the following commands:</Text>
-                    <Text style={styles.smallText}>(Please beware that doing so will remove the command you had selected from the path and replace it with this new one.)</Text>
+                <View style={styles(props).change}>
+                    <Text style={styles(props).title}>Change command</Text>
+                    <Text style={styles(props).normalText}>Please select from one of the following commands:</Text>
+                    <Text style={styles(props).smallText}>(Please beware that doing so will remove the command you had selected from the path and replace it with this new one.)</Text>
                 </View>
-                <View style={styles.commandSelection}>
+                <View style={styles(props).commandSelection}>
                     <C relative={props.relative} path={props.path} setPath={props.setPath} pathID={props.pathID} setPathID={props.setPathID} startPoints={props.startPoints} setStartPoints={props.setStartPoints} stroke={props.stroke} strokeWidth={props.strokeWidth} strokeOpacity={props.strokeOpacity} fill={props.fill} fillOpacity={props.fillOpacity} info={props.info} setInfo={props.setInfo} />
                     <Q relative={props.relative} path={props.path} setPath={props.setPath} pathID={props.pathID} setPathID={props.setPathID} startPoints={props.startPoints} setStartPoints={props.setStartPoints} stroke={props.stroke} strokeWidth={props.strokeWidth} strokeOpacity={props.strokeOpacity} fill={props.fill} fillOpacity={props.fillOpacity} info={props.info} setInfo={props.setInfo} />
                 </View>
@@ -117,7 +117,7 @@ const SidePanel = (props) => {
 
 export default SidePanel;
 
-const styles = StyleSheet.create({
+const styles = (props) => StyleSheet.create({
     sidePanel:{
         backgroundColor: '#ddd',
         borderColor: '#fdb',
@@ -128,8 +128,9 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         padding: 22,
         boxShadow: '-2px 2px 8px #9c9c9c',
-        margin: 10,
-        height: 450
+        margin: 8,
+        height: 475,
+        width: 225
     },
     top: {
         display: 'flex',
@@ -144,13 +145,15 @@ const styles = StyleSheet.create({
     },
     title: {
         fontFamily: 'Quicksand-Bold',
-        fontSize: 20,
-        marginTop: 5,
+        fontSize: 17.5,
+        marginTop: -5,
         marginBottom: 5
     },
     modalTitle: {
         fontFamily: 'Quicksand-Bold',
-        fontSize: 35,
+        fontSize: 25,
+        marginTop: -20,
+        textShadow: '-1px 1px 2px gray, 1px 1px 1px gray',
     },
     gridAndTables: {
         display: 'flex',

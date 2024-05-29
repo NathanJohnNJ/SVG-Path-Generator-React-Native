@@ -4,20 +4,20 @@ import { StyleSheet, Text, View, Modal } from 'react-native';
 import React from 'react';
 import FieldSet from 'react-native-fieldset';
 
-const L = (props) => {
+const H = (props) => {
     const [modalIsOpen, setModalIsOpen] = useState(false);
-    const [hover, setHover] = useState({sub: false, can: false, l:false, x:false, y:false});
-    const [endPoint, setEndPoint] = useState({x:50, y:50})
+    const [hover, setHover] = useState({sub: false, can: false, h:false, x:false, y:false});
 
     const startX = props.path[props.pathID].absX;
     const startY = props.path[props.pathID].absY;
 
     function openModal(){ 
-        setEndPoint({x:50, y:50})
+        props.setEndPoint({x:50, y:0})
         setModalIsOpen(true)
     }
     function closeModal(){
         setModalIsOpen(false)
+        props.setEndPoint({})
     }
 
     function hoverFunc(i){
@@ -25,42 +25,42 @@ const L = (props) => {
         setHover(newHover)
     }
     function resetHover(){
-        setHover({sub: false, can: false, l:false, x:false, y:false})
+        setHover({sub: false, can: false, h:false, x:false, y:false})
     }
 
     const defaultPath = {
-        type: 'l',
-        absType: 'L',
+        type: 'h',
+        absType:'H',
         id: props.pathID+1,
         absX: 100,
-        absY: 100,
+        absY: 50,
         startPoint: {x: 50, y: 50},
-        endPoint: {x:50, y: 50},
-        absEndPoint: {x: 100, y: 100},
-        command: 'l50,50',
-        absCommand: 'L100,100',
-        fullCommand: 'M50,50l50,50',
-        fullAbsCommand: 'M50,50L100,100'
+        endPoint: {x:50, y: 0},
+        absEndPoint: {x: 100, y: 50},
+        command: 'h50',
+        absCommand: 'H100',
+        fullCommand: 'M50,50h50',
+        fullAbsCommand: 'M50,50H100'
     }
     
     function addToPath(){
         const startX = props.path[props.pathID].absX;
         const startY = props.path[props.pathID].absY;
-        const lPath = {
-            type: 'l',
-            absType: 'L',
+        const hPath = {
+            type: 'h',
+            absType: 'H',
             id: props.pathID+1,
-            absX: endPoint.x+startX,
-            absY: endPoint.y+startY,
+            absX: props.endPoint.x+startX,
+            absY: props.endPoint.y+startY,
             startPoint: {x: startX, y: startY},
-            endPoint: {x: endPoint.x,y: endPoint.y},
-            absEndPoint: {x: endPoint.x+startX,y: endPoint.y+startY},
-            command: `l${endPoint.x},${endPoint.y}`,
-            absCommand: `L${startX+endPoint.x},${startY+endPoint.y}`,
-            fullCommand: `M${startX},${startY}l${endPoint.x},${endPoint.y}`,
-            fullAbsCommand: `M${startX},${startY}L${startX+endPoint.x},${startY+endPoint.y}`
+            endPoint: {x: props.endPoint.x, y: props.endPoint.y},
+            absEndPoint: {x: props.endPoint.x+startX, y: props.endPoint.y+startY},
+            command: `h${props.endPoint.x}`,
+            absCommand: `H${startX+props.endPoint.x}`,
+            fullCommand: `M${startX},${startY}h${props.endPoint.x}`,
+            fullAbsCommand: `M${startX},${startY}H${startX+props.endPoint.x}`
         } 
-        const newPath = [...props.path, lPath]
+        const newPath = [...props.path, hPath]
         props.setPath(newPath)
         props.setPathID(props.pathID+1)  
         setModalIsOpen(false)
@@ -68,44 +68,55 @@ const L = (props) => {
 
     return (
         <View style={styles(props).outerContainer}>
-            <Text onClick={openModal}  onMouseOver={() => hoverFunc('l')} onMouseLeave={resetHover} style={hover.l?styles(props).hover:styles(props).button}>L</Text>
+            <Text onClick={openModal}  onMouseOver={() => hoverFunc('h')} onMouseLeave={resetHover} style={hover.h?styles(props).hover:styles(props).button}>H</Text>
             <Modal
             animationType="slide"
             transparent={false}
             visible={modalIsOpen}
             onReluestClose={closeModal}
             >
-                <Text style={styles(props).title}>New L Command</Text>
+                <Text style={styles(props).title}>New H Command</Text>
                 
                 <View style={styles(props).row}>
                    
                     <View style={styles(props).container}>
-                        <GridWithDrag size="250" command="L" path={defaultPath}  relative={props.relative} endPoint={endPoint} setEndPoint={setEndPoint} strokeWidth={props.strokeWidth} stroke={props.stroke} fill={props.fill} fillOpacity={props.fillOpacity} strokeOpacity={props.strokeOpacity} endCol={props.endCol} endOpacity={props.endOpacity} endSize={props.endSize} highlight={props.highlight} startX={startX} startY={startY}  />
+                        <GridWithDrag size="250" command="H" path={defaultPath}  relative={props.relative} endPoint={props.endPoint} setEndPoint={props.setEndPoint} strokeWidth={props.strokeWidth} stroke={props.stroke} fill={props.fill} fillOpacity={props.fillOpacity} strokeOpacity={props.strokeOpacity} endCol={props.endCol} endOpacity={props.endOpacity} endSize={props.endSize} highlight={props.highlight} startX={startX} resetHover={resetHover} hoverFunc={hoverFunc}/>
                     </View>
                    
-                   <View style={styles(props).mainContainer}>
-                    <View style={styles(props).tableContainer}>
-                    <FieldSet label="End Point" labelColor={props.endCol} labelStyle={styles(props).label} mainStyle={styles(props).fieldSet}>
-                        <table style={styles(props).table}>
-                            <tbody style={styles(props).tbody}>
-                                <tr style={styles(props).tr}> 
-                                    <th style={styles(props).endTh}>x</th>
-                                    <th style={styles(props).endTh}>y</th>
-                                </tr>
-                                <tr style={styles(props).tr}>
-                                    <td style={hover.x?styles(props).hoverEnd:styles(props).end} onMouseEnter={()=>{hoverFunc('x')}} onMouseLeave={resetHover}>{props.endPoint.x}</td>
-                                    <td style={hover.y?styles(props).hoverEnd:styles(props).end} onMouseEnter={()=>{hoverFunc('y')}} onMouseLeave={resetHover}>{props.endPoint.y}</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </FieldSet>
-                </View>
-                </View>
+                    <View style={styles(props).mainContainer}>
+                            <View style={styles(props).tableContainer}>
+                            <FieldSet label="End Point" labelColor={props.endCol} labelStyle={styles(props).label} mainStyle={styles(props).fieldSet}>
+                                <table style={styles(props).table}>
+                                    <tbody style={styles(props).tbody}>
+                                        <tr style={styles(props).tr}> 
+                                            <th style={styles(props).endTh}>x</th>
+                                            <th style={styles(props).endTh}>y</th>
+                                        </tr>
+                                        <tr style={styles(props).trWide}> 
+                                            <th style={styles(props).thWide}>Relative</th>
+                                        </tr>
+                                        <tr style={styles(props).tr}>
+                                            <td style={hover.x?styles(props).hoverEnd:styles(props).end} onMouseEnter={()=>{hoverFunc('x')}} onMouseLeave={resetHover}>{props.endPoint.x}</td>
+                                            <td style={hover.y?styles(props).hoverEnd:styles(props).end} onMouseEnter={()=>{hoverFunc('y')}} onMouseLeave={resetHover}>{props.endPoint.y}</td>
+                                        </tr>
+                                        <tr style={styles(props).trWide}> 
+                                            <th style={styles(props).thWide}>Absolute</th>
+                                        </tr>
+                                        <tr style={styles(props).tr}>
+                                            <td style={hover.x?styles(props).hoverEnd:styles(props).end} onMouseEnter={()=>{hoverFunc('x')}} onMouseLeave={resetHover}>{props.endPoint.x+startX}</td>
+                                            <td style={hover.y?styles(props).hoverEnd:styles(props).end} onMouseEnter={()=>{hoverFunc('y')}} onMouseLeave={resetHover}>{props.endPoint.y+startY}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </FieldSet>
+                        </View>
+                        
+                    </View>
                 </View>
                 
                 <View style={styles(props).subCan}>
-                    <Text onClick={addToPath}  onMouseOver={() => hoverFunc('sub')} onMouseLeave={resetHover} style={hover.sub?styles(props).submitHover:styles(props).submitButton}>Add to path!</Text>
-                    <Text onClick={closeModal}  onMouseOver={() => hoverFunc('can')} onMouseLeave={resetHover} style={hover.can?styles(props).cancelHover:styles(props).cancelButton}>Cancel</Text>
+                    <Text onClick={addToPath} onMouseOver={() => hoverFunc('sub')} onMouseLeave={resetHover} style={hover.sub?styles(props).submitHover:styles(props).submitButton}>Add to path!</Text>
+                    <Text onClick={closeModal} onMouseOver={() => hoverFunc('can')} onMouseLeave={resetHover} style={hover.can?styles(props).cancelHover:styles(props).cancelButton}>Cancel</Text>
                 </View>
 
             </Modal>
@@ -113,7 +124,7 @@ const L = (props) => {
     )
 };
 
-export default L;
+export default H;
 
 const styles = (props) => StyleSheet.create({
     outerContainer:{
@@ -316,62 +327,62 @@ const styles = (props) => StyleSheet.create({
           justifyContent: 'center',
       },
       tr: {
-        flex: 1,
+          flex: 1,
+          display: 'flex',
+          flexDirection: 'row',
+          alignItems: 'center',
+          justifyContent: 'center',
+      },
+      trWide:{
+          flex: 1,
+          display: 'flex',
+          marginTop:5
+      },
+      thWide: {
         display: 'flex',
-        flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
+        border: '1.8px solid black',
+        borderRadius: 5,
+        fontFamily: 'Quicksand-Bold',
+        fontSize: 16,
+        flex:1,
+        width: 80,
+        height: 25,
+        marginTop: 1,
+        padding:4,
+        backgroundColor: props.endCol,
+      },
+      endTh: {
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        border: '1.8px solid black',
+        borderRadius: 5,
+        fontFamily: 'Quicksand-Medium',
+        fontSize: 16,
+        flex:1,
+        width: 40,
+        height: 25,
+        marginTop: 1,
+        padding:2,
+        backgroundColor: props.endCol,
     },
-    trWide:{
-      flex: 1,
-      display: 'flex',
-      marginTop:5
-  },
-  thWide: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    border: '1.8px solid black',
-    borderRadius: 5,
-    fontFamily: 'Quicksand-Bold',
-    fontSize: 16,
-    flex:1,
-    width: 80,
-    height: 25,
-    marginTop: 1,
-    padding:4,
-    backgroundColor: props.endCol,
-  },
-    endTh: {
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      border: '1.8px solid black',
-      borderRadius: 5,
-      fontFamily: 'Quicksand-Medium',
-      fontSize: 16,
-      flex:1,
-      width: 40,
-      height: 25,
-      marginTop: 1,
-      padding:2,
-      backgroundColor: props.endCol,
-  },
-  end: {
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      textAlign: 'center',
-      border: '1.5px dashed grey',
-      borderRadius: 5,
-      fontFamily: 'Quicksand-Regular',
-      fontSize: 16,
-      color: props.endCol,
-      flex:1,
-      width: 40,
-      height: 25,
-      padding: 2
-  },
+    end: {
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        textAlign: 'center',
+        border: '1.5px dashed grey',
+        borderRadius: 5,
+        fontFamily: 'Quicksand-Regular',
+        fontSize: 16,
+        color: props.endCol,
+        flex:1,
+        width: 40,
+        height: 25,
+        padding: 2
+    },
     hoverEnd: {
         display: 'flex',
         alignItems: 'center',

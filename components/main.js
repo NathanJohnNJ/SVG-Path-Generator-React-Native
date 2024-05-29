@@ -13,8 +13,8 @@ const Main = (props) => {
     const firstCMD = {
         type: relative?'c':'C',
         id: pathID,
-        absX: {value: 200},
-        absY: {value: 50},
+        absX: 200,
+        absY: 50,
         startPoint: {x: 50, y: 50},
         controlPoints: relative?[{key: 'dx1', value:50}, {key: 'dy1', value:50}, {key: 'dx2', value:100}, {key: 'dy2', value:-50}]:[{key: 'dx1', value:100}, {key: 'dy1', value:100}, {key: 'dx2', value:100}, {key: 'dy2', value:-50}],
         endPoint: relative?{x: 150,y: 0}:{x: 200,y: 50},
@@ -26,8 +26,8 @@ const Main = (props) => {
     const blank = {
       type: '-',
       id: '-',
-      absX: {value: '-'},
-      absY: {value: '-'},
+      absX: '-',
+      absY: '-',
       startPoint: {x: '-', y: '-'},
       controlPoints: [{key: '-', value:'-'}],
       endPoint: {x: '-', y: '-'},
@@ -44,33 +44,40 @@ const Main = (props) => {
 
     return (
       <View>
-        <View style={styles.container}>
-          <Text style={styles.title}>SVG Path Generator</Text>  
+        <View style={styles(props).titleContainer}>
+          <Text style={styles(props).title}>SVG Path Generator</Text>  
         </View>
             
-            <View style={styles.gridArea}>
-              <View style={styles.mainCont}>
-                <View style={styles.configCommands}>
+            <View style={styles(props).gridArea}>
+              <View style={styles(props).mainCont}>
+                <View style={styles(props).configCommands}>
                   
                   <ConfigPanel stroke={props.stroke} strokeWidth={props.strokeWidth} strokeOpacity={props.strokeOpacity} fill={props.fill} fillOpacity={props.fillOpacity} setStroke={props.setStroke} setStrokeWidth={props.setStrokeWidth} setStrokeOpacity={props.setStrokeOpacity} setFill={props.setFill} setFillOpacity={props.setFillOpacity} controlCol={props.controlCol} setControlCol={props.setControlCol} ctrlOpacity={props.ctrlOpacity} setCtrlOpacity={props.setCtrlOpacity} controlSize={props.controlSize} setControlSize={props.setControlSize} endCol={props.endCol} setEndCol={props.setEndCol} endOpacity={props.endOpacity} setEndOpacity={props.setEndOpacity} endSize={props.endSize} setEndSize={props.setEndSize} highlight={props.highlight} setHighlight={props.setHighlight}/>
-                  <CommandPanel path={path} setPath={setPath} relative={relative} setRelative={setRelative} stroke={props.stroke} strokeWidth={props.strokeWidth} strokeOpacity={props.strokeOpacity} fill={props.fill} fillOpacity={props.fillOpacity} pathID={pathID} setPathID={setPathID} info={info} setInfo={setInfo} setEndPoint={setEndPoint} setFirstCtrl={setFirstCtrl} setSecondCtrl={setSecondCtrl} endPoint={endPoint} firstCtrl={firstCtrl} secondCtrl={secondCtrl} controlCol={props.controlCol} setControlCol={props.setControlCol} ctrlOpacity={props.ctrlOpacity} setCtrlOpacity={props.setCtrlOpacity} controlSize={props.controlSize} setControlSize={props.setControlSize} endCol={props.endCol} setEndCol={props.setEndCol} endOpacity={props.endOpacity} setEndOpacity={props.setEndOpacity} endSize={props.endSize} setEndSize={props.setEndSize} highlight={props.highlight} setHighlight={props.setHighlight} />
+                 
+                  <CommandPanel path={path} setPath={setPath} relative={relative} setRelative={setRelative} stroke={props.stroke} strokeWidth={props.strokeWidth} strokeOpacity={props.strokeOpacity} fill={props.fill} fillOpacity={props.fillOpacity} pathID={pathID} setPathID={setPathID} info={info} setInfo={setInfo} setEndPoint={setEndPoint} setFirstCtrl={setFirstCtrl} setSecondCtrl={setSecondCtrl} endPoint={endPoint} firstCtrl={firstCtrl} secondCtrl={secondCtrl} controlCol={props.controlCol} ctrlOpacity={props.ctrlOpacity} controlSize={props.controlSize} endCol={props.endCol} endOpacity={props.endOpacity} endSize={props.endSize} highlight={props.highlight}  />
                 </View>
-                <View style={styles.container}>
-                  <Grid size="450" id="grid" children={<PathFromArray path={path} stroke={props.stroke} strokeWidth={props.strokeWidth} strokeOpacity={props.strokeOpacity} fill={props.fill} fillOpacity={props.fillOpacity} setInfo={setInfo} setEndPoint={setEndPoint} setFirstCtrl={setFirstCtrl} setSecondCtrl={setSecondCtrl} controlCol={props.controlCol} setControlCol={props.setControlCol} ctrlOpacity={props.ctrlOpacity} setCtrlOpacity={props.setCtrlOpacity} controlSize={props.controlSize} setControlSize={props.setControlSize} endCol={props.endCol} setEndCol={props.setEndCol} endOpacity={props.endOpacity} setEndOpacity={props.setEndOpacity} endSize={props.endSize} setEndSize={props.setEndSize} highlight={props.highlight} setHighlight={props.setHighlight} />} />
-                  <View style={styles.fullPath}>
-                  <Text style={styles.fullPathText} >Full path command: "M50,50{path.map((command, i) => {
+                <View style={styles(props).container}>
+                  <Grid size="450" id="grid" children={<PathFromArray path={path} stroke={props.stroke} strokeWidth={props.strokeWidth} strokeOpacity={props.strokeOpacity} fill={props.fill} fillOpacity={props.fillOpacity} setInfo={setInfo} setEndPoint={setEndPoint} setFirstCtrl={setFirstCtrl} setSecondCtrl={setSecondCtrl} controlCol={props.controlCol} ctrlOpacity={props.ctrlOpacity} controlSize={props.controlSize} endCol={props.endCol} endOpacity={props.endOpacity} endSize={props.endSize} highlight={props.highlight}/>} />
+                  
+                  <View style={styles(props).fullPath}>
+                  <Text numberOfLines={10} style={styles(props).fullPathText} >Relative path: "M50,50{path.map((command, i) => {
                     return(
                       <Text key={i}>{command.command}</Text>
                     )
                   })}"</Text>
+                  <Text numberOfLines={10} style={styles(props).fullPathText} >Absolute path: "M50,50{path.map((command, i) => {
+                    return(
+                      <Text key={i}>{command.absCommand}</Text>
+                    )
+                  })}"</Text>
                   </View>
                 </View>
-                <View style={styles.configCommands}>
-                <View style={styles.switcher}>
-                      <Pressable onPress={() => setRelative(relative => relative)} disabled={!relative} style={!relative?styles.selected:styles.switch}><Text style={!relative?styles.selectedText:styles.switchText}>Absolute</Text></Pressable>
-                      <Pressable onPress={() => setRelative(relative => !relative)} disabled={relative} style={relative?styles.selected:styles.switch}><Text style={relative?styles.selectedText:styles.switchText}>Relative</Text></Pressable>
+                <View style={styles(props).configCommands}>
+                <View style={styles(props).switcher}>
+                      <Pressable onPress={() => setRelative(relative => !relative)} disabled={!relative} style={!relative?styles(props).selected:styles(props).switch}><Text style={!relative?styles(props).selectedText:styles(props).switchText}>Absolute</Text></Pressable>
+                      <Pressable onPress={() => setRelative(relative => !relative)} disabled={relative} style={relative?styles(props).selected:styles(props).switch}><Text style={relative?styles(props).selectedText:styles(props).switchText}>Relative</Text></Pressable>
                 </View>
-                <SidePanel info={info} setInfo={setInfo} firstCtrl={firstCtrl} setFirstCtrl={setFirstCtrl} secondCtrl={secondCtrl} setSecondCtrl={setSecondCtrl} endPoint={endPoint} setEndPoint={setEndPoint} relative={relative} path={path} setPath={setPath} pathID={pathID} setPathID={setPathID} stroke={props.stroke} strokeWidth={props.strokeWidth} strokeOpacity={props.strokeOpacity} fill={props.fill} fillOpacity={props.fillOpacity} controlCol={props.controlCol} setControlCol={props.setControlCol} ctrlOpacity={props.ctrlOpacity} setCtrlOpacity={props.setCtrlOpacity} controlSize={props.controlSize} setControlSize={props.setControlSize} endCol={props.endCol} setEndCol={props.setEndCol} endOpacity={props.endOpacity} setEndOpacity={props.setEndOpacity} endSize={props.endSize} setEndSize={props.setEndSize} highlight={props.highlight} setHighlight={props.setHighlight} />
+                <SidePanel info={info} setInfo={setInfo} firstCtrl={firstCtrl} setFirstCtrl={setFirstCtrl} secondCtrl={secondCtrl} setSecondCtrl={setSecondCtrl} endPoint={endPoint} setEndPoint={setEndPoint} relative={relative} path={path} setPath={setPath} pathID={pathID} setPathID={setPathID} stroke={props.stroke} strokeWidth={props.strokeWidth} strokeOpacity={props.strokeOpacity} fill={props.fill} fillOpacity={props.fillOpacity} controlCol={props.controlCol} ctrlOpacity={props.ctrlOpacity} controlSize={props.controlSize} endCol={props.endCol} endOpacity={props.endOpacity} endSize={props.endSize} highlight={props.highlight} />
                 </View>
               </View>
             </View>
@@ -81,7 +88,7 @@ const Main = (props) => {
 export default Main;
 
 //All below checked, all are being used
-const styles = StyleSheet.create({
+const styles = (props) => StyleSheet.create({
   mainCont:{
     display: 'flex',
     flexDirection: 'row'
@@ -101,121 +108,24 @@ const styles = StyleSheet.create({
       display:'flex',
       flexDirection:'column'
     },
-    options:{
-      flex:1,
+    titleContainer:{
       display: 'flex',
-      alignSelf: 'flex-start',
-      position: 'fixed',
-      left: 20
+      flexDirection: 'column',
+      alignItems: 'center',
+      alignSelf: 'center',
+      justifyContent: 'center',
+      width: 'fit-content',
+      textShadow: '-2px 2px 4px gray, 2px 2px 2px gray',
+      marginTop: 10
     },
     title:{
-      fontFamily: 'Quicksand-Bold',
+      fontFamily: 'Geologica-Bold',
       fontSize:36,
       marginTop: -20
-    },
-    visible:{
-      display:'flex'
-    },
-    hidden:{
-      display:'none'
-    },
-    closeBtn:{
-      width: 25,
-      color: '#fff',
-      textAlign: 'center',
-      fontFamily: 'Quicksand-Medium'
     },
     gridArea:{
       marginTop: -5
     },
-    position: {
-      marginTop: -250,
-      fontFamily: 'Quicksand-Bold',
-      fontSize: 16
-    },
-    button: {
-        display:'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        width:25,
-        height:25,   
-        color:'#4e4e4e',
-        backgroundColor: '#6c6c6c',
-        textAlign: 'center',
-        fontFamily: 'Quicksand-Bold',
-        fontSize: 18,
-        borderRadius: 5,
-        margin: 5
-      },
-      mobile:{
-        textShadowOffset: {x:'-1px', y:'-1px'},
-        textShadowColor: '#4e4e4e',
-        textShadowRadius: 1,
-      },
-      web:{ 
-        textShadow: '-1px 1px 1px #4e4e4e',
-        cursor: 'pointer',
-        color:'red' 
-      },
-      hover: {
-        display:'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        width:'auto',
-        height:25,
-        width: 25,
-        color:'#ffffff',
-        backgroundColor: '#4e4e4e',
-        textAlign: 'center',
-        fontFamily: 'Quicksand-Regular',
-        fontSize: 18,
-        borderRadius: 5,
-        margin: 5
-      },
-      close: {
-        display:'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        width:'auto',
-        height:25,   
-        color:'#4e4e4e',
-        backgroundColor: '#200000',
-        textAlign: 'center',
-        textShadow: '-1px 1px 1px #4e4e4e',
-        textShadowOffset: {x:'-1px', y:'-1px'},
-        textShadowColor: '#4e4e4e',
-        textShadowRadius: 1,
-        fontFamily: 'Quicksand-Regular',
-        fontSize: 18,
-        borderRadius: 5,
-        margin: 5
-      },
-      hoverClose: {
-        display:'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        width:'auto',
-        height:25,   
-        color:'#200000',
-        backgroundColor: '#4e4e4e',
-        textAlign: 'center',
-        textShadow: '-1px -1px 1px #200000',
-        fontFamily: 'Quicksand-Regular',
-        fontSize: 18,
-        borderRadius: 5,
-        margin: 5
-      },
-      commands:{
-        display: 'flex',
-        alignIems: 'center',
-        justifyContent: 'space-evenly',
-        flexDirection: 'row',
-        margin: 5
-      },
     switch:{
       display:'flex',
       flexDirection: 'column',
@@ -260,7 +170,7 @@ const styles = StyleSheet.create({
     switcher:{
       display:'flex',
       flexDirection: 'row',
-      width:250,
+      width:225,
       height: 70,
       backgroundColor: '#eaeaea',
       borderColor: '#dbf',
@@ -280,13 +190,16 @@ const styles = StyleSheet.create({
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
-      padding: 22,
+      padding: 4,
       boxShadow: '-2px 2px 8px #9c9c9c',
       margin: 10,
+      width: 600
     },
     fullPathText: {
       fontFamily: 'Geologica-Medium',
-      fontSize: 18
+      fontSize: 13,
+      width:450,
+      flex:1,
     }
       
 })
