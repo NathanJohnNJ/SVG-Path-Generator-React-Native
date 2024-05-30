@@ -4,7 +4,6 @@ import Svg, { G, Rect, Defs, Pattern, Line } from "react-native-svg";
 
 const Grid = (props) => {
     
-
     const viewBox = `0 0 ${props.size} ${props.size}`
     return(
         <View style={styles(props).grid}>
@@ -57,6 +56,6 @@ const styles =  (props) => StyleSheet.create({
         padding: 16,
         boxShadow: '-2px 2px 8px #9c9c9c',
         margin: 10,
-        width: 530                                           
+        width: props.mainWidth                                         
     }
 })

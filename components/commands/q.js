@@ -3,7 +3,7 @@ import GridWithDrag from './gridWithDrag';
 import { StyleSheet, Text, View, Modal } from 'react-native';
 import React from 'react';
 import Tables from './tables';
-import { Svg, Path, Rect, G } from 'react-native-svg';
+import Presets from '../presetPaths/q';
 
 const Q = (props) => {
     const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -25,8 +25,16 @@ const Q = (props) => {
         props.setEndPoint({})
     }
     function hoverFunc(i){
+        if (i==='dx1'||i==='dy1'){
+            const newHover = { ...hover, dx1:true, dy1:true}
+            setHover(newHover)
+        }else if (i==='x'||i==='y'){
+            const newHover = { ...hover, x:true, y:true}
+            setHover(newHover)
+        }else{
         const newHover = { ...hover, [i]: true}
         setHover(newHover)
+        }
     }
     function resetHover(){
         setHover({sub: false, can: false, q: false, dx1: false, dy1: false, x: false, y:false})
@@ -48,59 +56,7 @@ const Q = (props) => {
         fullCommand: 'M50,50q25,50 50,0',
         fullAbsCommand: 'M50,50Q75,100 100,50'
     }
-    // const secondDefault = {
-    //     type: 'q',
-    //     absType: 'Q',
-    //     id: props.pathID+1,
-    //     absX: 100,
-    //     absY: 50,
-    //     startPoint: {x: 50, y: 50},
-    //     controlPoints: [{key: 'dx1', value:25}, {key: 'dy1', value:-50}],
-    //     absControlPoints: [{key: 'dx1', value:75}, {key: 'dy1', value:0}],
-    //     endPoint: {x:50, y: 0},
-    //     absEndPoint: {x: 100, y: 50},
-    //     command: 'q25,-50 50,0',
-    //     absCommand: 'Q75,0 100,50',
-    //     fullCommand: 'M50,50q25,-50 50,0',
-    //     fullAbsCommand: 'M50,50Q75,0 100,50'
-    // }
-    // const thirdDefault = {
-    //     type: 'q',
-    //     absType: 'Q',
-    //     id: props.pathID+1,
-    //     absX: 50,
-    //     absY: 100,
-    //     startPoint: {x: 50, y: 50},
-    //     controlPoints: [{key: 'dx1', value:50}, {key: 'dy1', value:-25}],
-    //     absControlPoints: [{key: 'dx1', value:100}, {key: 'dy1', value:25}],
-    //     endPoint: {x:0, y: 50},
-    //     absEndPoint: {x: 50, y: 100},
-    //     command: 'q50,-25 0,50',
-    //     absCommand: '100,25 50,100',
-    //     fullCommand: 'M50,50q50,-25 0,50',
-    //     fullAbsCommand: 'M50,50Q100,25 50,100'
-    // }
-    // const fourthDefault = {
-    //     type: 'q',
-    //     absType: 'Q',
-    //     id: props.pathID+1,
-    //     absX: 75,
-    //     absY: 150,
-    //     startPoint: {x: 50, y: 50},
-    //     controlPoints: [{key: 'dx1', value:-50}, {key: 'dy1', value:-50}],
-    //     absControlPoints: [{key: 'dx1', value:75}, {key: 'dy1', value:100}],
-    //     endPoint: {x:25, y: 100},
-    //     absEndPoint: {x: 75, y: 150},
-    //     command: 'q-50,-50 25,100',
-    //     absCommand: 'Q0,0 75,150',
-    //     fullCommand: 'M50,50q-50,-50 25,100',
-    //     fullAbsCommand: 'M50,50Q0,0 75,150'
-    // }
-    // // setDefaultPath(firstDefault)
-    // const [defaultPath, setDefaultPath] = useState(firstDefault)
 
-
-    
     function addToPath(){
         const startX = props.path[props.pathID].absX;
         const startY = props.path[props.pathID].absY;
@@ -136,43 +92,16 @@ const Q = (props) => {
             visible={modalIsOpen}
             onRequestClose={closeModal}
             >
-                <Text style={styles(props).title}>New Q Command</Text>
-                
                 <View style={styles(props).row}>
-                   {/* <View style={styles(props).defaultSection}>
-                    <Svg height="100" width="100" viewBox='0 0 100 100'>
-                    <G>
-                    <Rect height="100" width="100" fill="none" stroke="#bbb" strokeWidth="3">
-                        <Path d={defaultPath.fullCommand} height="100" width="100" viewBox='0 0 300 300' fill="none" stroke="#f00" /> 
-                    </Rect>
-                    </G>
-                    </Svg>
-                    <Svg height="100" width="100" viewBox='0 0 100 100'>
-                    <G>
-                    <Rect height="100" width="100" fill="none" stroke="#bbb" strokeWidth="3">
-                        <Path d={secondDefault.fullCommand} height="100" width="100" viewBox='0 0 300 300' fill="none" stroke="#f00" /> 
-                    </Rect>
-                    </G>
-                    </Svg>
-                    <Svg height="100" width="100" viewBox='0 0 100 100'>
-                    <G>
-                    <Rect height="100" width="100" fill="none" stroke="#bbb" strokeWidth="3">
-                        <Path d={thirdDefault.fullCommand} height="100" width="100" viewBox='0 0 300 300' fill="none" stroke="#f00" /> 
-                    </Rect>
-                    </G>
-                    </Svg>
-                    <Svg height="100" width="100" viewBox='0 0 100 100'>
-                    <G>
-                    <Rect height="100" width="100" fill="none" stroke="#bbb" strokeWidth="3">
-                        <Path d={fourthDefault.fullCommand} height="100" width="100" viewBox='0 0 300 300' fill="none" stroke="#f00" /> 
-                    </Rect>
-                    </G>
-                    </Svg>
-                   </View> */}
+                   <Presets stroke={props.stroke} fill={props.fill} fillOpacity={props.fillOpacity} />
+                   <View style={styles(props).middleSection}>
+                   <View style={styles.titleContainer}>
+                    <Text style={styles(props).title}>New Q Command</Text>
+                    </View>
                     <View style={styles(props).container}>
                         <GridWithDrag size="250" path={defaultPath} firstCtrl={props.firstCtrl} setFirstCtrl={props.setFirstCtrl} endPoint={props.endPoint} setEndPoint={props.setEndPoint} strokeWidth={props.strokeWidth} stroke={props.stroke} fill={props.fill} fillOpacity={props.fillOpacity} strokeOpacity={props.strokeOpacity} controlCol={props.controlCol} ctrlOpacity={props.ctrlOpacity} controlSize={props.controlSize} endCol={props.endCol} endOpacity={props.endOpacity} endSize={props.endSize} highlight={props.highlight} startX={startX} startY={startY} resetHover={resetHover} hoverFunc={hoverFunc} />
                     </View>
-                   
+                    </View>
                     <View style={styles(props).container}>
                         <Tables path={defaultPath} firstCtrl={props.firstCtrl} setFirstCtrl={props.setFirstCtrl} endPoint={props.endPoint} setEndPoint={props.setEndPoint} controlCol={props.controlCol} ctrlOpacity={props.ctrlOpacity} controlSize={props.controlSize} endCol={props.endCol} endOpacity={props.endOpacity} endSize={props.endSize} highlight={props.highlight} resetHover={resetHover} hoverFunc={hoverFunc} startX={startX} startY={startY} hover={hover} />
                     </View>
@@ -196,7 +125,7 @@ const styles = (props) => StyleSheet.create({
     display: 'flex',
     alignItems: 'center',
     flexDirection:'column',
-    justifyContent: 'center'
+    justifyContent: 'center',
     },
     container: {
       display: 'flex',
@@ -208,21 +137,36 @@ const styles = (props) => StyleSheet.create({
         display:'flex',
         flexDirection: "row",
         alignContent: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        marginTop: 20
     },
+    middleSection: {
+        margin: 10
+    },
+    titleContainer:{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        alignSelf: 'center',
+        justifyContent: 'center',
+        width: 'fit-content',
+        marginTop: 10
+      },
     title:{
-        fontFamily:'Quicksand-Bold',
-        fontSize: 30,
-        textAlign: 'center',
-        margin: 15
-    },
+        fontFamily: 'Geologica-Bold',
+        fontSize:30,
+        marginTop: 10,
+        textShadow: '-2px 2px 4px gray, 2px 2px 2px gray',
+        textAlign: 'center'
+      },
     subCan: {
         flex: 1,
         flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: 'space-around',
+        justifyContent: 'space-evenly',
         alignSelf: 'center',
         marginTop: -150,
+        marginLeft: -75,
         width: 350
       },
     button: {

@@ -131,9 +131,9 @@ const GridWithDrag = (props) => {
                         </title>
                     </circle>   
                 </Grid>
-                <View style={styles(props).position}>
-                    <Text>Relative Command: "q{props.firstCtrl.x},{props.firstCtrl.y} {props.endPoint.x},{props.endPoint.y}"</Text>
-                    <Text>Absolute Command: "Q{props.firstCtrl.x+props.startX},{props.firstCtrl.y+props.startY} {props.endPoint.x+props.startX},{props.endPoint.y+props.startY}"</Text>
+                <View style={styles(props).fullPath}>
+                    <Text style={styles(props).fullPathText}>Relative Command: "q{props.firstCtrl.x},{props.firstCtrl.y} {props.endPoint.x},{props.endPoint.y}"</Text>
+                    <Text style={styles(props).fullPathText}>Absolute Command: "Q{props.firstCtrl.x+props.startX},{props.firstCtrl.y+props.startY} {props.endPoint.x+props.startX},{props.endPoint.y+props.startY}"</Text>
                 </View>
             </View>
         )
@@ -148,9 +148,9 @@ const GridWithDrag = (props) => {
                         </title>
                     </circle>   
                 </Grid>
-                <View style={styles(props).position}>
-                    <Text>Relative Command: "l{props.endPoint.x},{props.endPoint.y}"</Text>
-                    <Text>Absolute Command: "L{props.endPoint.x+props.startX},{props.endPoint.y+props.startY}"</Text>
+                <View style={styles(props).fullPath}>
+                    <Text style={styles(props).fullPathText}>Relative Command: "l{props.endPoint.x},{props.endPoint.y}"</Text>
+                    <Text style={styles(props).fullPathText}>Absolute Command: "L{props.endPoint.x+props.startX},{props.endPoint.y+props.startY}"</Text>
                 </View>
             </View>
         )
@@ -165,9 +165,9 @@ const GridWithDrag = (props) => {
                         </title>
                     </circle>   
                 </Grid>
-                <View style={styles(props).position}>
-                    <Text>Relative Command: "{props.path.type}{props.endPoint.y}"</Text>
-                    <Text>Absolute Command: "{props.path.absType}{props.endPoint.y+props.startY}"</Text>
+                <View style={styles(props).fullPath}>
+                    <Text style={styles(props).fullPathText}>Relative Command: "{props.path.type}{props.endPoint.y}"</Text>
+                    <Text style={styles(props).fullPathText}>Absolute Command: "{props.path.absType}{props.endPoint.y+props.startY}"</Text>
                 </View>
             </View>
         )
@@ -182,9 +182,9 @@ const GridWithDrag = (props) => {
                         </title>
                     </circle>   
                 </Grid>
-                <View style={styles(props).position}>
-                    <Text>Relative Command: "{props.path.type}{props.endPoint.x}"</Text>
-                    <Text>Absolute Command: "{props.path.absType}{props.endPoint.x+props.startX}"</Text>
+                <View style={styles(props).fullPath}>
+                    <Text style={styles(props).fullPathText}>Relative Command: "{props.path.type}{props.endPoint.x}"</Text>
+                    <Text style={styles(props).fullPathText}>Absolute Command: "{props.path.absType}{props.endPoint.x+props.startX}"</Text>
                 </View>
             </View>
         )
@@ -211,9 +211,9 @@ const GridWithDrag = (props) => {
                         </title>
                     </circle>
                 </Grid>
-                <View style={styles(props).position}>
-                    <Text>Relative Command Path: "c{props.firstCtrl.x},{props.firstCtrl.y} {props.secondCtrl.x},{props.secondCtrl.y} {props.endPoint.x},{props.endPoint.y}"</Text>
-                    <Text>Absolute Command Path: "C{props.firstCtrl.x+props.startX},{props.firstCtrl.y+props.startY} {props.secondCtrl.x+props.startX},{props.secondCtrl.y+props.startY} {props.endPoint.x+props.startX},{props.endPoint.y+props.startY}"</Text>
+                <View style={styles(props).fullPath}>
+                    <Text style={styles(props).fullPathText}>Relative Command Path: "c{props.firstCtrl.x},{props.firstCtrl.y} {props.secondCtrl.x},{props.secondCtrl.y} {props.endPoint.x},{props.endPoint.y}"</Text>
+                    <Text style={styles(props).fullPathText}>Absolute Command Path: "C{props.firstCtrl.x+props.startX},{props.firstCtrl.y+props.startY} {props.secondCtrl.x+props.startX},{props.secondCtrl.y+props.startY} {props.endPoint.x+props.startX},{props.endPoint.y+props.startY}"</Text>
                 </View>
             </View>
         )
@@ -229,11 +229,6 @@ const styles = (props) => StyleSheet.create({
       alignItems: 'center',
       justifyContent: 'center',
     },
-    position: {
-      flex:1,
-      alignItems: 'center',
-      justifyContent: 'center',
-    },
     drag:{
       cursor: "move",
       zIndex: 999
@@ -241,5 +236,31 @@ const styles = (props) => StyleSheet.create({
     end: {
         cursor: "move",
         zIndex:999
-    }
+    },
+    fullPath: {
+        backgroundColor: '#ddd',
+        borderColor: '#dff',
+        borderWidth: 3,
+        borderRadius: 18,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: 4,
+        boxShadow: '-2px 2px 8px #9c9c9c',
+        width: 'fit-content',
+        height: 70
+      },
+      fullPathText: {
+        fontFamily: 'Geologica-Medium',
+        fontSize: 13,
+        width:'fit-content',
+        flex:1,
+        marginTop: 8,
+        paddingLeft:4,
+        paddingTop: 4,
+        borderRadius: 6,
+        backgroundColor: 'rgba(255, 255, 255, 1)',
+        height: 'fit-content',
+        whiteSpace: 'nowrap'
+      },
 })      

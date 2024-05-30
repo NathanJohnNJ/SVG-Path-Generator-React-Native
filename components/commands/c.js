@@ -1,13 +1,16 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import GridWithDrag from './gridWithDrag';
 import { StyleSheet, Text, View, Modal} from 'react-native';
 import React from 'react';
 import Tables from './tables';
+import Presets from '../presetPaths/oldC';
 
 const C = (props) => {
     const [modalIsOpen, setModalIsOpen] = useState(false);
     const [hover, setHover] = useState({sub: false, can: false, c: false, dx1:false, dy1: false, dx2: false, dy2: false, x: false, y:false});
+    
 
+    
     const startX = props.path[props.pathID].absX;
     const startY = props.path[props.pathID].absY;
 
@@ -24,14 +27,25 @@ const C = (props) => {
         props.setEndPoint({})
     }
     function hoverFunc(i){
+        if (i==='dx1'||i==='dy1'){
+            const newHover = { ...hover, dx1:true, dy1:true}
+            setHover(newHover)
+        }else if (i==='dx2'||i==='dy2'){
+            const newHover = { ...hover, dx2:true, dy2:true}
+            setHover(newHover)
+        }else if (i==='x'||i==='y'){
+            const newHover = { ...hover, x:true, y:true}
+            setHover(newHover)
+        }else{
         const newHover = { ...hover, [i]: true}
         setHover(newHover)
+        }
     }
     function resetHover(){
         setHover({sub: false, can: false, c: false, dx1:false, dy1: false, dx2: false, dy2: false, x: false, y:false})
     }
 
-    const defaultPath = {
+    const first = {
         type:'c',
         absType: 'C',
         id: props.pathID+1,
@@ -47,7 +61,7 @@ const C = (props) => {
         fullCommand: 'M50,50c25,50 75,50 100,0',
         fullAbsCommand: 'M50,50C75,100 125,100 150,50'
     }
-    
+    const [defaultPath, setDefaultPath] = useState(first)
     function addToPath(){
         const startX = props.path[props.pathID].absX;
         const startY = props.path[props.pathID].absY;
@@ -82,14 +96,16 @@ const C = (props) => {
             visible={modalIsOpen}
             onRequestClose={closeModal}
             >
-                <Text style={styles(props).title}>New C Command</Text>
-               
                 <View style={styles(props).row}>
-                    
-                    <View style={styles(props).container}>
-                        <GridWithDrag size="250" path={defaultPath} firstCtrl={props.firstCtrl} setFirstCtrl={props.setFirstCtrl} secondCtrl={props.secondCtrl} setSecondCtrl={props.setSecondCtrl} endPoint={props.endPoint} setEndPoint={props.setEndPoint} strokeWidth={props.strokeWidth} stroke={props.stroke} fill={props.fill} fillOpacity={props.fillOpacity} strokeOpacity={props.strokeOpacity} controlCol={props.controlCol} ctrlOpacity={props.ctrlOpacity} controlSize={props.controlSize} endCol={props.endCol} endOpacity={props.endOpacity} endSize={props.endSize} highlight={props.highlight} startX={startX} startY={startY} resetHover={resetHover} hoverFunc={hoverFunc}/>
+                   <Presets pathID={props.pathID} stroke={props.stroke} fill={props.fill} fillOpacity={props.fillOpacity} defaultPath={defaultPath} setDefaultPath={setDefaultPath} firstCtrl={props.firstCtrl} path={first} setFirstCtrl={props.setFirstCtrl} secondCtrl={props.secondCtrl} setSecondCtrl={props.setSecondCtrl} endPoint={props.endPoint} setEndPoint={props.setEndPoint} addToPath={addToPath} strokeWidth={props.strokeWidth} />
+                   <View style={styles(props).middleSection}>
+                   <View style={styles.titleContainer}>
+                    <Text style={styles(props).title}>New C Command</Text>
                     </View>
-                   
+                    <View style={styles(props).container}>
+                        <GridWithDrag size="250" path={first} firstCtrl={props.firstCtrl} setFirstCtrl={props.setFirstCtrl} secondCtrl={props.secondCtrl} setSecondCtrl={props.setSecondCtrl} endPoint={props.endPoint} setEndPoint={props.setEndPoint} strokeWidth={props.strokeWidth} stroke={props.stroke} fill={props.fill} fillOpacity={props.fillOpacity} strokeOpacity={props.strokeOpacity} controlCol={props.controlCol} ctrlOpacity={props.ctrlOpacity} controlSize={props.controlSize} endCol={props.endCol} endOpacity={props.endOpacity} endSize={props.endSize} highlight={props.highlight} startX={startX} startY={startY} resetHover={resetHover} hoverFunc={hoverFunc}/>
+                    </View>
+                   </View>
                     <View style={styles(props).container}>
                         <Tables firstCtrl={props.firstCtrl} setFirstCtrl={props.setFirstCtrl} secondCtrl={props.secondCtrl} setSecondCtrl={props.setSecondCtrl} endPoint={props.endPoint} setEndPoint={props.setEndPoint} controlCol={props.controlCol} ctrlOpacity={props.ctrlOpacity} controlSize={props.controlSize} endCol={props.endCol} endOpacity={props.endOpacity} endSize={props.endSize} highlight={props.highlight} startX={startX} startY={startY} resetHover={resetHover} hoverFunc={hoverFunc} hover={hover}/>
                     </View>
@@ -125,13 +141,28 @@ const styles = (props) => StyleSheet.create({
             display:'flex',
             flexDirection: "row",
             alignContent: 'center',
-            justifyContent: 'center'
+            justifyContent: 'center',
+            marginTop: 20
         },
+        middleSection: {
+            margin: 10,
+            width: 'fit-content'
+        },
+        titleContainer:{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            alignSelf: 'center',
+            justifyContent: 'center',
+            width: 'fit-content',
+            marginTop: 10
+          },
         title:{
-            fontFamily:'Quicksand-Bold',
-            fontSize: 30,
-            textAlign: 'center',
-            margin: 15
+            fontFamily: 'Geologica-Bold',
+            fontSize:30,
+            marginTop: 10,
+            textShadow: '-2px 2px 4px gray, 2px 2px 2px gray',
+            textAlign: 'center'
         },
         subCan: {
             flex: 1,
@@ -140,6 +171,7 @@ const styles = (props) => StyleSheet.create({
             justifyContent: 'space-around',
             alignSelf: 'center',
             marginTop: -150,
+            marginLeft: -75,
             width:350
           },
       button: {
@@ -258,5 +290,19 @@ const styles = (props) => StyleSheet.create({
         cursor: 'pointer',
         margin:5,
         textAlign: 'center'
-      }
+      },
+      defaultSection:{
+        width: 150,
+        backgroundColor: '#ddd',
+        borderColor: '#fdb',
+        borderWidth: 3,
+        borderRadius: 18,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: 22,
+        boxShadow: '-2px 2px 8px #9c9c9c',
+        margin: 8,
+        height: 450,
+    }
 })

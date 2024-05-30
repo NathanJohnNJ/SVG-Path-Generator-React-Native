@@ -4,6 +4,7 @@ import FieldSet from 'react-native-fieldset';
 import Q from '../commands/q';
 import C from '../commands/c';
 import Edit from '../edit';
+import Help from '../help';
 
 const SidePanel = (props) => {
     const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -53,6 +54,20 @@ const SidePanel = (props) => {
             </FieldSet>
         )
     }
+    function displayCtrlTables(){
+        if(props.info.type==='v'||props.info.type==='h'||props.info.type==='l'){
+            return(
+                <></>
+            )
+        }else {
+            return(
+                <View style={styles(props).tableSection}>
+                    <ControlTable />
+                </View>
+            )
+        }
+        
+    }
 
     return(
         <View style={styles(props).sidePanel}>
@@ -60,17 +75,15 @@ const SidePanel = (props) => {
                 <Text style={styles(props).modalTitle}>
                     More Info
                 </Text>
-                    <Edit info={props.info} setInfo={props.setInfo} path={props.path} setPath={props.setPath} relative={props.relative} pathID={props.pathID} setPathID={props.setPathID} stroke={props.stroke} strokeWidth={props.strokeWidth} strokeOpacity={props.strokeOpacity} fill={props.fill} fillOpacity={props.fillOpacity} firstCtrl={props.firstCtrl} setFirstCtrl={props.setFirstCtrl} secondCtrl={props.secondCtrl} setSecondCtrl={props.setSecondCtrl} endPoint={props.endPoint} setEndPoint={props.setEndPoint}/>
             </View>
+            
             <View style={styles(props).bottom}>
                 <View style={styles(props).changeSection}>
                     <Text style={styles(props).title}>Command: {props.info.type}</Text>
                 </View>
                 
                 <Text style={styles(props).title}>Path ID: {props.info.id}</Text>
-                <View style={styles(props).tableSection}>
-                    <ControlTable />
-                </View>
+                {displayCtrlTables()}
                 <View style={styles(props).tableSection}>
                     <FieldSet label="End Point" labelColor={props.endCol} labelStyle={styles(props).label} mainStyle={styles(props).fieldSet}>
                         <table style={styles(props).table}>
@@ -87,6 +100,10 @@ const SidePanel = (props) => {
                         </table>
                     </FieldSet>
                 </View>
+            </View>
+            <View style={styles(props).editHelp}>
+                    <Edit info={props.info} setInfo={props.setInfo} path={props.path} setPath={props.setPath} relative={props.relative} pathID={props.pathID} setPathID={props.setPathID} stroke={props.stroke} strokeWidth={props.strokeWidth} strokeOpacity={props.strokeOpacity} fill={props.fill} fillOpacity={props.fillOpacity} firstCtrl={props.firstCtrl} setFirstCtrl={props.setFirstCtrl} secondCtrl={props.secondCtrl} setSecondCtrl={props.setSecondCtrl} endPoint={props.endPoint} setEndPoint={props.setEndPoint}/>
+                    <Help />
             </View>
             <Modal
             animationType="slide"
@@ -137,7 +154,14 @@ const styles = (props) => StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-around',
-        marginTop: -60
+        marginTop: -15
+    },
+    editHelp: {
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-around',
+        marginTop: 15
     },
     titleSection: {
         display: 'flex',
@@ -152,8 +176,10 @@ const styles = (props) => StyleSheet.create({
     modalTitle: {
         fontFamily: 'Quicksand-Bold',
         fontSize: 25,
-        marginTop: -20,
         textShadow: '-1px 1px 2px gray, 1px 1px 1px gray',
+        whiteSpace: 'nowrap',
+        textAlign: 'center',
+        marginTop: -70
     },
     gridAndTables: {
         display: 'flex',

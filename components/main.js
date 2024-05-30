@@ -63,7 +63,7 @@ const Main = (props) => {
                   <CommandPanel path={path} setPath={setPath} stroke={props.stroke} strokeWidth={props.strokeWidth} strokeOpacity={props.strokeOpacity} fill={props.fill} fillOpacity={props.fillOpacity} pathID={pathID} setPathID={setPathID} info={info} setInfo={setInfo} setEndPoint={setEndPoint} setFirstCtrl={setFirstCtrl} setSecondCtrl={setSecondCtrl} endPoint={endPoint} firstCtrl={firstCtrl} secondCtrl={secondCtrl} controlCol={props.controlCol} ctrlOpacity={props.ctrlOpacity} controlSize={props.controlSize} endCol={props.endCol} endOpacity={props.endOpacity} endSize={props.endSize} highlight={props.highlight}  />
                 </View>
                 <View style={styles(props).container}>
-                  <Grid size="450" id="grid" children={<PathFromArray path={path} stroke={props.stroke} strokeWidth={props.strokeWidth} strokeOpacity={props.strokeOpacity} fill={props.fill} fillOpacity={props.fillOpacity} setInfo={setInfo} setEndPoint={setEndPoint} setFirstCtrl={setFirstCtrl} setSecondCtrl={setSecondCtrl} controlCol={props.controlCol} ctrlOpacity={props.ctrlOpacity} controlSize={props.controlSize} endCol={props.endCol} endOpacity={props.endOpacity} endSize={props.endSize} highlight={props.highlight}/>} />
+                  <Grid size="450" mainWidth="530" id="grid" children={<PathFromArray path={path} stroke={props.stroke} strokeWidth={props.strokeWidth} strokeOpacity={props.strokeOpacity} fill={props.fill} fillOpacity={props.fillOpacity} setInfo={setInfo} setEndPoint={setEndPoint} setFirstCtrl={setFirstCtrl} setSecondCtrl={setSecondCtrl} controlCol={props.controlCol} ctrlOpacity={props.ctrlOpacity} controlSize={props.controlSize} endCol={props.endCol} endOpacity={props.endOpacity} endSize={props.endSize} highlight={props.highlight}/>} />
                   
                   {/* <Grid size="450" id="grid" children={<Path path={path} stroke={props.stroke} strokeWidth={props.strokeWidth} strokeOpacity={props.strokeOpacity} fill={props.fill} fillOpacity={props.fillOpacity} setInfo={setInfo} setEndPoint={setEndPoint} setFirstCtrl={setFirstCtrl} setSecondCtrl={setSecondCtrl} controlCol={props.controlCol} ctrlOpacity={props.ctrlOpacity} controlSize={props.controlSize} endCol={props.endCol} endOpacity={props.endOpacity} endSize={props.endSize} highlight={props.highlight} showNodes={showNodes}/>} />                   */}
                   <View style={styles(props).fullPath}>
@@ -119,13 +119,13 @@ const styles = (props) => StyleSheet.create({
       alignSelf: 'center',
       justifyContent: 'center',
       width: 'fit-content',
-      textShadow: '-2px 2px 4px gray, 2px 2px 2px gray',
       marginTop: 10
     },
     title:{
       fontFamily: 'Geologica-Bold',
       fontSize:36,
-      marginTop: -20
+      marginTop: -20,
+      textShadow: '-2px 2px 4px gray, 2px 2px 2px gray',
     },
     gridArea:{
       marginTop: -5
@@ -140,11 +140,10 @@ const styles = (props) => StyleSheet.create({
       justifyContent: 'center',
       padding: 4,
       boxShadow: '-2px 2px 8px #9c9c9c',
-      // margin: 10,
       position: 'absolute',
       bottom: 8 ,
       left: 10,
-      width: 795,
+      width: 745,
       height: 80
     },
     fullPathText: {
