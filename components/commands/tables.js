@@ -5,8 +5,6 @@ import FieldSet from 'react-native-fieldset';
 
 
 const Tables = (props) => {
-    const [hover, setHover] = useState({dx1: false, dy1:false, dx2:false, dy2:false, x: false, y: false})
-
     const ControlTable = () => {
         let controlPoints = [];
         props.secondCtrl
@@ -15,7 +13,6 @@ const Tables = (props) => {
         :
         controlPoints = [{key: 'dx1', value:`${props.firstCtrl.x}`}, {key: 'dy1', value:`${props.firstCtrl.y}`}];
         let headerArr = [];
-        let dataArr = [];
         controlPoints.map((point, i) =>{
             headerArr.push(point.key)
         })

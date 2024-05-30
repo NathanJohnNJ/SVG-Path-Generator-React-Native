@@ -49,8 +49,9 @@ const styles = (props) => StyleSheet.create({
     title: {
         fontFamily: 'Quicksand-Bold',
         fontSize: 20,
-        marginBottom: 15,
-        marginTop: -20
+        textShadow: '-1px 1px 2px gray, 1px 1px 1px gray',
+        marginBottom: 20,
+        marginTop: -30
     },
     top: {
         display: 'flex',

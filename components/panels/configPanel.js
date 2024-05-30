@@ -300,7 +300,7 @@ const ConfigPanel = (props) => {
 
                 {/****** CONTROL SECTION ******/}
             <View style={styles(props).strokeSection}>
-                    <FieldSet label="Control Points" labelColor={props.stroke} labelStyle={styles(props).sectionTitle} mainStyle={styles(props).fieldSet}>
+                    <FieldSet label="Control Points" labelColor={props.controlCol} labelStyle={styles(props).sectionTitle} mainStyle={styles(props).fieldSet}>
                     {
                     showControl
                     ?
@@ -368,7 +368,7 @@ const ConfigPanel = (props) => {
                     <View style={styles(props).bottom}>
                 {/****** END POINT SECTION ******/}
                 <View style={styles(props).strokeSection}>
-                    <FieldSet label="End Points" labelColor={props.endPointCol} labelStyle={styles(props).sectionTitle} mainStyle={styles(props).fieldSet}>
+                    <FieldSet label="End Points" labelColor={props.endCol} labelStyle={styles(props).sectionTitle} mainStyle={styles(props).fieldSet}>
                     {
                         showEndPoints
                         ?
@@ -482,7 +482,7 @@ const styles = (props) => StyleSheet.create({
         padding: 1
     },
     opacity: {
-        width: 25,
+        width: 35,
         textAlign: 'center'
     },
     configPanel:{
@@ -505,7 +505,8 @@ const styles = (props) => StyleSheet.create({
     },
     title: {
         fontFamily: 'Quicksand-Bold',
-        fontSize: 18.5,
+        fontSize: 20,
+        textShadow: '-1px 1px 2px gray, 1px 1px 1px gray',
         marginBottom: 15,
         marginTop: -20
     },

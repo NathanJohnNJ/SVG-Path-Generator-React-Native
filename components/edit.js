@@ -2,7 +2,7 @@ import { StyleSheet, View, Modal, Pressable, Text } from 'react-native';
 import { useState } from 'react';
 import FieldSet from 'react-native-fieldset';
 import GridWithDrag from './commands/gridWithDrag';
-import Change from './change';
+// import Change from './change';
 
 
 const Edit = (props) => {
@@ -65,7 +65,7 @@ const Edit = (props) => {
                         <Text style={styles(props).title}>
                             Command: {props.info.type}
                         </Text>
-                        <Change relative={props.relative} path={props.path} setPath={props.setPath} pathID={props.pathID} setPathID={props.setPathID} startPoints={props.startPoints} setStartPoints={props.setStartPoints} stroke={props.stroke} strokeWidth={props.strokeWidth} strokeOpacity={props.strokeOpacity} fill={props.fill} fillOpacity={props.fillOpacity} iinfo={props.info} setInfo={props.setInfo} endPoint={props.endPoint} setEndPoint={props.setEndPoint} firstCtrl={props.firstCtrl} setFirstCtrl={props.setFirstCtrl} secondCtrl={props.secondCtrl} setSecondCtrl={props.setSecondCtrl} />
+                        {/* <Change relative={props.relative} path={props.path} setPath={props.setPath} pathID={props.pathID} setPathID={props.setPathID} startPoints={props.startPoints} setStartPoints={props.setStartPoints} stroke={props.stroke} strokeWidth={props.strokeWidth} strokeOpacity={props.strokeOpacity} fill={props.fill} fillOpacity={props.fillOpacity} iinfo={props.info} setInfo={props.setInfo} endPoint={props.endPoint} setEndPoint={props.setEndPoint} firstCtrl={props.firstCtrl} setFirstCtrl={props.setFirstCtrl} secondCtrl={props.secondCtrl} setSecondCtrl={props.setSecondCtrl} /> */}
                     </View>
                     <View style={styles(props).gridAndTables}>
                         <View style={styles(props).gridSection}>
@@ -203,8 +203,8 @@ const styles = (props) => StyleSheet.create({
         borderRadius: 6,
         padding: 5,
         margin: 5,
-        marginLeft: 20,
-        marginBottom: 15,
+        marginLeft: 30,
+        marginRight: -4,
         textAlign: 'center',
       },
     hover: {
@@ -224,7 +224,8 @@ const styles = (props) => StyleSheet.create({
         textAlign: 'center',
         padding: 5,
         margin: 5,
-        marginLeft: 10,
+        marginLeft: 30,
+        marginRight: -4,
         color:'#ffffff',
         fontFamily: 'Quicksand-Medium',
       },
