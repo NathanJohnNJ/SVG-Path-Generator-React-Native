@@ -105,6 +105,8 @@ const GridWithDrag = (props) => {
             currentPath.setAttributeNS(null, 'd', `M50,100v${props.endPoint.y}`)
         }else if(props.path.absType==='H'){
             currentPath.setAttributeNS(null, 'd', `M50,100h${props.endPoint.x}`)
+        }else if(props.path.absType==='T'){
+            currentPath.setAttributeNS(null, 'd', `M50,100t${props.endPoint.x},${props.endPoint.y}`)
         }
         grid.appendChild(currentPath)
     }
@@ -134,6 +136,23 @@ const GridWithDrag = (props) => {
                 <View style={styles(props).fullPath}>
                     <Text style={styles(props).fullPathText}>Relative Command: "q{props.firstCtrl.x},{props.firstCtrl.y} {props.endPoint.x},{props.endPoint.y}"</Text>
                     <Text style={styles(props).fullPathText}>Absolute Command: "Q{props.firstCtrl.x+props.startX},{props.firstCtrl.y+props.startY} {props.endPoint.x+props.startX},{props.endPoint.y+props.startY}"</Text>
+                </View>
+            </View>
+        )
+    }else if(props.path.absType==='T'){
+        const title = `End Point: ${props.endPoint.x},${props.endPoint.y}`
+        return(
+            <View style={styles(props).container}>
+                <Grid id='createGrid' size={props.size} viewBox={viewbox} onMouseMove={(evt) => drag(evt)} onMouseLeave={endDrag} >
+                    <circle className="draggable" id="endPoint" cx={props.endPoint.x+50} cy={props.endPoint.y+100} onMouseDown={(evt) => startDrag(evt)}  onMouseUp={endDrag} style={styles(props).end} fill={props.endCol} fillOpacity={props.endOpacity} r={props.endSize} >
+                        <title>
+                            {title}
+                        </title>
+                    </circle>   
+                </Grid>
+                <View style={styles(props).fullPath}>
+                    <Text style={styles(props).fullPathText}>Relative Command: "t{props.endPoint.x},{props.endPoint.y}"</Text>
+                    <Text style={styles(props).fullPathText}>Absolute Command: "T{props.endPoint.x+props.startX},{props.endPoint.y+props.startY}"</Text>
                 </View>
             </View>
         )

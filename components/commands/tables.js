@@ -61,7 +61,14 @@ const Tables = (props) => {
     }
     return(
         <View style={styles(props).mainContainer}>
+            {
+            props.firstCtrl
+            ?
             <ControlTable />
+            :
+            <></>    
+        }
+            
             <View style={styles(props).tableContainer}>
                 <FieldSet label="End Point" labelColor={props.endCol} labelStyle={styles(props).label} mainStyle={styles(props).fieldSet}>
                     <table style={styles(props).table}>

@@ -7,7 +7,7 @@ const ConfigPanel = (props) => {
     const [modalIsOpen, setModalIsOpen] = useState(false);
     const [modalTitle, setModalTitle] = useState('');
     const [attributeToChange, setAttributeToChange] = useState();
-    const [hover, setHover] = useState({x: false, change: false, edit: false});
+    const [hover, setHover] = useState({x: false, change: false, edit: false, can: false});
     const [showStroke, setShowStroke] = useState(false);
     const [showFill, setShowFill] = useState(false);
     const [showControl, setShowControl] = useState(false);
@@ -42,7 +42,7 @@ const ConfigPanel = (props) => {
         setHover(newHover)
     }
     function resetHover(){
-        setHover({x: false, change: false, edit: false})
+        setHover({x: false, change: false, edit: false, can: false})
     }
     function openModal(title){
         setModalIsOpen(true)
@@ -68,7 +68,21 @@ const ConfigPanel = (props) => {
         } else if (attributeToChange==='Highlight'){
             props.setHighlight(hex)
       }
-}
+    }
+    function reset(){
+        props.setStrokeWidth(3);
+        props.setStroke('#444');
+        props.setFill('#000');
+        props.setStrokeOpacity(1.0);
+        props.setFillOpacity(0);
+        props.setControlCol('#00f');
+        props.setCtrlOpacity(0.9);
+        props.setControlSize(5);
+        props.setEndCol('#f00');
+        props.setEndOpacity(0.9);
+        props.setEndSize(5);
+        props.setHighlight('#00eeff');
+    }
 
     function up(){
         if(props.strokeOpacity<1){
@@ -173,6 +187,8 @@ const ConfigPanel = (props) => {
                 <Text style={styles(props).title}>
                     Styles
                 </Text>
+                <View style={styles(props).panelContent}>
+                <View style={styles(props).all}>
             {/* ******** FIRST ROW ******** */}
             <View style={styles(props).bottom}>
 
@@ -411,8 +427,6 @@ const ConfigPanel = (props) => {
                             source={require('../images/up.svg')} />
                         </Pressable>
                     </View>
-
-
                     <View>
                         <Pressable style={styles(props).upDown} onPress={() => setShowEndPoints(showEndPoints => !showEndPoints)}>
                             <Image
@@ -434,7 +448,12 @@ const ConfigPanel = (props) => {
                     </View>
                     {/****** END OF END POINT SECTION ******/}
             </View>
-                    {/****** END OF SECOND ROW ******/}
+                    {/****** END OF FOURTH ROW ******/}
+            </View>
+            <Pressable style={hover.can?styles(props).cancelHover:styles(props).cancel} onPress={reset} onMouseOver={() => hoverFunc('can')} onMouseLeave={resetHover}>
+                <Text style={hover.can?styles(props).cancelHoverText:styles(props).cancelText} onMouseOver={() => hoverFunc('can')} onMouseLeave={resetHover}>RESET</Text>
+            </Pressable>
+            </View>
             <Modal
             animationType="slide"
             transparent={true}
@@ -493,26 +512,34 @@ const styles = (props) => StyleSheet.create({
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        padding: 30,
+        padding: 20,
         boxShadow: '-2px 2px 8px #9c9c9c',
-        margin: 8,    
-        height: 460,
+        margin: 10,    
+        height: 490,
         width: 200                                           
     },
     titleSection: {
         display: 'flex',
         flexDirection: 'row',
+        marginTop: 15,
     },
     title: {
         fontFamily: 'Quicksand-Bold',
-        fontSize: 20,
+        fontSize: 25,
         textShadow: '-1px 1px 2px gray, 1px 1px 1px gray',
         marginBottom: 15,
-        marginTop: -20
     },
     bottom: {
         display: 'flex',
-        flexDirection: 'row'
+        flexDirection: 'row',  
+    },
+    all:{
+        marginTop: -10,
+    },
+    panelContent:{
+        display: 'flex',
+        flexDirection: 'column',
+        justifyItems: 'space-between'
     },
     modalTitle: {
         fontFamily: 'Quicksand-Bold',
@@ -622,4 +649,45 @@ const styles = (props) => StyleSheet.create({
         color:'#fff',
         textShadow: '-1px 1px 1px #fff',
     },
+    cancel: {
+        display:'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        width:'fit-content',
+        height:25,
+        padding:3,
+        backgroundColor: '#6c6c6c',
+        borderColor: '#681402',
+        borderWidth: 2,
+        borderRadius: 6,
+        margin:5,
+      },
+      cancelText: {
+        color:'#681402',
+        textShadow: '-1px 1px 1px #681402',
+        fontFamily: 'Quicksand-Regular',
+        fontSize: 18,
+        textAlign: 'center',
+      },
+      cancelHover: {
+        display:'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        width:'fit-content',
+        height:25,
+        padding:3,
+        borderColor: '#fff',
+        borderWidth: 2,
+        borderRadius: 6,
+        backgroundColor: '#681402',
+        cursor: 'pointer',
+        margin:5,
+      },
+      cancelHoverText:{
+        color:'#fff',
+        textShadow: '-1px 1px 1px #fff',
+        fontFamily: 'Quicksand-Medium',
+        fontSize: 18,
+        textAlign: 'center',
+      }
 })

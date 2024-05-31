@@ -1,13 +1,13 @@
 To Do:
   - Add A command
-  - Add S and C commands
+  - Add S and T commands
   - Add Z command
   - Add links to help pages > make a component that takes an argument of type, can be placed on the main page for general docs and then each commands page to link to their respective sections in the docs. - Tried to add to side panel initially but the link isn't going to the right place - more research needed.
   - Finish functionality of edit modal
   - Add functionality to change command component
   - Add branding and link to njtd.xyz
   - Add opening animation 
-  - Record video introducing and demonstrating the appendChild
+  - Record video introducing and demonstrating the app
   - Add output options
   - Different default options for each command
   - Align command modal styles to new design on Q component

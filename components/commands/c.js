@@ -9,8 +9,6 @@ const C = (props) => {
     const [modalIsOpen, setModalIsOpen] = useState(false);
     const [hover, setHover] = useState({sub: false, can: false, c: false, dx1:false, dy1: false, dx2: false, dy2: false, x: false, y:false});
     
-
-    
     const startX = props.path[props.pathID].absX;
     const startY = props.path[props.pathID].absY;
 
@@ -191,7 +189,7 @@ const styles = (props) => StyleSheet.create({
         borderRadius: 6,
         margin: 5,
         textAlign: 'center',
-        paddingBottom: 3,
+        paddingBottom: 1,
       },
       hover: {
         display:'flex',
@@ -208,7 +206,7 @@ const styles = (props) => StyleSheet.create({
         fontSize: 18,
         cursor: 'pointer',
         textAlign: 'center',
-        paddingBottom: 5,
+        paddingBottom: 1,
         margin: 5,   
         color:'#ffffff',
         fontFamily: 'Quicksand-Medium',
