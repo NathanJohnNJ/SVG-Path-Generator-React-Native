@@ -7,7 +7,7 @@ A few weeks ago I was playing around with my logo for my [portfolio site](https:
 I then had a look at the [MDN documentation for SVG's](https://developer.mozilla.org/en-US/docs/Web/SVG) to learn about the different commands available to a path element, before heading over to [W3Schools](https://www.w3schools.com/graphics/svg_path.asp) try my hand at coding some paths. Whilst I gained an understanding quite quickly, and have managed to produce a 'nearly there' version of my logo, I really wished there was a better tool out there for editing/creating SVG path's.
 
 ### SVG logo attempt
-![The logo I created](https://github.com/NathanJohnNJ/SVG-Path-Generator-React-Native/blob/main/assets/icon.svg?raw=true)
+![The logo I created](https://github.com/NathanJohnNJ/SVG-Path-Generator-React-Native/blob/main/assets/logo.svg?raw=true)
 
 ### Backdrop Build v4
 After trying a few of the more popular offerings for SVG editors, I felt that none of them were giving me the flexibility I wanted, at least not without having to pay for additional services. Then I heard about [Backdrop Build](https://backdropbuild.com) and was invited to join the latest build which was only a couple of weeks away. The build ran for 4 weeks, which have absolutely flown by, and that brings us to today, where I have a very 'early-stage' MVP ready to launch and to share with the world.
