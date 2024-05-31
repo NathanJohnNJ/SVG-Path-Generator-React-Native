@@ -6,68 +6,60 @@ import Grid from "../grid";
 const Presets = (props) => {
 
     const first = {
-        type: 'q',
-        absType: 'Q',
+        type: 't',
+        absType: 'T',
         id: props.pathID+1,
         absX: 100,
         absY: 50,
         startPoint: {x: 50, y: 50},
-        controlPoints: [{key: 'dx1', value:25}, {key: 'dy1', value:50}],
-        absControlPoints: [{key: 'dx1', value:75}, {key: 'dy1', value:100}],
         endPoint: {x:50, y: 0},
         absEndPoint: {x: 100, y: 50},
-        command: 'q25,50 50,0',
-        absCommand: 'Q75,100 100,50',
-        fullCommand: 'M50,50q25,50 50,0',
-        fullAbsCommand: 'M50,50Q75,100 100,50'
+        command: 't50,0',
+        absCommand: 'T100,50',
+        fullCommand: 'M50,50t50,0',
+        fullAbsCommand: 'M50,50T100,50'
     }
     const second = {
-        type: 'q',
-        absType: 'Q',
-        id: props.pathID+1,
-        absX: 100,
-        absY: 50,
-        startPoint: {x: 50, y: 50},
-        controlPoints: [{key: 'dx1', value:25}, {key: 'dy1', value:-50}],
-        absControlPoints: [{key: 'dx1', value:75}, {key: 'dy1', value:0}],
-        endPoint: {x:50, y: 0},
-        absEndPoint: {x: 100, y: 50},
-        command: 'q25,-50 50,0',
-        absCommand: 'Q75,0 100,50',
-        fullCommand: 'M50,50q25,-50 50,0',
-        fullAbsCommand: 'M50,50Q75,0 100,50'
-    }
-    const third = {
-        type: 'q',
-        absType: 'Q',
-        id: props.pathID+1,
-        absX: 50,
-        absY: 100,
-        startPoint: {x: 50, y: 50},
-        controlPoints: [{key: 'dx1', value:50}, {key: 'dy1', value:-25}],
-        absControlPoints: [{key: 'dx1', value:100}, {key: 'dy1', value:25}],
-        endPoint: {x:0, y: 50},
-        absEndPoint: {x: 50, y: 100},
-        command: 'q50,-25 0,50',
-        absCommand: 'Q100,25 50,100',
-        fullCommand: 'M50,50q50,-25 0,50',
-        fullAbsCommand: 'M50,50Q100,25 50,100'
-    }
-    const fourth = {
-        type: 'q',
-        absType: 'Q',
+        type: 't',
+        absType: 'T',
         id: props.pathID+1,
         absX: 75,
         absY: 150,
         startPoint: {x: 50, y: 50},
-        controlPoints: [{key: 'dx1', value:-50}, {key: 'dy1', value:-50}],
-        absControlPoints: [{key: 'dx1', value:75}, {key: 'dy1', value:100}],
         endPoint: {x:25, y: 100},
         absEndPoint: {x: 75, y: 150},
-        command: 'q-50,-50 25,100',
-        absCommand: 'Q0,0 75,150',
-        fullCommand: 'M50,50q-50,-50 25,100',
-        fullAbsCommand: 'M50,50Q0,0 75,150'
+        command: 't25,100',
+        absCommand: 'T75,150',
+        fullCommand: 'M50,50t25,100',
+        fullAbsCommand: 'M50,50T75,150'
+    }
+    const third = {
+        type: 't',
+        absType: 'T',
+        id: props.pathID+1,
+        absX: 50,
+        absY: 100,
+        startPoint: {x: 50, y: 50},
+        endPoint: {x:0, y: 50},
+        absEndPoint: {x: 50, y: 100},
+        command: 't0,50',
+        absCommand: 'T50,100',
+        fullCommand: 'M50,50t0,50',
+        fullAbsCommand: 'M50,50T50,100'
+    }
+    const fourth = {
+        type: 't',
+        absType: 'T',
+        id: props.pathID+1,
+        absX: 100,
+        absY: 50,
+        startPoint: {x: 50, y: 50},
+        endPoint: {x:50, y: 0},
+        absEndPoint: {x: 100, y: 50},
+        command: 't25,-50',
+        absCommand: 'T100,50',
+        fullCommand: 'M50,50t50,0',
+        fullAbsCommand: 'M50,50T100,50'
     }
     const presetArray = [first, second, third, fourth]
     // const [defaultPath, setDefaultPath] = useState(firstDefault)

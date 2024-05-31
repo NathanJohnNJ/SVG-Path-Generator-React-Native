@@ -6,6 +6,7 @@ import C from '../commands/c';
 import Edit from '../edit';
 import Help from '../help';
 
+
 const SidePanel = (props) => {
     const [modalIsOpen, setModalIsOpen] = useState(false);
     const [hover, setHover] = useState({x: false, change: false});
@@ -42,10 +43,23 @@ const SidePanel = (props) => {
                                 )
                             })}
                         </tr>
+                        <tr style={styles(props).trWide}> 
+                                    <th style={styles(props).ctrlWide}>Relative</th>
+                                </tr>
                         <tr style={styles(props).tr}>
                             {dataArr.map((data, i) => {
                                 return(
                                     <td style={styles(props).td} key={i}>{data}</td>
+                                )
+                            })}
+                        </tr>
+                        <tr style={styles(props).trWide}> 
+                                    <th style={styles(props).ctrlWide}>Absolute</th>
+                                </tr>
+                        <tr style={styles(props).tr}>
+                            {props.info.absControlPoints.map((point, i) => {
+                                return(
+                                    <td style={(hover[point.key])?styles(props).hoverTd:styles(props).td} key={i} onMouseEnter={()=>props.hoverFunc(point.key)} onMouseLeave={resetHover}>{point.value}</td>
                                 )
                             })}
                         </tr>
@@ -78,27 +92,37 @@ const SidePanel = (props) => {
             </View>
             
             <View style={styles(props).bottom}>
-                <View style={styles(props).changeSection}>
                     <Text style={styles(props).title}>Command: {props.info.type}</Text>
-                </View>
                 
                 <Text style={styles(props).title}>Path ID: {props.info.id}</Text>
+                <View style={styles(props).mainTables}>
                 {displayCtrlTables()}
                 <View style={styles(props).tableSection}>
-                    <FieldSet label="End Point" labelColor={props.endCol} labelStyle={styles(props).label} mainStyle={styles(props).fieldSet}>
-                        <table style={styles(props).table}>
-                            <tbody style={styles(props).tbody}>
-                                <tr style={styles(props).tr}>
-                                    <th style={styles(props).th}>x</th>
-                                    <th style={styles(props).th}>y</th>
+                <FieldSet label="End Point" labelColor={props.endCol} labelStyle={styles(props).label} mainStyle={styles(props).fieldSet}>
+                    <table style={styles(props).table}>
+                        <tbody style={styles(props).tbody}>
+                            <tr style={styles(props).tr}> 
+                                <th style={styles(props).endTh}>x</th>
+                                <th style={styles(props).endTh}>y</th>
+                            </tr>
+                            <tr style={styles(props).trWide}> 
+                                    <th style={styles(props).thWide}>Relative</th>
                                 </tr>
-                                <tr style={styles(props).tr}>
-                                    <td style={styles(props).end}>{props.info.endPoint.x}</td>
-                                    <td style={styles(props).end}>{props.info.endPoint.y}</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </FieldSet>
+                            <tr style={styles(props).tr}>
+                                <td style={hover.x?styles(props).hoverEnd:styles(props).end} onMouseEnter={()=>{hoverFunc('x')}} onMouseLeave={props.resetHover}>{props.info.endPoint.x}</td>
+                                <td style={hover.y?styles(props).hoverEnd:styles(props).end} onMouseEnter={()=>{hoverFunc('y')}} onMouseLeave={props.resetHover}>{props.info.endPoint.y}</td>
+                            </tr>
+                            <tr style={styles(props).trWide}> 
+                                <th style={styles(props).thWide}>Absolute</th>
+                            </tr>
+                            <tr style={styles(props).tr}>
+                                <td style={hover.x?styles(props).hoverEnd:styles(props).end} onMouseEnter={()=>{hoverFunc('x')}} onMouseLeave={props.resetHover}>{props.info.absEndPoint.x}</td>
+                                <td style={hover.y?styles(props).hoverEnd:styles(props).end} onMouseEnter={()=>{hoverFunc('y')}} onMouseLeave={props.resetHover}>{props.info.absEndPoint.y}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </FieldSet>
+                </View>
                 </View>
             </View>
             <View style={styles(props).editHelp}>
@@ -136,7 +160,7 @@ export default SidePanel;
 
 const styles = (props) => StyleSheet.create({
     sidePanel:{
-        backgroundColor: '#ddd',
+        backgroundColor: '#eee',
         borderColor: '#fdb',
         borderWidth: 3,
         borderRadius: 18,
@@ -145,9 +169,9 @@ const styles = (props) => StyleSheet.create({
         justifyContent: 'center',
         padding: 22,
         boxShadow: '-2px 2px 8px #9c9c9c',
-        margin: 6,
-        height: 485,
-        width: 245  
+        margin: 10,
+        height: 400,
+        width: 360  
     },
     top: {
         display: 'flex',
@@ -161,7 +185,6 @@ const styles = (props) => StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-around',
-        marginTop: 15
     },
     titleSection: {
         display: 'flex',
@@ -171,8 +194,15 @@ const styles = (props) => StyleSheet.create({
         fontFamily: 'Quicksand-Bold',
         fontSize: 17.5,
         marginTop: -5,
-        marginBottom: 5
+        marginBottom: 5,
+        textAlign: 'center'
     },
+    mainTables:{
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center'
+        },
     modalTitle: {
         fontFamily: 'Quicksand-Bold',
         fontSize: 25,
@@ -202,7 +232,7 @@ const styles = (props) => StyleSheet.create({
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        height:25,
+        height:20,
         width: 'fit-content',
         color:'#4e4e4e',
         backgroundColor: '#6c6c6c',
@@ -222,7 +252,7 @@ const styles = (props) => StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         width:'fit-content',
-        height:25,
+        height:20,
         backgroundColor: '#4e4e4e',
         borderColor: '#fff',
         borderWidth: 2,
@@ -236,13 +266,13 @@ const styles = (props) => StyleSheet.create({
     buttonText: {
         textAlign: 'center',
         fontFamily: 'Quicksand-Regular',
-        fontSize: 18,
+        fontSize: 16,
         color:'#4e4e4e',
     },
     textHover: {
         textAlign: 'center',
         fontFamily: 'Quicksand-Medium',
-        fontSize: 18,
+        fontSize: 16,
         color:'#ffffff',
     },
     close: {
@@ -250,7 +280,7 @@ const styles = (props) => StyleSheet.create({
       flexDirection: 'column',
       alignItems: 'center',
       justifyContent: 'center',
-      height:25,
+      height:20,
       width: 'fit-content',
       backgroundColor: '#6c6c6c',
       borderRadius: 6,
@@ -260,7 +290,7 @@ const styles = (props) => StyleSheet.create({
       borderWidth: 2,
       textAlign: 'center',
       fontFamily: 'Quicksand-Regular',
-      fontSize: 18,
+      fontSize: 17,
       color:'#681402',
     },
   closeHover: {
@@ -294,11 +324,11 @@ const styles = (props) => StyleSheet.create({
         textShadow: '-1px 1px 1px #fff',
     },
     tableSection: {
-        margin: 10
+        margin: 2
     },
     fieldSet:{
-        backgroundColor: '#a2a2a2',
-        height: 80,
+        backgroundColor: '#ddd',
+        height:50,
         width: 'fit-content',
         display: 'flex',
         flexDirection: 'column',
@@ -308,28 +338,26 @@ const styles = (props) => StyleSheet.create({
     },
     label: {
         fontFamily: 'Quicksand-Bold',
-        fontSize: 17,
+        fontSize: 15.5,
         backgroundColor: 'rgba(255, 255, 255, 0.9)',
         borderRadius: 6,
-        marginBottom: 10,
     },
     table: {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
         color: '#fff',
-        flex:1
+        borderRadius: 6,
     },
     tbody:{
-        flex:1,
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
     },
     tr: {
-        flex: 1,
         display: 'flex',
+        flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
     },
@@ -340,42 +368,126 @@ const styles = (props) => StyleSheet.create({
         border: '1.8px solid black',
         borderRadius: 5,
         fontFamily: 'Quicksand-Medium',
-        fontSize: 18,
+        fontSize: 15,
+        width: 40,
+        height: 20,
+        marginTop: 5,
+        padding:2,
+        backgroundColor: props.controlCol,
+    },
+    
+    endTh: {
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        border: '1.8px solid black',
+        borderRadius: 5,
+        fontFamily: 'Quicksand-Medium',
+        fontSize: 15,
         flex:1,
         width: 40,
-        height: 25,
-        padding:2
+        height: 20,
+        marginTop: 5,
+        padding:2,
+        backgroundColor: props.endCol,
     },
     td: {
         display: 'flex',
+        flexDirection:'column',
         alignItems: 'center',
         justifyContent: 'center',
         textAlign: 'center',
         border: '1.5px dashed grey',
         borderRadius: 5,
         fontFamily: 'Quicksand-Regular',
-        fontSize: 18,
-        color: '#12f',
+        fontSize: 15,
+        color: props.controlCol,
+        // flex:1,
+        width: 40,
+        height: 20,
+        padding: 2
+    },
+    hoverTd: {
+        display: 'flex',
+        flexDirection:'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        textAlign: 'center',
+        border: '1.5px dashed grey',
+        borderRadius: 5,
+        fontFamily: 'Quicksand-Bold',
+        fontSize: 14,
+        color: props.controlCol,
         flex:1,
         width: 40,
-        height: 25,
-        padding:2,
-        margin:1
+        height: 20,
+        padding: 2
     },
-    end: {
+    trWide:{
+        // flex: 1,
+        display: 'flex',
+        marginTop:2.5
+    },
+    thWide: {
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      border: '1.8px solid black',
+      borderRadius: 5,
+      fontFamily: 'Quicksand-Bold',
+      fontSize: 14,
+    //   flex:1,
+      width: 80,
+      height: 20,
+      marginTop: 0.5,
+      padding:2,
+      backgroundColor: props.endCol,
+    },
+    ctrlWide: {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
+        border: '1.8px solid black',
+        borderRadius: 5,
+        fontFamily: 'Quicksand-Bold',
+        fontSize: 14,
+        flex:1,
+        width: 80,
+        height: 20,
+        marginTop: 1,
+        padding:2,
+        backgroundColor: props.controlCol,
+      },
+    end: {
+        display: 'flex',
+        flexDirection:'column',
+        alignItems: 'center',
+        justifyContent: 'center',
         textAlign: 'center',
         border: '1.5px dashed grey',
         borderRadius: 5,
         fontFamily: 'Quicksand-Regular',
-        fontSize: 18,
-        color: '#f00',
+        fontSize: 15,
+        color: props.endCol,
+        // flex:1,
+        width: 40,
+        height: 20,
+        padding: 2
+    },
+    hoverEnd: {
+        display: 'flex',
+        flexDirection:'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        textAlign: 'center',
+        border: '1.5px dashed grey',
+        borderRadius: 5,
+        fontFamily: 'Quicksand-Bold',
+        fontSize: 15,
+        color: props.endCol,
         flex:1,
         width: 40,
-        height: 25,
-        padding: 2,
-        margin: 1
+        height: 20,
+        padding: 2
     },
 })

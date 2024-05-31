@@ -3,17 +3,17 @@ import React, {useCallback, useState} from 'react';
 
 const OpenURLButton = (url) => {
   const [hover, setHover] = useState(false);
-    const handlePress = useCallback( async ()=> {
-        await Linking.openURL(url)
-    }, [url])
     return( 
-    <Pressable onPress={handlePress} style={hover?styles.hover:styles.button} onMouseOver={() => setHover(hover => !hover)} onMouseOut={() => setHover(hover => !hover)}>
+    <Pressable onPress={njtd} style={hover?styles.hover:styles.button} onMouseOver={() => setHover(hover => !hover)} onMouseOut={() => setHover(hover => !hover)}>
         <Text style={hover?styles.hoverText:styles.buttonText}>?</Text>
     </Pressable>
     );
   };
+  function njtd(){
+    window.open('https://developer.mozilla.org/en-US/docs/Web/SVG');
+}
 const Help = (props) =>{
-    const Url = "https://developer.mozilla.org/en-US/docs/Web/SVG"
+    const Url = ""
     return(
         <OpenURLButton url={props.url?props.url:Url}/>
     )

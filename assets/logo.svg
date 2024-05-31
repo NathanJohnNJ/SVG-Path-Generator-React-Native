@@ -1,0 +1,242 @@
+<svg id="parent" height="1024" width="1024" viewbox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg"  xmlns:xlink="http://www.w3.org/1999/xlink">
+    <defs>
+        <clipPath id="clipCircle">
+            <circle cx="512" cy="512" r="402"/>
+        </clipPath>
+        <linearGradient id="camoGrad" gradientTransform="rotate(45)">
+            <stop offset="0%" stop-color="#000000" />
+            <stop offset="5%" stop-color="#2b2b2b" />
+            <stop offset="70%" stop-color="#000000" />
+        </linearGradient>
+        <linearGradient id="camoGrad2" gradientTransform="rotate(45)">
+            <stop offset="0%" stop-color="#000000" />
+            <stop offset="50%" stop-color="#2b2b2b" />
+            <stop offset="75%" stop-color="#1a1a1a" />
+            <stop offset="100%" stop-color="#000000" />
+        </linearGradient>
+        <linearGradient id="camoGrad3" gradientTransform="rotate(25)">
+            <stop offset="50%" stop-color="#000000" />
+            <stop offset="100%" stop-color="#1a1a1a" />
+        </linearGradient>
+        
+        <linearGradient id="hatGrad">
+            <stop offset="0%" stop-color="#000000" />
+            <stop offset="25%" stop-color="#3c3c3c" />
+            <stop offset="50%" stop-color="#6f6f6f" />
+            <stop offset="55%" stop-color="#6f6f6f" />
+            <stop offset="75%" stop-color="#3c3c3c" />
+            <stop offset="100%" stop-color="#000000" />
+        </linearGradient>
+        <linearGradient id="bodyGrad">
+            <stop offset="1%" stop-color="#1f1f1f" />
+            <stop offset="75%" stop-color="#3c3c3c" />
+        </linearGradient>
+        <linearGradient id="macGrad" gradientTransform="rotate(90)">
+            <stop offset="10%" stop-color="#cfcfcf" />
+            <stop offset="95%" stop-color="#7e7e82" />
+        </linearGradient>
+        <linearGradient id="faceGrad" gradientTransform="rotate(90)">
+            <stop offset="10%" stop-color="#a9825a" />
+            <stop offset="30%" stop-color="#c5845c" />
+            <stop offset="80%" stop-color="#e5ac79" />
+            <stop offset="85%" stop-color="#ffd9ae" />
+        </linearGradient>
+        <linearGradient id="earGrad" gradientTransform="rotate(90)">
+            <stop offset="10%" stop-color="#ffd9ae" />
+            <stop offset="55%" stop-color="#e5ac79" />
+        </linearGradient>
+        <linearGradient id="shadowGrad" gradientTransform="rotate(90)">
+            <stop offset="0%" stop-color="#a68642" />
+            <stop offset="90%" stop-color="#7d5524" />
+        </linearGradient>
+        <linearGradient id="eyeGrad" gradientTransform="rotate(90)">
+            <stop offset="50%" stop-color="#000000" />
+            <stop offset="75%" stop-color="#ffffff" />
+        </linearGradient>
+        <linearGradient id="browGrad" gradientTransform="rotate(15)">
+            <stop offset="50%" stop-color="#4d3120" />
+            <stop offset="75%" stop-color="#5c3b2a" />
+        </linearGradient>
+        <linearGradient id="glassesGrad" gradientTransform="rotate(90)">
+            <stop stop-color="#101010" />
+            <stop offset="33%" stop-color="#4a4d4d" />
+        </linearGradient>
+        <linearGradient id="piercingGrad" gradientTransform="rotate(90)">
+            <stop stop-color="#0000ff" />
+            <stop offset="33%" stop-color="#020d2f" />
+        </linearGradient>
+    </defs>
+
+    <g id="layer1">
+        <circle r="435" cx="512" cy="512" style="stroke:black;fill:none;stroke-width:14px"/>
+        <circle r="418" cx="512" cy="512" style="stroke:black;fill:none;stroke-width:2px"/>
+        <circle r="410" cx="512" cy="512" style="stroke:black;fill:none;stroke-width:2px"/>
+   </g>
+   
+    <g id="layer2">
+        <circle r="402" cx="512" cy="512" style="stroke:black;fill:black;"/>
+    </g>
+
+    <g id="layer3" clip-path="url(#clipCircle)" height="1024" width="1024" viewbox="0 0 1024 1024">
+        <g id="camo1" style="fill:url(#camoGrad); stroke:url(#camoGrad) stroke-width:1">
+        <path d="M350,0 q30,-20 60,0 q90,30 60,0 q30,-30 60,0 q60,60 0,120 q-30,30 15,60 c45,-15 15,-45 60,-15 q30,15 -15,90 q-30,30 -60,20 q-40,-20 -90,0 q-50,30 -60,60 q-30,-15 -45,-30 q-30,-30 0,-60 q60,-30 10,-90 q-80,-70 40,-30 q30,-20 -20, -60 T550,256z" style="scale: 2; transform: rotate(2deg);"/>
+        <path d="M20,380 q 40,-40 80,0 q40,40 80,40 q40,0 20, 60 q-20,40 10,80 q-20,40 -80,0 q-40,-20 -80,0 q-40,10 -35,-30 q20,-40 0,-60 q-40,-40 0,-85z" style="scale: 2; transform: rotate(341deg);"/>
+        <path d="M900 70 q-250 150 250 200 q100 0 0 -120 t0 -150 c80 0 100 -100 0 -100 l-150 -25 q-25 -15 -90 50 c-30 20 -30 40 10 20 q-60 -40 -110 220Z" style="stroke-width:3;rotate:z 65deg; scale:0.6"/>
+        
+        <path d="M0,120 q0,-40 40,-40 q16,0 16,16 q0,16 -16,16 q-24,16 0,32 q32,8 40,0 q8,-16 -8,-16 q-16,-8 0,-16 q16,-24 32,0 q14,24 24,0 q10,-24 24,0 l24,24 q8,24 -16,24 q-32,16 0,40 q0,40 -40,40 q-24,0 -24,-24 q8,-16 24,-16 q16,-8 0,-16 q-12,-16 -24,-12 q-24,0 -16,32 q-20,24 -40,0 q-8,-40 -40,-16 q-16,8 0,16 q24,12 0,24 q-24,8 -32,-16 q0,-48 32,-56 q16,-12 0,-32z" style="scale: 2;"/>
+        <path d="M265,110 q-24,-64 24,-32 q8,16 32,16 q16,-8 32,0 q24,0 40,-16 q16,0 8,16 q8,16 24,16 q32,16 0,40 q-24,24 0,64 q-40,8 -56,-24 q-16,-16 -32,0 q-24,32 -40,0 q0, -16 -16,-24 q-24,-8 0,-16 q24,-8 0,-24z" style="scale: 1.75; transform: rotate(2deg);"/>
+        <path d="M100,400 q30,-20 60,0 q90,30 60,0 q30,-30 60,0 q60,60 0,120 q-30,30 15,60 c45,-15 15,-45 60,-15 q30,15 -15,90 q-30,30 -60,20 q-40,-20 -90,0 q-50,30 -60,60 q-30,-15 -45,-30 q-30,-30 0,-60 q60,-30 10,-90 q-80,-70 30,-30 q10,-20 -20, -60 T100,400z" style="scale: 1; transform: rotate(346deg);"/>
+        </g>
+        <g id="camo2" style="fill:url(#camoGrad2); stroke:url(#camoGrad2) stroke-width:1">
+        
+        <path d="M150,350 q 40,-40 80,0 q40,40 80,40 q40,0 20, 60 q-20,40 10,80 q-20,40 -80,0 q-40,-20 -80,0 q-40,10 -35,-30 q20,-40 0,-60 q-40,-40 0,-85z" style="scale: 2; transform: rotate(341deg);"/>
+        <path d="M40,250 q 40,-40 80,0 q40,40 80,40 q40,0 20, 60 q-20,40 10,80 q-20,40 -80,0 q-40,-20 -80,0 q-40,10 -35,-30 q20,-40 0,-60 q-40,-40 0,-85z" style="scale: 2; transform: rotate(341deg);"/>
+        <path d="M-920,-140 q30,-30 60,0 q30,30 60,0 q30,-30 60,0 q60,60 0,120 q-30,30 15,60 c30,15 90,0 15,-30 c-45,-15 15,-45 60,-15 l80,45 q30,15 -15,90 q-30,30 -60,20 q-40,-20 -90,10 q-50,30 -120,0 q-30,-15 -45,-30 q-30,-30 0,-60 q60,-60 0,-90 q-80,-40, -20,-120z" style="scale: 1; transform: rotate(190deg);"/>
+        <path d="M90,-160 q30,-30 60,0 q30,30 60 0 c30,-5 45,0 15,45 q-30,30 0,60 t0,60 c-15,15 -30,12 -50,0 q20,-10 -80,-60 q-30,-15 -50,-40 z" style="scale: 3; rotate: 1 1 1 60deg;"/>
+        
+        <path d="M384,256 q15,15 80,0 q30,-15 55,-50 t60,-30 q-30,-45 -45,-30 q60,-30 -10,-90 t40,-30 q30,-60 20,40 t30,30 t70,180 T384,256z" style="scale: 0.5; transform: rotate(346deg);"/>
+        <path d="M150,434 q0,-40 40,-40 q16,0 16,16 q0,16 -16,16 q-24,16 0,32 q32,8 40,0 q8,-16 -8,-16 q-16,-8 0,-16 q16,-24 32,0 q14,24 24,0 q10,-24 24,0 l24,24 q8,24 -16,24 q-32,16 0,40 q0,40 -40,40 q-24,0 -24,-24 q8,-16 24,-16 q16,-8 0,-16 q-12,-16 -24,-12 q-24,0 -16,32 q-20,24 -40,0 q-8,-40 -40,-16 q-16,8 0,16 q24,12 0,24 q-24,8 -32,-16 q0,-48 32,-56 q16,-12 0,-32z" style="scale: 2; transform: rotate(333deg);"/>
+        <path d="M128,384 q-24,-64 24,-32 q8,16 32,16 q16,-8 32,0 q24,0 40,-16 q16,0 8,16 q8,16 24,16 q32,16 0,40 q-24,24 0,64 q-40,8 -56,-24 q-16,-16 -32,0 q-24,32 -40,0 q0, -16 -16,-24 q-24,-8 0,-16 q24,-8 0,-24z" style="scale: 2; transform: rotate(15deg);"/>
+        <path d="M180,220 q-24,-64 24,-32 q8,16 32,16 q16,-8 32,0 q24,0 40,-16 q16,0 8,16 q8,16 24,16 q32,16 0,40 q-24,24 0,64 q-40,8 -56,-24 q-16,-16 -32,0 q-24,32 -40,0 q0, -16 -16,-24 q-24,-8 0,-16 q24,-8 0,-24z" style="scale: 2; transform: rotate(0deg);"/>
+        </g>
+        
+        <g id="camo3" style="fill:url(#camoGrad3); stroke:url(#camoGrad3) stroke-width:1">
+        <path d="M340,310 q30,-30 60,0 q30,30 60 0 c30,-5 45,0 15,45 q-30,30 0,60 t0,60 c-15,15 -30,12 -30,0 q20,-10 -60,-60 q-30,-15 -30, -40 z" style="scale: 2; rotate: 1 1 1 170deg;"/>
+        <path d="M128,384 q30,-30 60,0 q30,30 60,0 q30,-30 60,0 q60,60 0,120 q-30,30 15,60 c30,15 90,0 15,-30 c-45,-15 15,-45 60,-15 l80,45 q30,15 -15,90 q-30,30 -60,20 q-40,-20 -90,10 q-50,30 -120,0 q-30,-15 -45,-30 q-30,-30 0,-60 q60,-60 0,-90 q-80,-40, -20,-120z" style=" scale: 2.5; transform: rotate(349deg);"/>
+        <path d="M896,640 q0,-40 40,-40 q16,0 16,16 q0,16 -16,16 q-24,16 0,32 q32,8 40,0 q8,-16 -8,-16 q-16,-8 0,-16 q16,-24 32,0 q14,24 24,0 q10,-24 24,0 l24,24 q8,24 -16,24 q-32,16 0,40 q0,40 -40,40 q-24,0 -24,-24 q8,-16 24,-16 q16,-8 0,-16 q-12,-16 -24,-12 q-24,0 -16,32 q-20,24 -40,0 q-8,-40 -40,-16 q-16,8 0,16 q24,12 0,24 q-24,8 -32,-16 q0,-48 32,-56 q16,-12 0,-32z" style=" scale: 1; transform: rotate(357deg);"/>
+        <path d="M50,30 q-24,-64 24,-32 q8,16 32,16 q16,-8 32,0 q24,0 40,-16 q16,0 8,16 q8,16 24,16 q32,16 0,40 q-24,24 0,64 q-40,8 -56,-24 q-16,-16 -32,0 q-24,32 -40,0 q0, -16 -16,-24 q-24,-8 0,-16 q24,-8 0,-24z" style="scale: 2; transform: rotate(14deg);"/>
+        <path d="M100,384 q30,-30 60,0 q30,30 60,0 q30,-30 60,0 q60,60 0,120 q-30,30 15,60 c30,15 90,0 15,-30 c-45,-15 15,-45 60,-15 l80,45 q30,15 -15,90 q-30,30 -60,20 q-40,-20 -90,10 q-50,30 -120,0 q-30,-15 -45,-30 q-30,-30 0,-60 q60,-60 0,-90 q-80,-40, -20,-120z" style="scale: 1.5; transform: rotate(9deg);"/>
+        <path d="M250,265 q30,-50 60,0 q90,30 60,0 q30,-30 60,0 q60,60 0,120 q-30,30 15,60 c45,-15 15,-45 60,-15 q30,15 -15,90 q-30,30 -60,20 q-40,-20 -90,0 q-50,30 -60,60 q-30,-15 -45,-30 q-30,-30 0,-60 q60,-30 10,-90 q-80,-70, -20,70  q-50,150 -60 0 l0,-150 c20,40 60,0 -14,-80 T250,265z" style="scale: 1; transform: rotate(32deg);"/>
+        <path d="M375,230 q8,16 32,16 q16,-8 32,0 q24,0 40,-16 q16,0 8,16 q-24,24 0,64 q-40,8 -56,-24 q-16,-16 -32,0 q-24,32 -40,0 q0, -16 -16,-24 q-24,-8 0,-16 q24,-8 0,-24z" style="scale:2"/>
+        <path d="M128,384 q30,-30 60,0 q30,30 60,0 q30,-30 60,0 q60,60 0,120 q-30,30 15,60 c30,15 90,0 15,-30 c-45,-15 15,-45 60,-15 l80,45 q30,15 -15,90 q-30,30 -60,20 q-40,-20 -90,10 q-50,30 -120,0 q-30,-15 -45,-30 q-30,-30 0,-60 q60,-60 0,-90 q-80,-40, -20,-120z" style="scale: 1; transform: rotate(302deg);"/>
+        <path d="M550,256 q30,-20 60,0 q90,30 60,0 q30,-30 60,0 q60,60 0,120 q-30,30 15,60 c45,-15 15,-45 60,-15 q30,15 -15,90 q-30,30 -60,20 q-40,-20 -90,0 q-50,30 -60,60 q-30,-15 -45,-30 q-30,-30 0,-60 q60,-30 10,-90 q-80,-70 40,-30 q30,-20 -20, -60 T550,256z" style="scale: 1.5; transform: rotate(2deg);"/>
+        <path d="M384,256 q-24,-64 24,-32 q8,16 32,16 q16,-8 32,0 q24,0 40,-16 q16,0 8,16 q8,16 24,16 q32,16 0,40 q-24,24 0,64 q-40,8 -56,-24 q-16,-16 -32,0 q-24,32 -40,0 q0, -16 -16,-24 q-24,-8 0,-16 q24,-8 0,-24z" style="scale: 2; transform: rotate(341deg);"/>
+        <path d="M128,384 q-24,-64 24,-32 q8,16 32,16 q16,-8 32,0 q24,0 40,-16 q16,0 8,16 q8,16 24,16 q32,16 0,40 q-24,24 0,64 q-40,8 -56,-24 q-16,-16 -32,0 q-24,32 -40,0 q0, -16 -16,-24 q-24,-8 0,-16 q24,-8 0,-24z" style="scale: 2; transform: rotate(323deg);"/>
+        <path d="M88,384 q30,-30 60,0 q30,30 60,0 q30,-30 60,0 q60,60 0,120 q-30,30 15,60 c30,15 90,0 15,-30 c-45,-15 15,-45 60,-15 l80,45 q30,15 -15,90 q-30,30 -60,20 q-40,-20 -90,10 q-50,30 -120,0 q-30,-15 -45,-30 q-30,-30 0,-60 q60,-60 0,-90 q-80,-40, -20,-120z" style="scale: 0.5; transform: rotate(3deg);"/>
+        <path d="M256,776 q30,-20 60,0 q90,30 60,0 q30,-30 60,0 q60,60 0,120 q-30,30 15,60 c45,-15 15,-45 60,-15 q30,15 -15,90 q-30,30 -60,20 q-40,-20 -90,0 q-50,30 -60,60 q-30,-15 -45,-30 q-30,-30 0,-60 q60,-30 10,-90 q-80,-70 40,-30 q30,-20 -20, -60 T256,776z" style="scale: 0.5; transform: rotate(323deg);"/>  
+        <path d="M384,264 q0,-40 40,-40 q16,0 16,16 q0,16 -16,16 q-24,16 0,32 q32,8 40,0 q8,-16 -8,-16 q-16,-8 0,-16 q16,-24 32,0 q14,24 24,0 q10,-24 24,0 l24,24 q8,24 -16,24 q-32,16 0,40 q0,40 -40,40 q-24,0 -24,-24 q8,-16 24,-16 q16,-8 0,-16 q-12,-16 -24,-12 q-24,0 -16,32 q-20,24 -40,0 q-8,-40 -40,-16 q-16,8 0,16 q24,12 0,24 q-24,8 -32,-16 q0,-48 32,-56 q16,-12 0,-32z" style="scale: 2; transform: rotate(19deg);"/>
+        <path d="M776,512 q-24,-64 24,-32 q8,16 32,16 q16,-8 32,0 q24,0 40,-16 q16,0 8,16 q8,16 24,16 q32,16 0,40 q-24,24 0,64 q-40,8 -56,-24 q-16,-16 -32,0 q-24,32 -40,0 q0, -16 -16,-24 q-24,-8 0,-16 q24,-8 0,-24z" style="scale: 1; transform: rotate(30deg);"/>
+        <path d="M900 -580 q-250 150 250 200 q100 0 0 -120 t0 -150 c80 0 100 -100 0 -100 l-150 -25 q-25 -15 -90 50 c-30 20 -30 40 10 20 q-60 -40 -110 220Z" style="stroke-width:3;rotate:z 65deg; scale:0.6"/>
+        </g>
+    </g>
+    
+    <g id="layer4" transform="scale(1.1) translate(-49)">
+            <g id="face" height="1024" width="1024" viewbox="0 0 1024 1024"  >
+        <g id="ears">
+            <g id="leftEar">
+                <path id="leftOne" d="M414,310 c-25,-16 -20,25 0,50" style="fill: url('#faceGrad'); stroke: url(#faceGrad); stroke-width: 3;" gradientUnits="userSpaceOnUse"/>
+                <path id="leftTwo" d="M414,310 c-25,-16 -20,25 0,50" style="fill: none; stroke: url(#earGrad); stroke-width: 5;" gradientUnits="userSpaceOnUse"/> 
+                <circle id="leftThree" cx="405" cy="344" r="3" style="fill:url(#piercingGrad);stroke-width:1px" gradientUnits="userSpaceOnUse"  /> 
+                <circle id="leftFour" cx="411" cy="353" r="6" style="fill:url(#piercingGrad);stroke-width:1px" gradientUnits="userSpaceOnUse"  />
+                <circle id="leftFive" cx="411" cy="336" r="3" style="fill:url(#piercingGrad);stroke-width:1px" gradientUnits="userSpaceOnUse"  /> 
+                <circle id="leftSix" cx="400" cy="315" r="3" style="fill:url(#piercingGrad);stroke-width:1px" gradientUnits="userSpaceOnUse"  /> 
+            </g>
+            <g id="rightEar">
+                <path id="rightOne" transform="scale(-1, 1)" transform-origin="center" d="M414,310 c-25,-16 -20,25 0,50" style="fill: url('#faceGrad'); stroke: url(#faceGrad); stroke-width: 3;" gradientUnits="userSpaceOnUse"/>
+                <path id="rightTwo" transform="scale(-1, 1)" transform-origin="center" d="M414,310 c-25,-16 -20,25 0,50" style="fill: none; stroke: url(#earGrad); stroke-width: 5;" gradientUnits="userSpaceOnUse"/>  
+                <circle id="rightThree" transform="scale(-1, 1)" transform-origin="center" cx="403" cy="342" r="3" style="fill:url(#piercingGrad);stroke-width:1px" gradientUnits="userSpaceOnUse" /> 
+                <circle id="rightFour" transform="scale(-1, 1)" transform-origin="center" cx="407" cy="348" r="3" style="fill:url(#piercingGrad);stroke-width:1px" gradientUnits="userSpaceOnUse" />
+                <circle id="rightFive" transform="scale(-1, 1)" transform-origin="center" cx="411" cy="353" r="3" style="fill:url(#piercingGrad);stroke-width:1px" gradientUnits="userSpaceOnUse" />
+                <circle id="rightSix" transform="scale(-1, 1)" transform-origin="center" cx="411" cy="336" r="3" style="fill:url(#piercingGrad);stroke-width:1px" gradientUnits="userSpaceOnUse" />
+                <circle id="rightSeven" transform="scale(-1, 1)" transform-origin="center" cx="411" cy="329" r="3" style="fill:url(#piercingGrad);stroke-width:1px" gradientUnits="userSpaceOnUse"  />
+            </g>
+        </g>
+        <path id="mainFace" d="M414,300 c-5,-105 199,-105 194,0 q4,10 -2,80 c-8,5 -186,5 -190,0 q-4,-70 -2,-80z" style="fill: url('#faceGrad'); stroke: url(#shadowGrad); stroke-width: 3;" gradientUnits="userSpaceOnUse"/>
+        <g id="eyes" >
+            <g id="left" transform="translate(-0.5,-2)">
+                <path id="leftEyeOne" d="M439.5,338 q20,-25 50,-2 q-25,30 -48, 1" style="fill: #ffffff; stroke:#ffffff;stroke-width:1;opacity:0.35" gradientUnits="userSpaceOnUse"/>
+                <path id="leftEyeTwo" d="M442,338 q20,-25 50,-2 q-30,20 -50, 2" style="fill: #efefef; stroke: url(#eyeGrad); stroke-width: 1;" gradientUnits="userSpaceOnUse"/> 
+                <circle id="leftEyeThree" cx="467" cy="336" r="8.5" style="fill: black; stroke: #0e2089; stroke-width: 4.5;"/>
+                <circle id="leftEyeFour" cx="465" cy="330" r="3.5" style="fill: white; stroke-width: 0;"/>
+                <path id="leftLash" d="M440,337 q0,1 -4,-2 l10,-2 q0,1 -4,-2 l10,-2 q0,1 -4,-2 l10,-2 q20,-8 38,15 q -30,-28 -55, -1z " style="fill: #black; stroke:black; stroke-width: 1; opacity:0.95"  gradientUnits="userSpaceOnUse"/>
+            </g>
+            <g id="right" transform="translate(0.5,-2)">
+                <path id="rightEyeOne" transform="scale(-1, 1)" transform-origin="center" d="M439.5,338 q20,-25 50,-2 q-25,30 -48, 1 " style="fill: #ffffff; stroke:#ffffff;stroke-width:1;opacity:0.35" gradientUnits="userSpaceOnUse" />
+                <path id="rightEyetwo" transform="scale(-1, 1)" transform-origin="center" d="M442,338 q20,-25 50,-2 q-30,20 -50, 2" style="fill: #efefef; stroke: url(#eyeGrad); stroke-width: 1;" gradientUnits="userSpaceOnUse"/>   
+                <circle id="rightEyeThree" transform="scale(-1, 1)" transform-origin="center" cx="467" cy="336" r="8.5" style="fill: black; stroke: #0e2089; stroke-width:4.5;"/>
+                <circle id="rightEyeFour" cx="553" cy="330" r="3.5" style="fill: white; stroke-width: 0;"/>
+                <path id="rightLash" transform="scale(-1 1)" transform-origin="center" d="M440,337 q0,1 -4,-2 l10,-2 q0,1 -4,-2 l10,-2 q0,1 -4,-2 l10,-2 q20,-8 38,15 q -30,-28 -55, -1z" style="fill: #black; stroke:black; stroke-width: 1; opacity:0.95" gradientUnits="userSpaceOnUse"/>
+            </g>
+            <g id="brows" transform="translate(0,0.75)" >
+                <path id="leftBrow" d="M428,317 q3,-12 12,-19 q2,-2 43,6 q8,2 10,2" style="fill: url(#browGrad); stroke:url(#browGrad); stroke-width: 5;" gradientUnits="userSpaceOnUse" />
+                <path id="rightBrow" transform="scale(-1, 1)" transform-origin="center"  d="M428,317 q3,-12 12,-19 q2,-2 43,6 q8,2 10,2" style="fill: url(#browGrad); stroke:url(#browGrad); stroke-width: 5;" gradientUnits="userSpaceOnUse" />
+            </g>
+            <path id="noseShadow" d="M493,355 
+            c19,-16 0,-35 19,-38 
+            c19,3 0,22 19,38" style="fill:none; stroke-width:7.5; stroke:#5c3b2a; opacity:0.25; stroke-linecap:round" />
+            <path id="glasses" transform="translate(0,-1)" d="M420,310 q34,-5 77,4 
+            c0,-2 30,-2 30,0 
+            q42,-9 77,-4 
+            l4,-1 l-1,6 l-4,1 
+            q2,35 -14,42 q-40,4 -51,-4 q-14,-20 -12,-30 
+            c-5,-12 -23,-12 -28,0 q2,10 -12,30 q-11,8 -51,4 q-12,-7 -14,-42 l-4,-1 l-1,-6 l4,1
+            M420,315 q34,-10 80,4 l-10,35 q-75,20 -65,39 
+            M604,315 q-46,-10 -80,4 l10,35 q75,20 65,39" fill-rule="evenodd" style="fill: url(#glassesGrad); stroke:url(#glassesGrad); stroke-width: 9.25;" 
+            gradientUnits="userSpaceOnUse" />
+        </g>
+        <g id="noseDetail">
+            <path id="nosePiercing" d="M494,359 q 0,-13 8,-7" style="fill:none; stroke-width:2; stroke:#2c205d; stroke-linecap:round" />
+            <path id="nose" d="M500,350 c-15,20 38,20 24,0" style="fill:none; stroke-width: 5; stroke:#222222; opacity:0.15; stroke-linecap:round" />
+            <circle id="noseHighlight1" cx="512.25" cy="332" r="5" style="fill:white; stroke-width: 5; stroke:white; opacity:0.15;" />
+            <circle id="noseHighlight2" cx="512.25" cy="340.5" r="4" style="fill:white; stroke-width: 5; stroke:white; opacity:0.25;" />
+            <circle id="noseHighlight3" cx="512.25" cy="342.5" r="7" style="fill:white; stroke-width: 5; stroke:white; opacity:0.25;" />
+            <circle id="noseHighlight4" cx="512.25" cy="352.5" r="5" style="fill:white; stroke-width: 5; stroke:white; opacity:0.15;" />
+            <circle id="noseHighlight5" cx="512.25" cy="334" r="3.5" style="fill:white; stroke-width: 5; stroke:white; opacity:0.2;" />
+            <circle id="noseHighlight6" cx="512.25" cy="334" r="2" style="fill:white; stroke-width: 5; stroke:white; opacity:0.15;" />
+            <circle id="noseHighlight7" cx="512.25" cy="338" r="5" style="fill:white; stroke-width: 5; stroke:white; opacity:0.15;" />
+        </g>
+    </g>
+
+    <g id="hat" height="1024" width="1024" viewbox="0 0 1024 1024" dx="512px">
+        <path id="mainHat" d="M414,264 c-10,-105 206,-105 196,0 l-2,38 c-8,-35 -186,-35 -194,0z" style="fill: url('#hatGrad'); stroke: url(#hatGrad); stroke-width: 1;" gradientUnits="userSpaceOnUse"/>
+        <path id="peak" d="M410,300 c-29,-40 229,-40 202,0 l-4,5 c2,-27 -198,-27 -192,0z" style="fill: #050505; stroke: #000000; stroke-width: 1;" gradientUnits="userSpaceOnUse"/>
+    </g>
+    <g id="shoulders" height="1024" width="1024" viewbox="0 0 1024 1024">
+        <path id="leftShoulder" d="M340,515 q0,-50 40,-60 l0,60" style="fill: url('#bodyGrad'); stroke: url(#bodyGrad); stroke-width: 1;" gradientUnits="userSpaceOnUse"/>
+        <path id="rightShoulder" transform="scale(-1, 1)" transform-origin="center" d="M340,515 q0,-50 40,-60 l0,60" style="fill: url('#bodyGrad'); stroke: url(#bodyGrad); stroke-width: 1;" gradientUnits="userSpaceOnUse"/>
+    </g>
+    <g id="mac" height="1024" width="1024" viewbox="0 0 1024 1024">
+        <path id="macPath" d="M387.5,515 c-15,0 -15,0 -15,-10 
+        l-15,-140 
+        c0,-5 -5,-5 15,-10 
+        l275,0 
+        c15,0 15,0 15,10 
+        l-15,140 
+        c0,10 0,10 -15,10z" style="fill: url('#macGrad'); stroke: url(#macGrad); stroke-width: 1;" gradientUnits="userSpaceOnUse"/>
+        <g id="raspberry">
+            <g id="raspLeaves">
+                <path id="leftLeaf" d="M510,430 q-20,5 -25,-15 q35,0 30,15" style="fill:#efefef; stroke-width: 1; stroke:#efefef" gradientUnits="userSpaceOnUse" />
+                <path id="rightLeaf" transform="scale(-1, 1)" transform-origin="center" d="M510,430 q-20,5 -25,-15 q35,0 30,15" style="fill:#efefef; stroke-width: 1; stroke:#efefef" gradientUnits="userSpaceOnUse" />
+            </g>
+            <g id="raspMain">
+                <circle id="raspberry1" transform="scale(-1, 1)" transform-origin="center"  cx="497.5" cy="440" r="9" style="fill:#efefef; stroke-width: 0;" gradientUnits="userSpaceOnUse"/>
+                <circle id="raspberry2"  cx="497.5" cy="440" r="9" style="fill:#efefef; stroke-width: 0;" gradientUnits="userSpaceOnUse"/>
+                <circle id="raspberry3"  cx="510" cy="437.5" r="9" style="fill:#efefef; stroke-width: 0;" gradientUnits="userSpaceOnUse"/>
+                <circle id="raspberry4"  cx="522.5" cy="440" r="9" style="fill:#efefef; stroke-width: 0;" gradientUnits="userSpaceOnUse"/>
+                <circle id="raspberry5"  transform="scale(-1, 1)" transform-origin="center" cx="522.5" cy="440" r="9" style="fill:#efefef; stroke-width: 0;" gradientUnits="userSpaceOnUse"/>
+                <circle  id="raspberry6"  transform="scale(-1, 1)" transform-origin="center" cx="495" cy="450" r="9" style="fill:#efefef; stroke-width: 0;" gradientUnits="userSpaceOnUse"/>
+                <circle id="raspberry7"  cx="495" cy="450" r="9" style="fill:#efefef; stroke-width: 0;" gradientUnits="userSpaceOnUse"/>
+                <circle  id="raspberry8"  cx="502.5" cy="445" r="9" style="fill:#efefef; stroke-width: 0;" gradientUnits="userSpaceOnUse"/>
+                <circle id="raspberry9"  cx="517.5" cy="445" r="9" style="fill:#efefef; stroke-width: 0;" gradientUnits="userSpaceOnUse"/>
+                <circle id="raspberry10"  cx="525" cy="450" r="9" style="fill:#efefef; stroke-width: 0;" gradientUnits="userSpaceOnUse"/>
+                <circle  id="raspberry11"  transform="scale(-1, 1)" transform-origin="center" cx="525" cy="450" r="9" style="fill:#efefef; stroke-width: 0;" gradientUnits="userSpaceOnUse"/>
+                <circle  id="raspberry12"  transform="scale(-1, 1)" transform-origin="center" cx="500" cy="462.5" r="9" style="fill:#efefef; stroke-width: 0;" gradientUnits="userSpaceOnUse"/>
+                <circle id="raspberry13"  cx="500" cy="462.5" r="9" style="fill:#efefef; stroke-width: 0;" gradientUnits="userSpaceOnUse"/>
+                <circle id="raspberry14"  cx="510" cy="460" r="9" style="fill:#efefef; stroke-width: 0;" gradientUnits="userSpaceOnUse"/>
+                <circle id="raspberry15"  cx="520" cy="462.5" r="9" style="fill:#efefef; stroke-width: 0;" gradientUnits="userSpaceOnUse"/>
+                <circle  id="raspberry16" transform="scale(-1, 1)" ctransform-origin="center" cx="520" cy="462.5" r="9" style="fill:#efefef; stroke-width: 0;" gradientUnits="userSpaceOnUse"/>
+                <circle  id="raspberry17" transform="scale(-1, 1)" transform-origin="center" cx="510" cy="467.5" r="9" style="fill:#efefef; stroke-width: 0;" gradientUnits="userSpaceOnUse"/>
+                <circle  id="raspberry18" cx="510" cy="467.5" r="9" style="fill:#efefef; stroke-width: 0;" gradientUnits="userSpaceOnUse"/>
+            </g>
+        </g>
+    </g>
+    </g>
+    <g id="layer5" transform="translate(0,-40)">
+        <g fill="#ffffff" opacity="1" stroke="none">
+            <path id="n" d="M209.706 609.201L297.706 700.001C303.439 701.067 308.372 701.601 312.506 701.601C324.772 701.601 332.172 696.867 334.706 687.401L334.906 569.001L348.906 569.001L348.906 691.601C343.039 705.334 331.306 712.201 313.706 712.201C307.572 712.201 300.906 711.401 293.706 709.801L223.706 636.601L223.706 712.001L209.706 712.001L209.706 609.201ZM306.906 666.801L217.706 578.401C213.039 577.467 209.306 577.001 206.506 577.001C195.172 577.001 186.906 581.667 181.706 591.001L181.706 712.001L167.706 712.001L167.706 586.801C170.906 580.534 175.972 575.667 182.906 572.201C189.839 568.734 198.106 567.001 207.706 567.001C212.239 567.001 217.572 567.534 223.706 568.601L292.906 639.601L292.906 569.001L306.906 569.001L306.906 666.801Z"/>
+            <path id="j" d="M414.906 661.601C414.906 664.534 416.206 666.967 418.806 668.901C421.406 670.834 424.772 671.801 428.906 671.801C431.706 671.934 434.839 671.767 438.306 671.301C441.772 670.834 444.239 670.334 445.706 669.801C448.506 668.734 450.939 667.267 453.006 665.401C455.072 663.534 456.239 661.267 456.506 658.601L456.906 654.401L456.906 608.201L442.906 608.201L442.906 597.601L470.906 597.601L470.906 654.401L470.306 660.801C470.039 664.401 467.039 668.801 461.306 674.001C460.372 674.801 458.772 675.734 456.506 676.801C454.239 677.867 452.172 678.667 450.306 679.201C442.572 681.334 436.906 682.401 433.306 682.401C431.572 682.401 428.506 682.101 424.106 681.501C419.706 680.901 416.306 680.001 413.906 678.801C405.239 674.934 400.906 670.601 400.906 665.801L400.906 657.801L414.906 657.801L414.906 661.601ZM498.906 594.601C498.906 589.801 498.272 586.134 497.006 583.601C495.739 581.067 493.572 579.301 490.506 578.301C487.439 577.301 482.906 576.801 476.906 576.801L470.906 576.801L442.906 576.801L442.906 566.601L470.906 566.601L479.906 566.601L489.306 566.601C493.572 566.734 497.539 567.934 501.206 570.201C504.872 572.467 507.772 575.301 509.906 578.701C512.039 582.101 513.106 585.534 513.106 589.001L512.906 597.601L512.906 654.401L512.506 664.201C512.372 669.001 511.206 673.201 509.006 676.801C506.806 680.401 503.906 684.001 500.306 687.601C497.772 690.001 494.672 692.467 491.006 695.001C487.339 697.534 483.839 699.667 480.506 701.401C474.106 704.734 467.472 707.334 460.606 709.201C453.739 711.067 444.506 712.001 432.906 712.001C424.372 712.001 416.172 711.267 408.306 709.801C400.439 708.334 392.972 705.467 385.906 701.201C384.039 700.267 381.272 698.301 377.606 695.301C373.939 692.301 371.039 689.601 368.906 687.201C368.506 686.667 367.506 685.501 365.906 683.701C364.306 681.901 362.939 679.634 361.806 676.901C360.672 674.167 359.706 670.934 358.906 667.201L358.906 657.801L372.906 657.801L372.906 666.601C374.239 673.267 378.172 679.734 384.706 686.001C385.772 687.067 387.339 688.367 389.406 689.901C391.472 691.434 393.372 692.667 395.106 693.601C399.372 696.134 404.839 698.134 411.506 699.601C418.172 701.067 425.306 701.801 432.906 701.801C440.372 701.801 446.572 701.367 451.506 700.501C456.439 699.634 460.339 698.634 463.206 697.501C466.072 696.367 469.439 694.734 473.306 692.601C476.106 691.134 479.006 689.334 482.006 687.201C485.006 685.067 487.172 683.267 488.506 681.801C491.706 678.601 494.172 675.634 495.906 672.901C497.639 670.167 498.572 667.067 498.706 663.601L498.906 654.401L498.906 597.601L498.906 594.601Z"/>
+            <path id="t" d="M521.106 567.001L703.106 567.001L703.106 577.201L521.106 577.201L521.106 567.001ZM584.106 619.601C583.706 612.001 578.039 608.201 567.106 608.201L521.106 608.201L521.106 597.801L567.106 597.801C585.772 597.667 596.106 604.934 598.106 619.601L598.106 711.001L584.106 711.001L584.106 619.601ZM626.106 711.001L626.106 619.601C628.106 604.934 638.439 597.667 657.106 597.801L703.106 597.801L703.106 608.201L657.106 608.201C646.172 608.201 640.506 612.001 640.106 619.601L640.106 711.001L626.106 711.001Z"/>
+            <path id="d" d="M828.706 640.801C828.706 637.467 828.106 633.534 826.906 629.001C826.506 627.134 825.406 625.234 823.606 623.301C821.806 621.367 820.772 620.267 820.506 620.001C819.972 619.334 818.439 618.267 815.906 616.801C813.372 615.334 811.572 614.401 810.506 614.001C809.972 613.734 808.906 613.267 807.306 612.601C805.706 611.934 803.506 611.401 800.706 611.001L794.706 610.201L781.106 610.201L766.706 610.201L766.706 621.001L766.706 671.201L794.706 671.201L800.706 670.401C803.506 670.001 805.706 669.467 807.306 668.801C808.906 668.134 809.972 667.667 810.506 667.401C811.572 667.001 813.372 666.101 815.906 664.701C818.439 663.301 819.972 662.267 820.506 661.601C820.906 661.067 821.972 659.834 823.706 657.901C825.439 655.967 826.506 654.201 826.906 652.601C828.106 647.801 828.706 643.867 828.706 640.801ZM842.706 640.801C842.706 645.334 841.639 650.601 839.506 656.601C838.706 659.001 837.072 661.467 834.606 664.001C832.139 666.534 830.706 668.067 830.306 668.601C829.506 669.801 827.039 671.367 822.906 673.301C818.772 675.234 816.506 676.334 816.106 676.601C815.439 676.867 814.006 677.434 811.806 678.301C809.606 679.167 806.306 679.867 801.906 680.401L793.506 681.401L752.106 681.401L752.106 621.001L752.106 600.001L781.106 600.001L793.506 600.001L801.906 601.401C804.839 601.934 808.172 602.801 811.906 604.001L816.106 605.201C818.106 606.134 820.806 607.467 824.206 609.201C827.606 610.934 829.639 612.201 830.306 613.001C830.572 613.267 831.972 614.734 834.506 617.401C837.039 620.067 838.706 622.601 839.506 625.001C841.639 631.267 842.706 636.534 842.706 640.801ZM868.706 638.401C868.706 631.867 867.306 624.134 864.506 615.201C862.906 609.601 857.972 603.467 849.706 596.801C847.972 595.334 845.039 593.467 840.906 591.201C836.772 588.934 832.506 586.801 828.106 584.801C823.706 582.934 819.906 581.501 816.706 580.501C813.506 579.501 809.106 578.734 803.506 578.201L789.506 576.801L752.106 576.801C744.772 576.801 739.106 577.667 735.106 579.401C731.106 581.134 728.372 583.634 726.906 586.901C725.439 590.167 724.706 594.534 724.706 600.001L724.706 687.201C725.106 691.601 727.006 695.034 730.406 697.501C733.806 699.967 738.572 701.401 744.706 701.801L789.506 701.801L803.506 700.001C809.239 699.201 814.039 698.201 817.906 697.001C821.772 695.801 825.906 694.334 830.306 692.601C832.972 691.534 836.406 689.867 840.606 687.601C844.806 685.334 847.839 683.534 849.706 682.201C852.639 680.067 855.606 677.234 858.606 673.701C861.606 670.167 863.572 666.801 864.506 663.601C867.306 654.801 868.706 646.401 868.706 638.401ZM882.706 639.401C882.706 644.734 882.439 649.601 881.906 654.001C881.372 658.401 880.239 662.667 878.506 666.801C874.906 675.467 868.906 682.867 860.506 689.001C858.239 690.734 854.872 692.934 850.406 695.601C845.939 698.267 841.839 700.334 838.106 701.801C832.639 703.934 827.339 705.767 822.206 707.301C817.072 708.834 811.172 709.934 804.506 710.601L788.306 712.001L751.106 712.001C724.439 711.734 711.106 702.067 711.106 683.001L711.106 600.001C711.106 588.667 714.406 580.234 721.006 574.701C727.606 569.167 737.972 566.467 752.106 566.601L788.306 566.601L804.506 568.201C810.106 568.867 815.039 569.834 819.306 571.101C823.572 572.367 828.106 573.934 832.906 575.801C837.306 577.401 841.972 579.534 846.906 582.201C851.839 584.867 855.906 587.401 859.106 589.801C862.706 592.601 866.206 596.001 869.606 600.001C873.006 604.001 875.306 607.734 876.506 611.201C880.639 621.867 882.706 631.267 882.706 639.401Z"/>
+        </g>    
+    </g>
+</svg>

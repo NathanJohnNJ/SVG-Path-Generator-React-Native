@@ -55,36 +55,36 @@ const Main = (props) => {
         </View>
             
             <View style={styles(props).gridArea}>
+
               <View style={styles(props).mainCont}>
+
                 <View style={styles(props).configCommands}>
-                  
                   <ConfigPanel stroke={props.stroke} strokeWidth={props.strokeWidth} strokeOpacity={props.strokeOpacity} fill={props.fill} fillOpacity={props.fillOpacity} setStroke={props.setStroke} setStrokeWidth={props.setStrokeWidth} setStrokeOpacity={props.setStrokeOpacity} setFill={props.setFill} setFillOpacity={props.setFillOpacity} controlCol={props.controlCol} setControlCol={props.setControlCol} ctrlOpacity={props.ctrlOpacity} setCtrlOpacity={props.setCtrlOpacity} controlSize={props.controlSize} setControlSize={props.setControlSize} endCol={props.endCol} setEndCol={props.setEndCol} endOpacity={props.endOpacity} setEndOpacity={props.setEndOpacity} endSize={props.endSize} setEndSize={props.setEndSize} highlight={props.highlight} setHighlight={props.setHighlight}/>
-                 
-                  <CommandPanel path={path} setPath={setPath} stroke={props.stroke} strokeWidth={props.strokeWidth} strokeOpacity={props.strokeOpacity} fill={props.fill} fillOpacity={props.fillOpacity} pathID={pathID} setPathID={setPathID} info={info} setInfo={setInfo} setEndPoint={setEndPoint} setFirstCtrl={setFirstCtrl} setSecondCtrl={setSecondCtrl} endPoint={endPoint} firstCtrl={firstCtrl} secondCtrl={secondCtrl} controlCol={props.controlCol} ctrlOpacity={props.ctrlOpacity} controlSize={props.controlSize} endCol={props.endCol} endOpacity={props.endOpacity} endSize={props.endSize} highlight={props.highlight}  />
                 </View>
+
                 <View style={styles(props).container}>
                   <Grid size="450" mainWidth="530" id="grid" children={<PathFromArray path={path} stroke={props.stroke} strokeWidth={props.strokeWidth} strokeOpacity={props.strokeOpacity} fill={props.fill} fillOpacity={props.fillOpacity} setInfo={setInfo} setEndPoint={setEndPoint} setFirstCtrl={setFirstCtrl} setSecondCtrl={setSecondCtrl} controlCol={props.controlCol} ctrlOpacity={props.ctrlOpacity} controlSize={props.controlSize} endCol={props.endCol} endOpacity={props.endOpacity} endSize={props.endSize} highlight={props.highlight}/>} />
-                  
                   {/* <Grid size="450" id="grid" children={<Path path={path} stroke={props.stroke} strokeWidth={props.strokeWidth} strokeOpacity={props.strokeOpacity} fill={props.fill} fillOpacity={props.fillOpacity} setInfo={setInfo} setEndPoint={setEndPoint} setFirstCtrl={setFirstCtrl} setSecondCtrl={setSecondCtrl} controlCol={props.controlCol} ctrlOpacity={props.ctrlOpacity} controlSize={props.controlSize} endCol={props.endCol} endOpacity={props.endOpacity} endSize={props.endSize} highlight={props.highlight} showNodes={showNodes}/>} />                   */}
-                  <View style={styles(props).fullPath}>
-                  <Text numberOfLines={10} style={styles(props).fullPathText} >Relative path: "M50,100{path.map((command, i) => {
-                    return(
-                      <Text key={i}>{command.command}</Text>
-                    )
-                  })}"</Text>
-                  <Text numberOfLines={10} style={styles(props).fullPathText} >Absolute path: "M50,100{path.map((command, i) => {
-                    return(
-                      <Text key={i}>{command.absCommand}</Text>
-                    )
-                  })}"</Text>
-                  </View>
                 </View>
+
                 <View style={styles(props).configCommands}>
-                
-                <SidePanel info={info} setInfo={setInfo} firstCtrl={firstCtrl} setFirstCtrl={setFirstCtrl} secondCtrl={secondCtrl} setSecondCtrl={setSecondCtrl} endPoint={endPoint} setEndPoint={setEndPoint} path={path} setPath={setPath} pathID={pathID} setPathID={setPathID} stroke={props.stroke} strokeWidth={props.strokeWidth} strokeOpacity={props.strokeOpacity} fill={props.fill} fillOpacity={props.fillOpacity} controlCol={props.controlCol} ctrlOpacity={props.ctrlOpacity} controlSize={props.controlSize} endCol={props.endCol} endOpacity={props.endOpacity} endSize={props.endSize} highlight={props.highlight} />
+                  <CommandPanel path={path} setPath={setPath} stroke={props.stroke} strokeWidth={props.strokeWidth} strokeOpacity={props.strokeOpacity} fill={props.fill} fillOpacity={props.fillOpacity} pathID={pathID} setPathID={setPathID} info={info} setInfo={setInfo} setEndPoint={setEndPoint} setFirstCtrl={setFirstCtrl} setSecondCtrl={setSecondCtrl} endPoint={endPoint} firstCtrl={firstCtrl} secondCtrl={secondCtrl} controlCol={props.controlCol} ctrlOpacity={props.ctrlOpacity} controlSize={props.controlSize} endCol={props.endCol} endOpacity={props.endOpacity} endSize={props.endSize} highlight={props.highlight}  />
+                  <SidePanel info={info} setInfo={setInfo} firstCtrl={firstCtrl} setFirstCtrl={setFirstCtrl} secondCtrl={secondCtrl} setSecondCtrl={setSecondCtrl} endPoint={endPoint} setEndPoint={setEndPoint} path={path} setPath={setPath} pathID={pathID} setPathID={setPathID} stroke={props.stroke} strokeWidth={props.strokeWidth} strokeOpacity={props.strokeOpacity} fill={props.fill} fillOpacity={props.fillOpacity} controlCol={props.controlCol} ctrlOpacity={props.ctrlOpacity} controlSize={props.controlSize} endCol={props.endCol} endOpacity={props.endOpacity} endSize={props.endSize} highlight={props.highlight} />
                 </View>
               </View>
             </View>
+            <View style={styles(props).fullPath}>
+              <Text numberOfLines={10} style={styles(props).fullPathText} >Relative path: "M50,100{path.map((command, i) => {
+                return(
+                  <Text key={i}>{command.command}</Text>
+                )
+              })}"</Text>
+              <Text numberOfLines={10} style={styles(props).fullPathText} >Absolute path: "M50,100{path.map((command, i) => {
+                return(
+                  <Text key={i}>{command.absCommand}</Text>
+                )
+              })}"</Text>
+              </View>
         </View>
     )
 };
@@ -126,12 +126,22 @@ const styles = (props) => StyleSheet.create({
       fontSize:36,
       marginTop: -20,
       textShadow: '-2px 2px 4px gray, 2px 2px 2px gray',
+      borderColor: '#dff',
+      borderWidth: 3,
+      borderRadius: 18,
+      paddingLeft: 15,
+      paddingRight: 15,
+      paddingTop: 3,
+      paddingBottom:8,
+      boxShadow: '-2px 2px 8px #9c9c9c',
+      backgroundColor: '#fefefe',
+      margin: 5
     },
     gridArea:{
       marginTop: -5
     },
     fullPath: {
-      backgroundColor: '#ddd',
+      backgroundColor: '#eee',
       borderColor: '#dff',
       borderWidth: 3,
       borderRadius: 18,
@@ -140,22 +150,19 @@ const styles = (props) => StyleSheet.create({
       justifyContent: 'center',
       padding: 4,
       boxShadow: '-2px 2px 8px #9c9c9c',
-      position: 'absolute',
-      bottom: 8 ,
-      left: 10,
-      width: 745,
-      height: 80
+      height: 80,
+      margin: 5
     },
     fullPathText: {
       fontFamily: 'Geologica-Medium',
       fontSize: 13,
-      width:450,
+      width:"85%",
       flex:1,
       marginTop: 8,
       paddingLeft:4,
       paddingTop: 4,
       borderRadius: 6,
-      backgroundColor: 'rgba(255, 255, 255, 1)',
+      backgroundColor: 'rgba(255, 255, 255, 0.75)',
       height: 'fit-content'
     },
 })
