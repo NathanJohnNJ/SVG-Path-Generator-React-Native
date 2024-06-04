@@ -9,14 +9,14 @@ import Help from '../help';
 
 const SidePanel = (props) => {
     const [modalIsOpen, setModalIsOpen] = useState(false);
-    const [hover, setHover] = useState({x: false, change: false});
+    const [hover, setHover] = useState({sub: false, can: false, edit:false, change:false, com:false, dx1: false, dy1: false, dx2: false, dy2: false, x: false, y:false});
 
     function hoverFunc(i){
         const newHover = { ...hover, [i]: true}
         setHover(newHover)
     }
     function resetHover(){
-        setHover({x: false, change: false})
+        setHover({sub: false, can: false, edit:false, change:false, com:false, dx1: false, dy1: false, dx2: false, dy2: false, x: false, y:false})
     }
     function openModal(){
         setModalIsOpen(true)
@@ -26,40 +26,34 @@ const SidePanel = (props) => {
     }
 
     const ControlTable = () => {
-        let headerArr = [];
-        let dataArr = [];
-        props.info.controlPoints.map((point, i) =>{
-            headerArr.push(point.key)
-            dataArr.push(point.value)
-        })
         return(
             <FieldSet label="Control Points" labelColor={props.controlCol} labelStyle={styles(props).label} mainStyle={styles(props).fieldSet}>
                 <table style={styles(props).table}>
                     <tbody style={styles(props).tbody}>
                         <tr style={styles(props).tr}>
-                            {headerArr.map((header, i) => {
+                            {props.info.controlPoints.map((point, i) => {
                                 return(
-                                    <th style={styles(props).th} key={i}>{header}</th>
+                                    <th style={styles(props).th} key={i}>{point.key}</th>
                                 )
                             })}
                         </tr>
                         <tr style={styles(props).trWide}> 
-                                    <th style={styles(props).ctrlWide}>Relative</th>
-                                </tr>
+                            <th style={styles(props).ctrlWide}>Relative</th>
+                        </tr>
                         <tr style={styles(props).tr}>
-                            {dataArr.map((data, i) => {
+                            {props.info.controlPoints.map((point, i) => {
                                 return(
-                                    <td style={styles(props).td} key={i}>{data}</td>
+                                    <td style={(hover[point.key])?styles(props).hoverTd:styles(props).td} key={i} onMouseEnter={()=>hoverFunc(point.key)} onMouseLeave={resetHover}>{point.value}</td>
                                 )
                             })}
                         </tr>
                         <tr style={styles(props).trWide}> 
-                                    <th style={styles(props).ctrlWide}>Absolute</th>
-                                </tr>
+                            <th style={styles(props).ctrlWide}>Absolute</th>
+                        </tr>
                         <tr style={styles(props).tr}>
                             {props.info.absControlPoints.map((point, i) => {
                                 return(
-                                    <td style={(hover[point.key])?styles(props).hoverTd:styles(props).td} key={i} onMouseEnter={()=>props.hoverFunc(point.key)} onMouseLeave={resetHover}>{point.value}</td>
+                                    <td style={(hover[point.key])?styles(props).hoverTd:styles(props).td} key={i} onMouseEnter={()=>hoverFunc(point.key)} onMouseLeave={resetHover}>{point.value}</td>
                                 )
                             })}
                         </tr>
@@ -113,15 +107,15 @@ const SidePanel = (props) => {
                                     <th style={styles(props).thWide}>Relative</th>
                                 </tr>
                             <tr style={styles(props).tr}>
-                                <td style={hover.x?styles(props).hoverEnd:styles(props).end} onMouseEnter={()=>{hoverFunc('x')}} onMouseLeave={props.resetHover}>{props.info.endPoint.x}</td>
-                                <td style={hover.y?styles(props).hoverEnd:styles(props).end} onMouseEnter={()=>{hoverFunc('y')}} onMouseLeave={props.resetHover}>{props.info.endPoint.y}</td>
+                                <td style={hover.x?styles(props).hoverEnd:styles(props).end} onMouseEnter={()=>{hoverFunc('x')}} onMouseLeave={resetHover}>{props.info.endPoint.x}</td>
+                                <td style={hover.y?styles(props).hoverEnd:styles(props).end} onMouseEnter={()=>{hoverFunc('y')}} onMouseLeave={resetHover}>{props.info.endPoint.y}</td>
                             </tr>
                             <tr style={styles(props).trWide}> 
                                 <th style={styles(props).thWide}>Absolute</th>
                             </tr>
                             <tr style={styles(props).tr}>
-                                <td style={hover.x?styles(props).hoverEnd:styles(props).end} onMouseEnter={()=>{hoverFunc('x')}} onMouseLeave={props.resetHover}>{props.info.absEndPoint.x}</td>
-                                <td style={hover.y?styles(props).hoverEnd:styles(props).end} onMouseEnter={()=>{hoverFunc('y')}} onMouseLeave={props.resetHover}>{props.info.absEndPoint.y}</td>
+                                <td style={hover.x?styles(props).hoverEnd:styles(props).end} onMouseEnter={()=>{hoverFunc('x')}} onMouseLeave={resetHover}>{props.info.absEndPoint.x}</td>
+                                <td style={hover.y?styles(props).hoverEnd:styles(props).end} onMouseEnter={()=>{hoverFunc('y')}} onMouseLeave={resetHover}>{props.info.absEndPoint.y}</td>
                             </tr>
                         </tbody>
                     </table>
@@ -131,7 +125,7 @@ const SidePanel = (props) => {
                 </View>
             </View>
             <View style={styles(props).editHelp}>
-                    <Edit info={props.info} setInfo={props.setInfo} path={props.path} setPath={props.setPath} relative={props.relative} pathID={props.pathID} setPathID={props.setPathID} stroke={props.stroke} strokeWidth={props.strokeWidth} strokeOpacity={props.strokeOpacity} fill={props.fill} fillOpacity={props.fillOpacity} firstCtrl={props.firstCtrl} setFirstCtrl={props.setFirstCtrl} secondCtrl={props.secondCtrl} setSecondCtrl={props.setSecondCtrl} endPoint={props.endPoint} setEndPoint={props.setEndPoint}/>
+                    <Edit info={props.info} setInfo={props.setInfo} path={props.path} setPath={props.setPath} relative={props.relative} pathID={props.pathID} setPathID={props.setPathID} stroke={props.stroke} strokeWidth={props.strokeWidth} strokeOpacity={props.strokeOpacity} fill={props.fill} fillOpacity={props.fillOpacity} firstCtrl={props.firstCtrl} setFirstCtrl={props.setFirstCtrl} secondCtrl={props.secondCtrl} setSecondCtrl={props.setSecondCtrl} endPoint={props.endPoint} setEndPoint={props.setEndPoint} controlCol={props.controlCol} ctrlOpacity={props.ctrlOpacity} controlSize={props.controlSize} endCol={props.endCol} endOpacity={props.endOpacity} endSize={props.endSize} highlight={props.highlight}/>
                     <Help />
             </View>
             <Modal
@@ -141,19 +135,14 @@ const SidePanel = (props) => {
             onRequestClose={closeModal}
             >
                 <View style="styles(props).modal">
-                <Pressable style={hover.x?styles(props).closeHover:styles(props).close} onPress={closeModal} onMouseOver={() => hoverFunc('x')} onMouseLeave={resetHover}>
-                    <Text style={hover.x?styles(props).closeTextHover:styles(props).closeText}>
-                        X
-                    </Text>
-                </Pressable>
                 <View style={styles(props).change}>
                     <Text style={styles(props).title}>Change command</Text>
                     <Text style={styles(props).normalText}>Please select from one of the following commands:</Text>
                     <Text style={styles(props).smallText}>(Please beware that doing so will remove the command you had selected from the path and replace it with this new one.)</Text>
                 </View>
                 <View style={styles(props).commandSelection}>
-                    <C relative={props.relative} path={props.path} setPath={props.setPath} pathID={props.pathID} setPathID={props.setPathID} startPoints={props.startPoints} setStartPoints={props.setStartPoints} stroke={props.stroke} strokeWidth={props.strokeWidth} strokeOpacity={props.strokeOpacity} fill={props.fill} fillOpacity={props.fillOpacity} info={props.info} setInfo={props.setInfo} />
-                    <Q relative={props.relative} path={props.path} setPath={props.setPath} pathID={props.pathID} setPathID={props.setPathID} startPoints={props.startPoints} setStartPoints={props.setStartPoints} stroke={props.stroke} strokeWidth={props.strokeWidth} strokeOpacity={props.strokeOpacity} fill={props.fill} fillOpacity={props.fillOpacity} info={props.info} setInfo={props.setInfo} />
+                    <C relative={props.relative} path={props.path} setPath={props.setPath} pathID={props.pathID} setPathID={props.setPathID} stroke={props.stroke} strokeWidth={props.strokeWidth} strokeOpacity={props.strokeOpacity} fill={props.fill} fillOpacity={props.fillOpacity} info={props.info} setInfo={props.setInfo} />
+                    <Q relative={props.relative} path={props.path} setPath={props.setPath} pathID={props.pathID} setPathID={props.setPathID} stroke={props.stroke} strokeWidth={props.strokeWidth} strokeOpacity={props.strokeOpacity} fill={props.fill} fillOpacity={props.fillOpacity} info={props.info} setInfo={props.setInfo} />
                 </View>
                 </View>
             </Modal>

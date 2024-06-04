@@ -47,4 +47,4 @@ Since I only had 4 weeks to get this up and running, and since I, true to form, 
   - ~~Added default options for Q command~~
   - ~~Command underneath path to show both relative and absolute~~
   
-[https://www.buymeacoffee.com/nathanjohnnj](https://github.com/NathanJohnNJ/SVG-Path-Generator-React-Native/blob/main/.github/coffee.svg)
+[https://www.buymeacoffee.com/nathanjohnnj](https://raw.githubusercontent.com/NathanJohnNJ/SVG-Path-Generator-React-Native/0aebda9f3ad47a2f00232f6da22b5026c121c8e2/.github/coffee.svg)
