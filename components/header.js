@@ -1,5 +1,5 @@
 import { Image, StyleSheet } from 'react-native';
-import React, { useState } from 'react';
+import { useState, useLayoutEffect } from 'react';
 import { Svg, LinearGradient, Path, ForeignObject, Defs, Stop, G } from 'react-native-svg';
 
 const Header = ( props ) => {
@@ -7,28 +7,35 @@ const Header = ( props ) => {
     function njtd(){
         window.open('https://www.njtd.xyz');
     }
-    const [width, setWidth] = useState(window.innerWidth)
-    const [height, setHeight] = useState(window.innerHeight/5)
-    const viewbox = `0 0 ${width} ${height}`
-    document.addEventListener('resize', ()=> {
-        setWidth(window.innerWidth)
-        setHeight(window.innerHeight/10)
-    })
+    function useWindowSize() {
+        const [size, setSize] = useState([0, 0]);
+        useLayoutEffect(() => {
+          function updateSize() {
+            setSize([window.innerWidth, window.innerHeight]);
+          }
+          window.addEventListener('resize', updateSize);
+          updateSize();
+          return () => window.removeEventListener('resize', updateSize);
+        }, []);
+        return size;
+      }
 
-    const myPath = `M0,0 l${width},0 l0,${height} l-${width},0z`
-    const positionX = (width/2) - 75
+    const [width, height] = useWindowSize();
+    const viewbox = `0 0 ${width} ${height}`;
+    const myPath = `M0,0 l${width},0 l0,120 c-${width/16},60 -${width/8},-40 -${width/4},0 s-${width/8},-60 -${width/4},0s-${width/8},-40 -${width/4},0s-${width/8},-60 -${width/4},10z`;
+
     return(
         <Svg style={styles.header}>
             <Defs>
-                <LinearGradient id="gradient" x1="0" y1={height} x2={width} y2="0">
-                    <Stop offset="0" stopColor="#aaa" stopOpacity="1" />
-                    <Stop offset="1" stopColor="#888" stopOpacity="1" />
-                    <Stop offset="2" stopColor="#3d3d3d" stopOpacity="1" />
+                <LinearGradient id="grad" x1="0%" x2="100%" y1="0%" y2="0%">
+                    <Stop offset="0%" stopColor="#444"  />
+                    <Stop offset="50%" stopColor="#aaa" />
+                    <Stop offset="100%" stopColor="#eee" />
                 </LinearGradient>
             </Defs>
             <G x="0" y="0" viewBox={viewbox}>
-                {/* <Path x="0" y="0" viewBox={viewbox} fill="url(#gradient)" d={myPath} /> */}
-                <ForeignObject x={positionX} y={0} width={150} height={150} >
+                <Path x="0" y="0" viewBox={viewbox} fill="url(#grad)" d={myPath} stroke="none" preserveAspectRatio="minXminY meet"/>
+                <ForeignObject x={width/2} y={0} width={150} height={150} >
                     <Image style={styles.logo} source={require('../assets/logo.svg')} onClick={njtd} />
                 </ForeignObject>
             </G>
@@ -41,8 +48,7 @@ export default Header;
 const styles = StyleSheet.create({
     header: {
         width: '100%',
-        height: 150,
-        backgroundColor: '#666',
+        height: 160,
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
@@ -53,6 +59,7 @@ const styles = StyleSheet.create({
         height: 150,
         display: 'flex',
         alignSelf: 'center',
+        justifySelf: 'center',
         cursor: 'pointer'
     }
 })

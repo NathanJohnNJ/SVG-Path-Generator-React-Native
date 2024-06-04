@@ -2,18 +2,19 @@ import { useState } from 'react';
 import GridWithDrag from './gridWithDrag';
 import { StyleSheet, Text, View, Modal } from 'react-native';
 import React from 'react';
-import FieldSet from 'react-native-fieldset';
+import FieldSet from '@njtd/react-native-fieldset';
+import Help from '../help';
 
 const L = (props) => {
     const [modalIsOpen, setModalIsOpen] = useState(false);
     const [hover, setHover] = useState({sub: false, can: false, l:false, x:false, y:false});
-    const [endPoint, setEndPoint] = useState({x:50, y:50})
+    // const [endPoint, setEndPoint] = useState({x:50, y:50})
 
     const startX = props.path[props.pathID].absX;
     const startY = props.path[props.pathID].absY;
 
     function openModal(){ 
-        setEndPoint({x:50, y:50})
+        props.setEndPoint({x:50, y:50})
         setModalIsOpen(true)
     }
     function closeModal(){
@@ -21,8 +22,13 @@ const L = (props) => {
     }
 
     function hoverFunc(i){
-        const newHover = { ...hover, [i]: true}
-        setHover(newHover)
+        if (i==='x'||i==='y'){
+            const newHover = { ...hover, x:true, y:true}
+            setHover(newHover)
+        }else{
+            const newHover = { ...hover, [i]: true}
+            setHover(newHover)
+        }
     }
     function resetHover(){
         setHover({sub: false, can: false, l:false, x:false, y:false})
@@ -50,15 +56,15 @@ const L = (props) => {
             type: 'l',
             absType: 'L',
             id: props.pathID+1,
-            absX: endPoint.x+startX,
-            absY: endPoint.y+startY,
+            absX: props.endPoint.x+startX,
+            absY: props.endPoint.y+startY,
             startPoint: {x: startX, y: startY},
-            endPoint: {x: endPoint.x,y: endPoint.y},
-            absEndPoint: {x: endPoint.x+startX,y: endPoint.y+startY},
-            command: `l${endPoint.x},${endPoint.y}`,
-            absCommand: `L${startX+endPoint.x},${startY+endPoint.y}`,
-            fullCommand: `M${startX},${startY}l${endPoint.x},${endPoint.y}`,
-            fullAbsCommand: `M${startX},${startY}L${startX+endPoint.x},${startY+endPoint.y}`
+            endPoint: {x: props.endPoint.x, y: props.endPoint.y},
+            absEndPoint: {x: props.endPoint.x+startX, y: props.endPoint.y+startY},
+            command: `l${props.endPoint.x},${props.endPoint.y}`,
+            absCommand: `L${startX+props.endPoint.x},${startY+props.endPoint.y}`,
+            fullCommand: `M${startX},${startY}l${props.endPoint.x},${props.endPoint.y}`,
+            fullAbsCommand: `M${startX},${startY}L${startX+props.endPoint.x},${startY+props.endPoint.y}`
         } 
         const newPath = [...props.path, lPath]
         props.setPath(newPath)
@@ -80,10 +86,12 @@ const L = (props) => {
                 <View style={styles(props).row}>
                    
                     <View style={styles(props).container}>
-                        <GridWithDrag size="250" path={defaultPath} endPoint={endPoint} setEndPoint={setEndPoint} strokeWidth={props.strokeWidth} stroke={props.stroke} fill={props.fill} fillOpacity={props.fillOpacity} strokeOpacity={props.strokeOpacity} endCol={props.endCol} endOpacity={props.endOpacity} endSize={props.endSize} highlight={props.highlight} startX={startX} startY={startY}  />
+                        <GridWithDrag size="250" path={defaultPath} endPoint={props.endPoint} setEndPoint={props.setEndPoint} strokeWidth={props.strokeWidth} stroke={props.stroke} fill={props.fill} fillOpacity={props.fillOpacity} strokeOpacity={props.strokeOpacity} endCol={props.endCol} endOpacity={props.endOpacity} endSize={props.endSize} highlight={props.highlight} startX={startX} startY={startY}  />
                     </View>
                    
                    <View style={styles(props).mainContainer}>
+                   <Help url="https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorial/Paths" />
+                       
                     <View style={styles(props).tableContainer}>
                     <FieldSet label="End Point" labelColor={props.endCol} labelStyle={styles(props).label} mainStyle={styles(props).fieldSet}>
                         <table style={styles(props).table}>

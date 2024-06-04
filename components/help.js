@@ -1,21 +1,21 @@
-import { Text, Pressable, Linking, StyleSheet } from 'react-native';
-import React, {useCallback, useState} from 'react';
-
-const OpenURLButton = (url) => {
+import { Text, Pressable, StyleSheet } from 'react-native';
+import { useState } from 'react';
+ 
+const Help = (props) =>{
   const [hover, setHover] = useState(false);
-    return( 
-    <Pressable onPress={njtd} style={hover?styles.hover:styles.button} onMouseOver={() => setHover(hover => !hover)} onMouseOut={() => setHover(hover => !hover)}>
-        <Text style={hover?styles.hoverText:styles.buttonText}>?</Text>
-    </Pressable>
-    );
-  };
+
   function njtd(){
+    props.url
+    ?
+    window.open(props.url)
+    :
     window.open('https://developer.mozilla.org/en-US/docs/Web/SVG');
 }
-const Help = (props) =>{
-    const Url = ""
+
     return(
-        <OpenURLButton url={props.url?props.url:Url}/>
+      <Pressable onPress={njtd} style={hover?styles.hover:styles.button} onMouseOver={() => setHover(hover => !hover)} onMouseOut={() => setHover(hover => !hover)}>
+        <Text style={hover?styles.hoverText:styles.buttonText}>?</Text>
+      </Pressable>
     )
 }
 

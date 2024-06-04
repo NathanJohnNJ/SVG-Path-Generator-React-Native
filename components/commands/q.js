@@ -4,6 +4,7 @@ import { StyleSheet, Text, View, Modal } from 'react-native';
 import React from 'react';
 import Tables from './tables';
 import Presets from '../presetPaths/q';
+import Help from '../help';
 
 const Q = (props) => {
     const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -21,8 +22,6 @@ const Q = (props) => {
     }
     function closeModal(){
         setModalIsOpen(false)
-        props.setFirstCtrl({})  
-        props.setEndPoint({})
     }
     function hoverFunc(i){
         if (i==='dx1'||i==='dy1'){
@@ -103,6 +102,8 @@ const Q = (props) => {
                     </View>
                     </View>
                     <View style={styles(props).container}>
+                    <Help url="https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorial/Paths" />
+                       
                         <Tables path={defaultPath} firstCtrl={props.firstCtrl} setFirstCtrl={props.setFirstCtrl} endPoint={props.endPoint} setEndPoint={props.setEndPoint} controlCol={props.controlCol} ctrlOpacity={props.ctrlOpacity} controlSize={props.controlSize} endCol={props.endCol} endOpacity={props.endOpacity} endSize={props.endSize} highlight={props.highlight} resetHover={resetHover} hoverFunc={hoverFunc} startX={startX} startY={startY} hover={hover} />
                     </View>
                 

@@ -1,10 +1,8 @@
 import { View, StyleSheet, Text, Pressable } from "react-native";
-import { Svg, Path, G } from "react-native-svg";
+import { Path } from "react-native-svg";
 import Grid from "../grid";
-import { useEffect, useState } from "react";
 
 const Presets = (props) => {
-    const [chosen, setChosen] = useState(first);
 
     const first = {
         type:'c',
@@ -71,16 +69,15 @@ const Presets = (props) => {
         fullAbsCommand: 'M100,50C125,100 75,150 50,125'
     }
     const presetArray = [first, second, third, fourth]
-    
-    useEffect(() => {
-        props.setDefaultPath(chosen)
-        console.log(props.defaultPath)
+    // const [defaultPath, setDefaultPath] = useState(firstDefault)
+    function select(command){
+        props.setDefaultPath(command)
         const grid = document.getElementById('createGrid')
         const path = document.getElementById('path')
         // grid.removeChild(path)
-        props.setFirstCtrl({x:props.path.controlPoints[0].value, y:props.path.controlPoints[1].value})
-        props.setSecondCtrl({x:props.path.controlPoints[2].value, y:props.path.controlPoints[3].value})
-        props.setEndPoint(props.path.endPoint)
+        props.setFirstCtrl({x:command.controlPoints[0].value, y:command.controlPoints[1].value})
+        props.setSecondCtrl({x:command.controlPoints[2].value, y:command.controlPoints[3].value})
+        props.setEndPoint(command.endPoint)
         const svgns = "http://www.w3.org/2000/svg"
         const currentPath = document.createElementNS(svgns, 'path');
         currentPath.setAttributeNS(null, "id", 'path');
@@ -89,10 +86,9 @@ const Presets = (props) => {
         currentPath.setAttributeNS(null, 'stroke-opacity', props.strokeOpacity);
         currentPath.setAttributeNS(null, 'fill', props.fill);
         currentPath.setAttributeNS(null, 'fill-opacity', props.fillOpacity);
-        currentPath.setAttributeNS(null, 'd', `M50,100 ${props.defaultPath.command}`)
-        grid.appendChild(currentPath)
-    }, [chosen])
-    
+        currentPath.setAttributeNS(null, 'd', `M50,100c${props.firstCtrl.x},${props.firstCtrl.y} ${props.secondCtrl.x},${props.secondCtrl.y} ${props.endPoint.x},${props.endPoint.y}`)
+        grid.replaceChild(currentPath, path)
+    }
     return(
         <View style={styles.mainContainer}>
             <Text style={styles.title}>
@@ -102,9 +98,9 @@ const Presets = (props) => {
                 {
                     presetArray.map((command, i) => {
                         return(
-                            <Pressable style={styles.gridSection} key={i+20} onPress={()=>setChosen(command)}>
+                            <Pressable style={styles.gridSection} key={i+20} onPress={()=>select(command)}>
                                 <Grid size="150" mainWidth="180" id="miniGrid" key={i}>
-                                    <Path d={command.fullAbsCommand} id="path" fill={props.fill} key={i+10} fillOpacity={props.fillOpacity} stroke={props.stroke} strokeWidth="5" />
+                                    <Path d={command.fullAbsCommand} fill={props.fill} key={i+10} fillOpacity={props.fillOpacity} stroke={props.stroke} strokeWidth="5" />
                                 </Grid>
                             </Pressable>
                         )
@@ -146,6 +142,6 @@ const styles = StyleSheet.create({
       },
     gridSection:{
         scale: 0.5,
-        margin: -50
+        margin: -50,
       }
   });

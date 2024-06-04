@@ -2,7 +2,8 @@ import { useState } from 'react';
 import GridWithDrag from './gridWithDrag';
 import { StyleSheet, Text, View, Modal } from 'react-native';
 import React from 'react';
-import FieldSet from 'react-native-fieldset';
+import FieldSet from '@njtd/react-native-fieldset';
+import Help from '../help';
 
 const H = (props) => {
     const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -17,7 +18,6 @@ const H = (props) => {
     }
     function closeModal(){
         setModalIsOpen(false)
-        props.setEndPoint({})
     }
 
     function hoverFunc(i){
@@ -84,6 +84,8 @@ const H = (props) => {
                     </View>
                    
                     <View style={styles(props).mainContainer}>
+                    <Help url="https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorial/Paths" />
+                       
                             <View style={styles(props).tableContainer}>
                             <FieldSet label="End Point" labelColor={props.endCol} labelStyle={styles(props).label} mainStyle={styles(props).fieldSet}>
                                 <table style={styles(props).table}>

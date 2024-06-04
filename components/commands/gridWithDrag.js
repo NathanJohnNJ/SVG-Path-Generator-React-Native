@@ -66,13 +66,18 @@ const GridWithDrag = (props) => {
         }
     }
     function endDrag() {
-        if(selectedElement.id==="endPoint"){
-            selectedElement.setAttributeNS(null, 'r', props.endSize)
+        if(!selectedElement===null){
+            if(selectedElement.id==="endPoint"){
+                selectedElement.setAttributeNS(null, 'r', props.endSize)
+            }else{
+                selectedElement.setAttributeNS(null, 'r', props.controlSize)
+            }
+            setSelectedElement(null);
+            props.resetHover()
         }else{
-            selectedElement.setAttributeNS(null, 'r', props.controlSize)
+            setSelectedElement(null);
+            props.resetHover()
         }
-        setSelectedElement(null);
-        props.resetHover()
     }
     function startDrag(evt) {
         evt.preventDefault()

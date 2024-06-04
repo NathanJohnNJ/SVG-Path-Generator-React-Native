@@ -1,6 +1,6 @@
 import { StyleSheet, View, Modal, Pressable, Text } from 'react-native';
 import { useState } from 'react';
-import FieldSet from 'react-native-fieldset';
+import FieldSet from '@njtd/react-native-fieldset';
 import GridWithDrag from './commands/gridWithDrag';
 // import Change from './change';
 
@@ -18,6 +18,8 @@ const Edit = (props) => {
     function closeModal(){
         setModalIsOpen(false)
     }
+
+    
     function hoverFunc(i){
         const newHover = { ...hover, [i]: true}
         setHover(newHover)

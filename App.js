@@ -6,6 +6,8 @@ import * as Font from 'expo-font';
 import { inject } from '@vercel/analytics';
 import Header from './components/header';
 import Footer from './components/footer';
+import Opening from './components/openingModal';
+
  
 inject();
 
@@ -23,6 +25,25 @@ export default function App() {
   const [endSize, setEndSize] = useState(5);
   const [highlight, setHighlight] = useState('#00eeff');
 
+  const blank = {
+    type: '',
+    absType: '',
+    id: '',
+    absX: '50',
+    absY: '50',
+    startPoint: {x: '50', y: '50'},
+    controlPoints: [{key: '', value:''}],
+    endPoint: {x: '50', y: '50'},
+    absControlPoints: [{key: '', value:''}],
+    absEndPoint: {x: '50', y: '50'},
+    command: '',
+    absCommand: '',
+    fullCommand: 'M50,50',
+    fullAbsCommand: 'M50,50'
+  }
+  const [path, setPath] = useState([blank]);
+  const [pathID, setPathID] = useState(0);
+
 
   async function loadFonts() {
     await Font.loadAsync({
@@ -36,6 +57,7 @@ export default function App() {
       'Geologica-Medium': require('./assets/fonts/Geologica-Medium.ttf'),
       'Geologica-SemiBold': require('./assets/fonts/Geologica-SemiBold.ttf'),
       'Geologica-Bold': require('./assets/fonts/Geologica-Bold.ttf'),
+      'Geologica-Black': require('./assets/fonts/Geologica-Black.ttf'),
     });
   }
   loadFonts();
@@ -43,8 +65,8 @@ export default function App() {
       <ScrollView>
         <Header />
         <SafeAreaView style={styles.container}>
-          
-          <Main stroke={stroke} setStroke={setStroke} strokeWidth={strokeWidth} setStrokeWidth={setStrokeWidth} strokeOpacity={strokeOpacity} setStrokeOpacity={setStrokeOpacity} fill={fill} setFill={setFill} fillOpacity={fillOpacity} setFillOpacity={setFillOpacity} controlCol={controlCol} setControlCol={setControlCol} ctrlOpacity={ctrlOpacity} setCtrlOpacity={setCtrlOpacity} controlSize={controlSize} setControlSize={setControlSize} endCol={endCol} setEndCol={setEndCol} endOpacity={endOpacity} setEndOpacity={setEndOpacity} endSize={endSize} setEndSize={setEndSize} highlight={highlight} setHighlight={setHighlight} />
+          <Opening setPath={setPath} path={path} setPathID={setPathID} pathID={pathID} />
+          <Main path={path} setPath={setPath} stroke={stroke} setStroke={setStroke} strokeWidth={strokeWidth} setStrokeWidth={setStrokeWidth} strokeOpacity={strokeOpacity} setStrokeOpacity={setStrokeOpacity} fill={fill} setFill={setFill} fillOpacity={fillOpacity} setFillOpacity={setFillOpacity} controlCol={controlCol} setControlCol={setControlCol} ctrlOpacity={ctrlOpacity} setCtrlOpacity={setCtrlOpacity} controlSize={controlSize} setControlSize={setControlSize} endCol={endCol} setEndCol={setEndCol} endOpacity={endOpacity} setEndOpacity={setEndOpacity} endSize={endSize} setEndSize={setEndSize} highlight={highlight} setHighlight={setHighlight} setPathID={setPathID} pathID={pathID}  />
           
         </SafeAreaView>
         <Footer />

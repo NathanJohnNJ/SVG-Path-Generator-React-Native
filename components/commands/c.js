@@ -1,9 +1,10 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import GridWithDrag from './gridWithDrag';
 import { StyleSheet, Text, View, Modal} from 'react-native';
 import React from 'react';
 import Tables from './tables';
-import Presets from '../presetPaths/oldC';
+import Presets from '../presetPaths/c';
+import Help from '../help';
 
 const C = (props) => {
     const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -20,9 +21,6 @@ const C = (props) => {
     }
     function closeModal(){
         setModalIsOpen(false)
-        props.setFirstCtrl({})
-        props.setSecondCtrl({})
-        props.setEndPoint({})
     }
     function hoverFunc(i){
         if (i==='dx1'||i==='dy1'){
@@ -105,6 +103,7 @@ const C = (props) => {
                     </View>
                    </View>
                     <View style={styles(props).container}>
+                        <Help url="https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorial/Paths" />
                         <Tables firstCtrl={props.firstCtrl} setFirstCtrl={props.setFirstCtrl} secondCtrl={props.secondCtrl} setSecondCtrl={props.setSecondCtrl} endPoint={props.endPoint} setEndPoint={props.setEndPoint} controlCol={props.controlCol} ctrlOpacity={props.ctrlOpacity} controlSize={props.controlSize} endCol={props.endCol} endOpacity={props.endOpacity} endSize={props.endSize} highlight={props.highlight} startX={startX} startY={startY} resetHover={resetHover} hoverFunc={hoverFunc} hover={hover}/>
                     </View>
                 

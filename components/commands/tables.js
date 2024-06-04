@@ -1,7 +1,7 @@
 
 import { StyleSheet, View } from 'react-native';
-import React, { useState } from 'react';
-import FieldSet from 'react-native-fieldset';
+import React from 'react';
+import FieldSet from '@njtd/react-native-fieldset';
 
 
 const Tables = (props) => {
