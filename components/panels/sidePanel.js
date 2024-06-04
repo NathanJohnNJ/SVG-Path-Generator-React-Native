@@ -1,6 +1,6 @@
 import { StyleSheet, View, Modal, Pressable, Text } from 'react-native';
 import { useState } from 'react';
-import FieldSet from 'react-native-fieldset';
+import FieldSet from '@njtd/react-native-fieldset';
 import Q from '../commands/q';
 import C from '../commands/c';
 import Edit from '../edit';
@@ -69,7 +69,7 @@ const SidePanel = (props) => {
         )
     }
     function displayCtrlTables(){
-        if(props.info.type==='v'||props.info.type==='h'||props.info.type==='l'){
+        if(props.info.type==='v'||props.info.type==='h'||props.info.type==='l'||props.info.type===''){
             return(
                 <></>
             )
@@ -97,8 +97,12 @@ const SidePanel = (props) => {
                 <Text style={styles(props).title}>Path ID: {props.info.id}</Text>
                 <View style={styles(props).mainTables}>
                 {displayCtrlTables()}
+                {props.info.type===''
+                ?
+                    <></>
+                :
                 <View style={styles(props).tableSection}>
-                <FieldSet label="End Point" labelColor={props.endCol} labelStyle={styles(props).label} mainStyle={styles(props).fieldSet}>
+                <FieldSet label="End Point" labelColor={props.endCol}  borderColor="#000" labelStyle={styles(props).label} mainStyle={styles(props).fieldSet}>
                     <table style={styles(props).table}>
                         <tbody style={styles(props).tbody}>
                             <tr style={styles(props).tr}> 
@@ -123,6 +127,7 @@ const SidePanel = (props) => {
                     </table>
                 </FieldSet>
                 </View>
+                }
                 </View>
             </View>
             <View style={styles(props).editHelp}>
