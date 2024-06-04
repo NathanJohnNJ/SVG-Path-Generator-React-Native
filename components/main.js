@@ -149,6 +149,7 @@ const styles = (props) => StyleSheet.create({
       alignItems: 'center',
       justifyContent: 'center',
       padding: 4,
+      paddingBottom: 10,
       boxShadow: '-2px 2px 8px #9c9c9c',
       height: 120,
       margin: 5,

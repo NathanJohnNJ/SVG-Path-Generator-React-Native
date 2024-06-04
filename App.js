@@ -78,7 +78,7 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     margin:-20,
-    scale: 0.85,
+    scale: 0.8,
     flex: 1,
     display: 'flex',
     alignItems: 'center',
