@@ -1,6 +1,5 @@
-import { View, StyleSheet, Text } from "react-native";
-import { useState } from 'react';
-import { Svg, Path, G } from "react-native-svg";
+import { View, StyleSheet, Text, Pressable } from "react-native";
+import { Path } from "react-native-svg";
 import Grid from "../grid";
 
 const Presets = (props) => {
@@ -69,8 +68,21 @@ const Presets = (props) => {
         fullCommand: 'M50,50q-50,-50 25,100',
         fullAbsCommand: 'M50,50Q0,0 75,150'
     }
-    const presetArray = [first, second, third, fourth]
-    // const [defaultPath, setDefaultPath] = useState(firstDefault)
+    const presetArray = [first, second, third, fourth];
+    function select(command){
+        const grid = document.getElementById('createGrid');
+        const path = document.getElementById('path');
+        props.setFirstCtrl({x:command.controlPoints[0].value, y:command.controlPoints[1].value});
+        props.setEndPoint(command.endPoint);
+        const svgns = "http://www.w3.org/2000/svg";
+        const currentPath = document.createElementNS(svgns, 'path');
+        currentPath.setAttributeNS(null, "id", 'path');
+        currentPath.setAttributeNS(null, 'stroke', "#ddd");
+        currentPath.setAttributeNS(null, 'stroke-width', '3');
+        currentPath.setAttributeNS(null, 'fill', 'none');
+        currentPath.setAttributeNS(null, 'd', `M${command.startPoint.x},${command.startPoint.y}q${command.controlPoints[0].value},${command.controlPoints[1].value} ${command.endPoint.x},${command.endPoint.y}`);
+        grid.replaceChild(currentPath, path);
+    }
     return(
         <View style={styles.mainContainer}>
             <Text style={styles.title}>
@@ -80,11 +92,11 @@ const Presets = (props) => {
                 {
                     presetArray.map((command, i) => {
                         return(
-                            <View style={styles.gridSection} key={i+20}>
+                            <Pressable style={styles.gridSection} key={i+20} onPress={()=>select(command)}>
                                 <Grid size="150" mainWidth="180" id="miniGrid" key={i}>
-                                    <Path d={command.fullAbsCommand} fill={props.fill} key={i+10} fillOpacity={props.fillOpacity} stroke={props.stroke} strokeWidth="5" />
+                                    <Path d={command.fullAbsCommand} fill="none" key={i+10} stroke={props.stroke} strokeWidth="5" />
                                 </Grid>
-                            </View>
+                            </Pressable>
                         )
                     })
                 }

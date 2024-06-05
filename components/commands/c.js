@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import GridWithDrag from './gridWithDrag';
 import { StyleSheet, Text, View, Modal} from 'react-native';
-import React from 'react';
 import Tables from './tables';
 import Presets from '../presetPaths/c';
 import Help from '../help';
@@ -10,14 +9,15 @@ const C = (props) => {
     const [modalIsOpen, setModalIsOpen] = useState(false);
     const [hover, setHover] = useState({sub: false, can: false, c: false, dx1:false, dy1: false, dx2: false, dy2: false, x: false, y:false});
     
+    
     const startX = props.path[props.pathID].absX;
     const startY = props.path[props.pathID].absY;
 
     function openModal(){
-        setModalIsOpen(true)
         props.setFirstCtrl({x:25, y:50})
         props.setSecondCtrl({x:75, y:50})
         props.setEndPoint({x:100, y:0})
+        setModalIsOpen(true)
     }
     function closeModal(){
         setModalIsOpen(false)
@@ -57,7 +57,8 @@ const C = (props) => {
         fullCommand: 'M50,50c25,50 75,50 100,0',
         fullAbsCommand: 'M50,50C75,100 125,100 150,50'
     }
-    const [defaultPath, setDefaultPath] = useState(first)
+    const [defaultPath, setDefaultPath] = useState(first);
+
     function addToPath(){
         const startX = props.path[props.pathID].absX;
         const startY = props.path[props.pathID].absY;
@@ -85,7 +86,9 @@ const C = (props) => {
 
     return (
         <View style={styles(props).outerContainer}>
-            <Text onClick={openModal} onMouseOver={() => hoverFunc('c')} onMouseLeave={resetHover} style={hover.c?styles(props).hover:styles(props).button}>C</Text>
+            <Text onClick={openModal} onMouseOver={() => hoverFunc('c')} onMouseLeave={resetHover} style={hover.c?styles(props).hover:styles(props).button}>
+                C
+            </Text>
             <Modal
             animationType="slide"
             transparent={false}
@@ -93,18 +96,20 @@ const C = (props) => {
             onRequestClose={closeModal}
             >
                 <View style={styles(props).row}>
-                   <Presets pathID={props.pathID} stroke={props.stroke} fill={props.fill} fillOpacity={props.fillOpacity} defaultPath={defaultPath} setDefaultPath={setDefaultPath} firstCtrl={props.firstCtrl} path={first} setFirstCtrl={props.setFirstCtrl} secondCtrl={props.secondCtrl} setSecondCtrl={props.setSecondCtrl} endPoint={props.endPoint} setEndPoint={props.setEndPoint} addToPath={addToPath} strokeWidth={props.strokeWidth} />
-                   <View style={styles(props).middleSection}>
-                   <View style={styles.titleContainer}>
-                    <Text style={styles(props).title}>New C Command</Text>
+                    <Presets pathID={props.pathID} defaultPath={defaultPath} setDefaultPath={setDefaultPath} stroke={props.stroke} strokeWidth={props.strokeWidth} setFirstCtrl={props.setFirstCtrl} setSecondCtrl={props.setSecondCtrl} setEndPoint={props.setEndPoint} firstCtrl={props.firstCtrl} secondCtrl={props.secondCtrl} endPoint={props.endPoint} fill={props.fill} fillOpacity={props.fillOpacity} strokeOpacity={props.strokeOpacity} controlCol={props.controlCol} ctrlOpacity={props.ctrlOpacity} controlSize={props.controlSize} endCol={props.endCol} endOpacity={props.endOpacity} endSize={props.endSize} />
+                    <View style={styles(props).middleSection}>
+                        <View style={styles(props).titleContainer}>
+                            <Text style={styles(props).title}>
+                                New C Command
+                            </Text>
+                        </View>
+                        <View style={styles(props).container}>
+                            <GridWithDrag size="250" path={defaultPath} firstCtrl={props.firstCtrl} startPoint={props.startPoint} setStartPoint={props.setStartPoint} setFirstCtrl={props.setFirstCtrl} secondCtrl={props.secondCtrl} setSecondCtrl={props.setSecondCtrl} endPoint={props.endPoint} setEndPoint={props.setEndPoint} strokeWidth={props.strokeWidth} stroke={props.stroke} fill={props.fill} fillOpacity={props.fillOpacity} strokeOpacity={props.strokeOpacity} controlCol={props.controlCol} ctrlOpacity={props.ctrlOpacity} controlSize={props.controlSize} endCol={props.endCol} endOpacity={props.endOpacity} endSize={props.endSize} highlight={props.highlight} startX={startX} startY={startY} resetHover={resetHover} hoverFunc={hoverFunc}/>
+                        </View>
                     </View>
-                    <View style={styles(props).container}>
-                        <GridWithDrag size="250" path={first} firstCtrl={props.firstCtrl} setFirstCtrl={props.setFirstCtrl} secondCtrl={props.secondCtrl} setSecondCtrl={props.setSecondCtrl} endPoint={props.endPoint} setEndPoint={props.setEndPoint} strokeWidth={props.strokeWidth} stroke={props.stroke} fill={props.fill} fillOpacity={props.fillOpacity} strokeOpacity={props.strokeOpacity} controlCol={props.controlCol} ctrlOpacity={props.ctrlOpacity} controlSize={props.controlSize} endCol={props.endCol} endOpacity={props.endOpacity} endSize={props.endSize} highlight={props.highlight} startX={startX} startY={startY} resetHover={resetHover} hoverFunc={hoverFunc}/>
-                    </View>
-                   </View>
                     <View style={styles(props).container}>
                         <Help url="https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorial/Paths" />
-                        <Tables firstCtrl={props.firstCtrl} setFirstCtrl={props.setFirstCtrl} secondCtrl={props.secondCtrl} setSecondCtrl={props.setSecondCtrl} endPoint={props.endPoint} setEndPoint={props.setEndPoint} controlCol={props.controlCol} ctrlOpacity={props.ctrlOpacity} controlSize={props.controlSize} endCol={props.endCol} endOpacity={props.endOpacity} endSize={props.endSize} highlight={props.highlight} startX={startX} startY={startY} resetHover={resetHover} hoverFunc={hoverFunc} hover={hover}/>
+                        <Tables firstCtrl={props.firstCtrl} secondCtrl={props.secondCtrl} endPoint={props.endPoint} controlCol={props.controlCol} endCol={props.endCol} endSize={props.endSize} resetHover={resetHover} hoverFunc={hoverFunc} startX={startX} startY={startY} hover={hover} />
                     </View>
                 
                 </View>

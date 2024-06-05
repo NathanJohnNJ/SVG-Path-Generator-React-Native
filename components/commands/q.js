@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import GridWithDrag from './gridWithDrag';
 import { StyleSheet, Text, View, Modal } from 'react-native';
-import React from 'react';
 import Tables from './tables';
 import Presets from '../presetPaths/q';
 import Help from '../help';
@@ -80,11 +79,12 @@ const Q = (props) => {
         props.setPathID(props.pathID+1)
         setModalIsOpen(false)
     }
-   
 
     return (
         <View style={styles(props).outerContainer}>
-            <Text onClick={openModal} onMouseOver={() => hoverFunc('q')} onMouseLeave={resetHover} style={hover.q?styles(props).hover:styles(props).button}>Q</Text>
+            <Text onClick={openModal} onMouseOver={() => hoverFunc('q')} onMouseLeave={resetHover} style={hover.q?styles(props).hover:styles(props).button}>
+                Q
+            </Text>
             <Modal
             animationType="slide"
             transparent={false}
@@ -92,19 +92,20 @@ const Q = (props) => {
             onRequestClose={closeModal}
             >
                 <View style={styles(props).row}>
-                   <Presets stroke={props.stroke} fill={props.fill} fillOpacity={props.fillOpacity} />
-                   <View style={styles(props).middleSection}>
-                   <View style={styles.titleContainer}>
-                    <Text style={styles(props).title}>New Q Command</Text>
+                    <Presets pathID={props.pathID} stroke={props.stroke} firstCtrl={props.firstCtrl} setFirstCtrl={props.setFirstCtrl} secondCtrl={props.secondCtrl} setSecondCtrl={props.setSecondCtrl} endPoint={props.endPoint} setEndPoint={props.setEndPoint} />
+                    <View style={styles(props).middleSection}>
+                        <View style={styles(props).titleContainer}>
+                            <Text style={styles(props).title}>
+                                New Q Command
+                            </Text>
+                        </View>
+                        <View style={styles(props).container}>
+                            <GridWithDrag size="250" path={defaultPath} firstCtrl={props.firstCtrl} setFirstCtrl={props.setFirstCtrl} endPoint={props.endPoint} setEndPoint={props.setEndPoint} strokeWidth={props.strokeWidth} stroke={props.stroke} fill={props.fill} fillOpacity={props.fillOpacity} strokeOpacity={props.strokeOpacity} controlCol={props.controlCol} ctrlOpacity={props.ctrlOpacity} controlSize={props.controlSize} endCol={props.endCol} endOpacity={props.endOpacity} endSize={props.endSize} highlight={props.highlight} startX={startX} startY={startY} resetHover={resetHover} hoverFunc={hoverFunc} />
+                        </View>
                     </View>
                     <View style={styles(props).container}>
-                        <GridWithDrag size="250" path={defaultPath} firstCtrl={props.firstCtrl} setFirstCtrl={props.setFirstCtrl} endPoint={props.endPoint} setEndPoint={props.setEndPoint} strokeWidth={props.strokeWidth} stroke={props.stroke} fill={props.fill} fillOpacity={props.fillOpacity} strokeOpacity={props.strokeOpacity} controlCol={props.controlCol} ctrlOpacity={props.ctrlOpacity} controlSize={props.controlSize} endCol={props.endCol} endOpacity={props.endOpacity} endSize={props.endSize} highlight={props.highlight} startX={startX} startY={startY} resetHover={resetHover} hoverFunc={hoverFunc} />
-                    </View>
-                    </View>
-                    <View style={styles(props).container}>
-                    <Help url="https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorial/Paths" />
-                       
-                        <Tables path={defaultPath} firstCtrl={props.firstCtrl} setFirstCtrl={props.setFirstCtrl} endPoint={props.endPoint} setEndPoint={props.setEndPoint} controlCol={props.controlCol} ctrlOpacity={props.ctrlOpacity} controlSize={props.controlSize} endCol={props.endCol} endOpacity={props.endOpacity} endSize={props.endSize} highlight={props.highlight} resetHover={resetHover} hoverFunc={hoverFunc} startX={startX} startY={startY} hover={hover} />
+                        <Help url="https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorial/Paths" />
+                        <Tables firstCtrl={props.firstCtrl} endPoint={props.endPoint} controlCol={props.controlCol} endCol={props.endCol} endSize={props.endSize} resetHover={resetHover} hoverFunc={hoverFunc} startX={startX} startY={startY} hover={hover} />
                     </View>
                 
                 </View>

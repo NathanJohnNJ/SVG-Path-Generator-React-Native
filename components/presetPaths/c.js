@@ -30,11 +30,11 @@ const Presets = (props) => {
         controlPoints: [{key: 'dx1', value:50}, {key: 'dy1', value:50}, {key: 'dx2', value:100}, {key: 'dy2', value:-50}],
         absControlPoints: [{key: 'dx1', value:75}, {key: 'dy1', value:100}, {key: 'dx2', value:125}, {key: 'dy2', value:0}],
         endPoint: {x: 125,y: 0},
-        absEndPoint:{x: 150,y: 50},
+        absEndPoint:{x: 175,y: 50},
         command:'c50,50 100,-50 150,0',
         absCommand: 'C75,100 125,0 175,50',
-        fullCommand: 'M25,50c50,50 100,-50 125,0',
-        fullAbsCommand: 'M25,50C75,100 125,0 150,50'
+        fullCommand: 'M50,50c50,50 100,-50 125,0',
+        fullAbsCommand: 'M50,50C100,100 150,0 175,50'
     }
     const third = {
         type:'c',
@@ -49,7 +49,7 @@ const Presets = (props) => {
         absEndPoint: {x: 150, y: 125},
         command: 'c25,50 75,0 100,75',
         absCommand: 'C75,100 125,50 150,125',
-        fullCommand: 'M50,50c25,50 75,0 100,175',
+        fullCommand: 'M50,50c25,50 75,0 100,75',
         fullAbsCommand: 'M50,50C75,100 125,50 150,125'
     }
     const fourth = {
@@ -58,27 +58,25 @@ const Presets = (props) => {
         id: props.pathID+1,
         absX: 50,
         absY: 125,
-        startPoint: {x: 100, y: 50},
+        startPoint: {x: 50, y: 50},
         controlPoints: [{key: 'dx1', value:25}, {key: 'dy1', value:50}, {key: 'dx2', value:-25}, {key: 'dy2', value:100}],
-        absControlPoints: [{key: 'dx1', value:125}, {key: 'dy1', value:100}, {key: 'dx2', value:75}, {key: 'dy2', value:150}],
+        absControlPoints: [{key: 'dx1', value:75}, {key: 'dy1', value:100}, {key: 'dx2', value:25}, {key: 'dy2', value:150}],
         endPoint: {x: -50, y: 75},
-        absEndPoint: {x: 50, y: 125},
+        absEndPoint: {x: 0, y: 125},
         command: 'c25,50 -25,100 -50,75',
         absCommand: 'C125,100 75,150 50,125',
-        fullCommand: 'M100,50c25,50 -25,100 -50,75',
-        fullAbsCommand: 'M100,50C125,100 75,150 50,125'
+        fullCommand: 'M50,50c25,50 -25,100 -50,75',
+        fullAbsCommand: 'M50,50C75,100 25,150 0,125'
     }
     const presetArray = [first, second, third, fourth]
-    // const [defaultPath, setDefaultPath] = useState(firstDefault)
     function select(command){
-        props.setDefaultPath(command)
-        const grid = document.getElementById('createGrid')
-        const path = document.getElementById('path')
-        // grid.removeChild(path)
-        props.setFirstCtrl({x:command.controlPoints[0].value, y:command.controlPoints[1].value})
-        props.setSecondCtrl({x:command.controlPoints[2].value, y:command.controlPoints[3].value})
-        props.setEndPoint(command.endPoint)
-        const svgns = "http://www.w3.org/2000/svg"
+        props.setDefaultPath(command);
+        const grid = document.getElementById('createGrid');
+        const path = document.getElementById('path');
+        props.setFirstCtrl({x:command.controlPoints[0].value, y:command.controlPoints[1].value});
+        props.setSecondCtrl({x:command.controlPoints[2].value, y:command.controlPoints[3].value});
+        props.setEndPoint(command.endPoint);
+        const svgns = "http://www.w3.org/2000/svg";
         const currentPath = document.createElementNS(svgns, 'path');
         currentPath.setAttributeNS(null, "id", 'path');
         currentPath.setAttributeNS(null, 'stroke', props.stroke);
@@ -86,8 +84,8 @@ const Presets = (props) => {
         currentPath.setAttributeNS(null, 'stroke-opacity', props.strokeOpacity);
         currentPath.setAttributeNS(null, 'fill', props.fill);
         currentPath.setAttributeNS(null, 'fill-opacity', props.fillOpacity);
-        currentPath.setAttributeNS(null, 'd', `M50,100c${props.firstCtrl.x},${props.firstCtrl.y} ${props.secondCtrl.x},${props.secondCtrl.y} ${props.endPoint.x},${props.endPoint.y}`)
-        grid.replaceChild(currentPath, path)
+        currentPath.setAttributeNS(null, 'd', `M50,100c${command.controlPoints[0].value},${command.controlPoints[1].value} ${command.controlPoints[2].value},${command.controlPoints[3].value} ${command.endPoint.x},${command.endPoint.y}`);
+        grid.replaceChild(currentPath, path);   
     }
     return(
         <View style={styles.mainContainer}>
@@ -100,7 +98,7 @@ const Presets = (props) => {
                         return(
                             <Pressable style={styles.gridSection} key={i+20} onPress={()=>select(command)}>
                                 <Grid size="150" mainWidth="180" id="miniGrid" key={i}>
-                                    <Path d={command.fullAbsCommand} fill={props.fill} key={i+10} fillOpacity={props.fillOpacity} stroke={props.stroke} strokeWidth="5" />
+                                    <Path d={command.fullAbsCommand} fill={props.fill} key={i+10} fillOpacity={props.fillOpacity} stroke={props.stroke} strokeWidth={props.strokeWidth} strokeOpacity={props.strokeOpacity} />
                                 </Grid>
                             </Pressable>
                         )
