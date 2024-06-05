@@ -50,3 +50,5 @@ Since I only had 4 weeks to get this up and running, and since I, true to form, 
 
   
 [https://www.buymeacoffee.com/nathanjohnnj](https://github.com/NathanJohnNJ/SVG-Path-Generator-React-Native/blob/main/assets/coffee.svg?raw=true)
+
+[![buymeacoffee](https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png)](https://www.buymeacoffee.com/nathanjohnnj)
