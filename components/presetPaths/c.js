@@ -3,6 +3,18 @@ import { Path } from "react-native-svg";
 import Grid from "../grid";
 
 const Presets = (props) => {
+    function hoverFunc(id){
+        const grid = document.getElementById(id)
+        grid.style.backgroundColor = "#acd";
+        grid.style.borderColor = "#e9b";
+        grid.style.boxShadow = "-1px 1px 10px #000";
+    }
+    function resetHover(id){
+        const grid = document.getElementById(id)
+        grid.style.backgroundColor = "#c2c2c2";
+        grid.style.borderColor = "#ccf";
+        grid.style.boxShadow = "-2px 2px 8px #9c9c9c";
+    }
 
     const first = {
         type:'c',
@@ -18,7 +30,8 @@ const Presets = (props) => {
         command: 'c25,50 75,50 100,0',
         absCommand: 'C75,100 125,100 150,50',
         fullCommand: 'M50,50c25,50 75,50 100,0',
-        fullAbsCommand: 'M50,50C75,100 125,100 150,50'
+        fullAbsCommand: 'M50,50C75,100 125,100 150,50',
+        hoverRef: 'first'
     }
     const second = {
         type: 'c',
@@ -34,7 +47,8 @@ const Presets = (props) => {
         command:'c50,50 100,-50 150,0',
         absCommand: 'C75,100 125,0 175,50',
         fullCommand: 'M50,50c50,50 100,-50 125,0',
-        fullAbsCommand: 'M50,50C100,100 150,0 175,50'
+        fullAbsCommand: 'M50,50C100,100 150,0 175,50',
+        hoverRef: 'second'
     }
     const third = {
         type:'c',
@@ -50,7 +64,8 @@ const Presets = (props) => {
         command: 'c25,50 75,0 100,75',
         absCommand: 'C75,100 125,50 150,125',
         fullCommand: 'M50,50c25,50 75,0 100,75',
-        fullAbsCommand: 'M50,50C75,100 125,50 150,125'
+        fullAbsCommand: 'M50,50C75,100 125,50 150,125',
+        hoverRef: 'third'
     }
     const fourth = {
         type:'c',
@@ -66,7 +81,8 @@ const Presets = (props) => {
         command: 'c25,50 -25,100 -50,75',
         absCommand: 'C125,100 75,150 50,125',
         fullCommand: 'M50,50c25,50 -25,100 -50,75',
-        fullAbsCommand: 'M50,50C75,100 25,150 0,125'
+        fullAbsCommand: 'M50,50C75,100 25,150 0,125',
+        hoverRef: 'fourth'
     }
     const presetArray = [first, second, third, fourth]
     function select(command){
@@ -96,7 +112,7 @@ const Presets = (props) => {
                 {
                     presetArray.map((command, i) => {
                         return(
-                            <Pressable style={styles.gridSection} key={i+20} onPress={()=>select(command)}>
+                            <Pressable id={command.hoverRef} style={styles.gridSection} key={i+20} onPress={()=>select(command)} onHoverIn={()=>hoverFunc(command.hoverRef)} onHoverOut={()=>resetHover(command.hoverRef)}>
                                 <Grid size="150" mainWidth="180" id="miniGrid" key={i}>
                                     <Path d={command.fullAbsCommand} fill={props.fill} key={i+10} fillOpacity={props.fillOpacity} stroke={props.stroke} strokeWidth={props.strokeWidth} strokeOpacity={props.strokeOpacity} />
                                 </Grid>
@@ -141,5 +157,8 @@ const styles = StyleSheet.create({
     gridSection:{
         scale: 0.5,
         margin: -50,
-      }
+        borderRadius: 18,
+        borderColor: "#ccf",
+        boxShadow: "-2px 2px 8px #9c9c9c",
+      },
   });

@@ -17,8 +17,6 @@ Since I only had 4 weeks to get this up and running, and since I, true to form, 
 
 ## To Do
   - Finish functionality of edit modal
-  - Align command and preset modal styles to new design on C component
-  - Different default options for each command
   - Add Z command
   - Add output options
   - Add functionality to change command component
@@ -47,8 +45,7 @@ Since I only had 4 weeks to get this up and running, and since I, true to form, 
   - ~~Add branding and link to njtd.xyz~~
   - ~~Record video introducing and demonstrating the app~~
   - ~~Tried to add help link to side panel initially but the link isn't going to the right place - more research needed.~~
-
-  
-[https://www.buymeacoffee.com/nathanjohnnj](https://github.com/NathanJohnNJ/SVG-Path-Generator-React-Native/blob/main/assets/coffee.svg?raw=true)
+  - ~~Align command and preset modal styles to new design on C component~~
+  - ~~Different default options for each command~~
 
 [![buymeacoffee](https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png)](https://www.buymeacoffee.com/nathanjohnnj)

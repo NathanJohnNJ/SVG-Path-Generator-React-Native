@@ -4,11 +4,11 @@ import { StyleSheet, Text, View, Modal } from 'react-native';
 import React from 'react';
 import FieldSet from '@njtd/react-native-fieldset';
 import Help from '../help';
+import Presets from '../presetPaths/l';
 
 const L = (props) => {
     const [modalIsOpen, setModalIsOpen] = useState(false);
     const [hover, setHover] = useState({sub: false, can: false, l:false, x:false, y:false});
-    // const [endPoint, setEndPoint] = useState({x:50, y:50})
 
     const startX = props.path[props.pathID].absX;
     const startY = props.path[props.pathID].absY;
@@ -34,7 +34,7 @@ const L = (props) => {
         setHover({sub: false, can: false, l:false, x:false, y:false})
     }
 
-    const defaultPath = {
+    const first = {
         type: 'l',
         absType: 'L',
         id: props.pathID+1,
@@ -48,6 +48,7 @@ const L = (props) => {
         fullCommand: 'M50,50l50,50',
         fullAbsCommand: 'M50,50L100,100'
     }
+    const [defaultPath, setDefaultPath] = useState(first);
     
     function addToPath(){
         const startX = props.path[props.pathID].absX;
@@ -81,41 +82,47 @@ const L = (props) => {
             visible={modalIsOpen}
             onReluestClose={closeModal}
             >
-                <Text style={styles(props).title}>New L Command</Text>
-                
                 <View style={styles(props).row}>
-                   
-                    <View style={styles(props).container}>
-                        <GridWithDrag size="250" path={defaultPath} endPoint={props.endPoint} setEndPoint={props.setEndPoint} strokeWidth={props.strokeWidth} stroke={props.stroke} fill={props.fill} fillOpacity={props.fillOpacity} strokeOpacity={props.strokeOpacity} endCol={props.endCol} endOpacity={props.endOpacity} endSize={props.endSize} highlight={props.highlight} startX={startX} startY={startY}  />
+                    <Presets pathID={props.pathID} defaultPath={defaultPath} setDefaultPath={setDefaultPath} stroke={props.stroke} strokeWidth={props.strokeWidth} setFirstCtrl={props.setFirstCtrl} setEndPoint={props.setEndPoint} firstCtrl={props.firstCtrl} endPoint={props.endPoint} fill={props.fill} fillOpacity={props.fillOpacity} strokeOpacity={props.strokeOpacity} />
+                    <View style={styles(props).middleSection}>
+                        <View style={styles(props).titleContainer}>
+                            <Text style={styles(props).title}>
+                                New L Command
+                            </Text>
+                        </View>
+                        <View style={styles(props).container}>
+                            <GridWithDrag size="250" path={defaultPath} endPoint={props.endPoint} setEndPoint={props.setEndPoint} strokeWidth={props.strokeWidth} stroke={props.stroke} fill={props.fill} fillOpacity={props.fillOpacity} strokeOpacity={props.strokeOpacity} endCol={props.endCol} endOpacity={props.endOpacity} endSize={props.endSize} highlight={props.highlight} startX={startX} startY={startY} resetHover={resetHover} hoverFunc={hoverFunc}   />
+                        </View>
                     </View>
-                   
-                   <View style={styles(props).mainContainer}>
-                   <Help url="https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorial/Paths" />
-                       
-                    <View style={styles(props).tableContainer}>
-                    <FieldSet label="End Point" labelColor={props.endCol} labelStyle={styles(props).label} mainStyle={styles(props).fieldSet}>
-                        <table style={styles(props).table}>
-                            <tbody style={styles(props).tbody}>
-                                <tr style={styles(props).tr}> 
-                                    <th style={styles(props).endTh}>x</th>
-                                    <th style={styles(props).endTh}>y</th>
-                                </tr>
-                                <tr style={styles(props).tr}>
-                                    <td style={hover.x?styles(props).hoverEnd:styles(props).end} onMouseEnter={()=>{hoverFunc('x')}} onMouseLeave={resetHover}>{props.endPoint.x}</td>
-                                    <td style={hover.y?styles(props).hoverEnd:styles(props).end} onMouseEnter={()=>{hoverFunc('y')}} onMouseLeave={resetHover}>{props.endPoint.y}</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </FieldSet>
-                </View>
-                </View>
+                    <View style={styles(props).mainContainer}>
+                        <Help url="https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorial/Paths" />
+                        <View style={styles(props).tableContainer}>
+                            <FieldSet label="End Point" labelColor={props.endCol} labelStyle={styles(props).label} mainStyle={styles(props).fieldSet}>
+                                <table style={styles(props).table}>
+                                    <tbody style={styles(props).tbody}>
+                                        <tr style={styles(props).tr}> 
+                                            <th style={styles(props).endTh}>x</th>
+                                            <th style={styles(props).endTh}>y</th>
+                                        </tr>
+                                        <tr style={styles(props).tr}>
+                                            <td style={hover.x?styles(props).hoverEnd:styles(props).end} onMouseEnter={()=>{hoverFunc('x')}} onMouseLeave={resetHover}>{props.endPoint.x}</td>
+                                            <td style={hover.y?styles(props).hoverEnd:styles(props).end} onMouseEnter={()=>{hoverFunc('y')}} onMouseLeave={resetHover}>{props.endPoint.y}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </FieldSet>
+                        </View>
+                    </View>
                 </View>
                 
                 <View style={styles(props).subCan}>
-                    <Text onClick={addToPath}  onMouseOver={() => hoverFunc('sub')} onMouseLeave={resetHover} style={hover.sub?styles(props).submitHover:styles(props).submitButton}>Add to path!</Text>
-                    <Text onClick={closeModal}  onMouseOver={() => hoverFunc('can')} onMouseLeave={resetHover} style={hover.can?styles(props).cancelHover:styles(props).cancelButton}>Cancel</Text>
+                    <Text onClick={addToPath}  onMouseOver={() => hoverFunc('sub')} onMouseLeave={resetHover} style={hover.sub?styles(props).submitHover:styles(props).submitButton}>
+                        Add to path!
+                    </Text>
+                    <Text onClick={closeModal}  onMouseOver={() => hoverFunc('can')} onMouseLeave={resetHover} style={hover.can?styles(props).cancelHover:styles(props).cancelButton}>
+                        Cancel
+                    </Text>
                 </View>
-
             </Modal>
         </View>
     )
@@ -140,21 +147,36 @@ const styles = (props) => StyleSheet.create({
         display:'flex',
         flexDirection: "row",
         alignContent: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        marginTop: 20
     },
+    middleSection: {
+        margin: 10
+    },
+    titleContainer:{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        alignSelf: 'center',
+        justifyContent: 'center',
+        width: 'fit-content',
+        marginTop: 10
+      },
     title:{
-        fontFamily:'Geologica-Bold',
-        fontSize: 30,
-        textAlign: 'center',
-        margin: 15
+        fontFamily: 'Geologica-Bold',
+        fontSize:30,
+        marginTop: 10,
+        textShadow: '-2px 2px 4px gray, 2px 2px 2px gray',
+        textAlign: 'center'
     },
     subCan: {
         flex: 1,
         flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: 'space-around',
+        justifyContent: 'space-evenly',
         alignSelf: 'center',
         marginTop: -150,
+        marginLeft: -75,
         width: 350
       },
     button: {

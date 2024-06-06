@@ -110,8 +110,6 @@ const GridWithDrag = (props) => {
             currentPath.setAttributeNS(null, 'd', `M50,100v${props.endPoint.y}`)
         }else if(props.path.absType==='H'){
             currentPath.setAttributeNS(null, 'd', `M50,100h${props.endPoint.x}`)
-        }else if(props.path.absType==='T'){
-            currentPath.setAttributeNS(null, 'd', `M50,100t${props.endPoint.x},${props.endPoint.y}`)
         }
         grid.appendChild(currentPath)
     }

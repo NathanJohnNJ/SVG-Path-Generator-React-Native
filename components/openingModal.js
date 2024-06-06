@@ -99,8 +99,6 @@ const Opening = (props) => {
     }
 
     const openingArray = [cPath, qPath, lPath, hPath, vPath];
-    // const [hover, setHover] = useState([q:false, c:false, l:false, v:false, h:false])
-    const [hover, setHover] = useState([false, false, false, false, false])
 
     function select(command){
         const newPath = [command]

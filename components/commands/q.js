@@ -38,7 +38,7 @@ const Q = (props) => {
         setHover({sub: false, can: false, q: false, dx1: false, dy1: false, x: false, y:false})
     }
 
-    const defaultPath = {
+    const first = {
         type: 'q',
         absType: 'Q',
         id: props.pathID+1,
@@ -54,6 +54,7 @@ const Q = (props) => {
         fullCommand: 'M50,50q25,50 50,0',
         fullAbsCommand: 'M50,50Q75,100 100,50'
     }
+    const [defaultPath, setDefaultPath] = useState(first);
 
     function addToPath(){
         const startX = props.path[props.pathID].absX;
@@ -92,7 +93,7 @@ const Q = (props) => {
             onRequestClose={closeModal}
             >
                 <View style={styles(props).row}>
-                    <Presets pathID={props.pathID} stroke={props.stroke} firstCtrl={props.firstCtrl} setFirstCtrl={props.setFirstCtrl} secondCtrl={props.secondCtrl} setSecondCtrl={props.setSecondCtrl} endPoint={props.endPoint} setEndPoint={props.setEndPoint} />
+                    <Presets pathID={props.pathID} defaultPath={defaultPath} setDefaultPath={setDefaultPath} stroke={props.stroke} strokeWidth={props.strokeWidth} setFirstCtrl={props.setFirstCtrl} setEndPoint={props.setEndPoint} firstCtrl={props.firstCtrl} endPoint={props.endPoint} fill={props.fill} fillOpacity={props.fillOpacity} strokeOpacity={props.strokeOpacity} />
                     <View style={styles(props).middleSection}>
                         <View style={styles(props).titleContainer}>
                             <Text style={styles(props).title}>
@@ -288,18 +289,4 @@ const styles = (props) => StyleSheet.create({
         margin:5,
         textAlign: 'center'
       },
-      defaultSection:{
-        width: 150,
-        backgroundColor: '#ddd',
-        borderColor: '#fdb',
-        borderWidth: 3,
-        borderRadius: 18,
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        padding: 22,
-        boxShadow: '-2px 2px 8px #9c9c9c',
-        margin: 8,
-        height: 450,
-      }
 })
