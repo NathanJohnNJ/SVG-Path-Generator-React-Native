@@ -17,79 +17,56 @@ const Presets = (props) => {
     }
 
     const first = {
-        type: 'q',
-        absType: 'Q',
+        type: 'l',
+        absType: 'L',
         id: props.pathID+1,
         absX: 100,
-        absY: 50,
+        absY: 100,
         startPoint: {x: 50, y: 50},
-        controlPoints: [{key: 'dx1', value:25}, {key: 'dy1', value:50}],
-        absControlPoints: [{key: 'dx1', value:75}, {key: 'dy1', value:100}],
-        endPoint: {x:50, y: 0},
-        absEndPoint: {x: 100, y: 50},
-        command: 'q25,50 50,0',
-        absCommand: 'Q75,100 100,50',
-        fullCommand: 'M50,50q25,50 50,0',
-        fullAbsCommand: 'M50,50Q75,100 100,50',
+        endPoint: {x:50, y: 50},
+        absEndPoint: {x: 100, y: 100},
+        command: 'l50,50',
+        absCommand: 'L100,100',
+        fullCommand: 'M50,50l50,50',
+        fullAbsCommand: 'M50,50L100,100',
         hoverRef: "first"
     }
     const second = {
-        type: 'q',
-        absType: 'Q',
+        type: 'l',
+        absType: 'L',
         id: props.pathID+1,
-        absX: 100,
-        absY: 50,
+        absX: 0,
+        absY: 100,
         startPoint: {x: 50, y: 50},
-        controlPoints: [{key: 'dx1', value:25}, {key: 'dy1', value:-50}],
-        absControlPoints: [{key: 'dx1', value:75}, {key: 'dy1', value:0}],
-        endPoint: {x:50, y: 0},
-        absEndPoint: {x: 100, y: 50},
-        command: 'q25,-50 50,0',
-        absCommand: 'Q75,0 100,50',
-        fullCommand: 'M50,50q25,-50 50,0',
-        fullAbsCommand: 'M50,50Q75,0 100,50',
+        endPoint: {x:-50, y: 50},
+        absEndPoint: {x: 0, y: 100},
+        command: 'l-50,50',
+        absCommand: 'L0,100',
+        fullCommand: 'M50,50l-50,50',
+        fullAbsCommand: 'M50,50L0,100',
         hoverRef: "second"
     }
     const third = {
-        type: 'q',
-        absType: 'Q',
-        id: props.pathID+1,
-        absX: 50,
-        absY: 100,
-        startPoint: {x: 50, y: 50},
-        controlPoints: [{key: 'dx1', value:50}, {key: 'dy1', value:-25}],
-        absControlPoints: [{key: 'dx1', value:100}, {key: 'dy1', value:25}],
-        endPoint: {x:0, y: 50},
-        absEndPoint: {x: 50, y: 100},
-        command: 'q50,-25 0,50',
-        absCommand: 'Q100,25 50,100',
-        fullCommand: 'M50,50q50,-25 0,50',
-        fullAbsCommand: 'M50,50Q100,25 50,100',
-        hoverRef: "third"
-    }
-    const fourth = {
-        type: 'q',
-        absType: 'Q',
+        type: 'l',
+        absType: 'L',
         id: props.pathID+1,
         absX: 75,
-        absY: 150,
+        absY: 200,
         startPoint: {x: 50, y: 50},
-        controlPoints: [{key: 'dx1', value:-50}, {key: 'dy1', value:-50}],
-        absControlPoints: [{key: 'dx1', value:0}, {key: 'dy1', value:0}],
-        endPoint: {x:25, y: 100},
-        absEndPoint: {x: 75, y: 150},
-        command: 'q-50,-50 25,100',
-        absCommand: 'Q0,0 75,150',
-        fullCommand: 'M50,50q-50,-50 25,100',
-        fullAbsCommand: 'M50,50Q0,0 75,150',
-        hoverRef: "fourth"
+        endPoint: {x:25, y: 150},
+        absEndPoint: {x: 75, y: 200},
+        command: 'l25,150',
+        absCommand: 'L75,200',
+        fullCommand: 'M50,50l25,150',
+        fullAbsCommand: 'M50,50,75,200',
+        hoverRef: "third"
     }
-    const presetArray = [first, second, third, fourth];
+    
+    const presetArray = [first, second, third];
     function select(command){
         props.setDefaultPath(command);
         const grid = document.getElementById('createGrid');
         const path = document.getElementById('path');
-        props.setFirstCtrl({x:command.controlPoints[0].value, y:command.controlPoints[1].value});
         props.setEndPoint(command.endPoint);
         const svgns = "http://www.w3.org/2000/svg";
         const currentPath = document.createElementNS(svgns, 'path');
@@ -99,7 +76,7 @@ const Presets = (props) => {
         currentPath.setAttributeNS(null, 'stroke-opacity', props.strokeOpacity);
         currentPath.setAttributeNS(null, 'fill', props.fill);
         currentPath.setAttributeNS(null, 'fill-opacity', props.fillOpacity);
-        currentPath.setAttributeNS(null, 'd', `M50,100q${command.controlPoints[0].value},${command.controlPoints[1].value} ${command.endPoint.x},${command.endPoint.y}`);
+        currentPath.setAttributeNS(null, 'd', `M50,100l ${command.endPoint.x},${command.endPoint.y}`);
         grid.replaceChild(currentPath, path);
     }
     return(
