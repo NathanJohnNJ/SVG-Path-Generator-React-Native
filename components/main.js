@@ -7,46 +7,72 @@ import { StyleSheet, Text, View } from 'react-native';
 import PathFromArray from './pathFromArray';
 
 const Main = (props) => {
-    // const [showNodes, setShowNodes] = useState(true);
-
-    // const firstCMD = {
-    //     type: 'c',
-    //     absType: 'C',
-    //     id: props.pathID,
-    //     absX: 200,
-    //     absY: 100,
-    //     startPoint: {x: 50, y: 100},
-    //     controlPoints: [{key: 'dx1', value:50}, {key: 'dy1', value:50}, {key: 'dx2', value:100}, {key: 'dy2', value:-50}],
-    //     absControlPoints: [{key: 'dx1', value:100}, {key: 'dy1', value:150}, {key: 'dx2', value:150}, {key: 'dy2', value:50}],
-    //     endPoint: {x: 150,y: 0},
-    //     absEndPoint:{x: 200,y: 100},
-    //     command:'c50,50 100,-50 150,0',
-    //     absCommand: 'C100,150 200,50 200,100',
-    //     fullCommand: 'M50,100c50,50 100,-50 150,0',
-    //     fullAbsCommand: 'M50,100C100,150 150,50 200,100'
-    // };  
 
     const blank = {
       type: '',
-      absType: '',
       id: '',
-      absX: '',
-      absY: '',
-      startPoint: {x: '50', y: '50'},
-      controlPoints: [{key: '', value:''}],
-      endPoint: {x: '', y: ''},
-      absControlPoints: [{key: '', value:''}],
-      absEndPoint: {x: '', y: ''},
-      command: '',
-      absCommand: '',
-      fullCommand: '',
-      fullAbsCommand: ''
+      startPoint: {x: '', y: ''},
+      endPoint: {x: '', y: ''}
     }
    
     const [info, setInfo] = useState(blank);
+    const [showBtn, setShowBtn] = useState(false);
     const [firstCtrl, setFirstCtrl] = useState({});
     const [secondCtrl, setSecondCtrl] = useState({});
     const [endPoint, setEndPoint] = useState({});
+    const size = 450
+
+    const commandFromMap = props.path.map((command, i) => {
+      if(command.type==="c"){
+        return(
+          `${command.type}${command.controlPoints[0].value},${command.controlPoints[1].value} ${command.controlPoints[2].value},${command.controlPoints[3].value} ${command.endPoint.x},${command.endPoint.y}`
+        )
+      } else if(command.type==="q" || command.type==="s"){
+        return(
+          `${command.type}${command.controlPoints[0].value},${command.controlPoints[1].value} ${command.endPoint.x},${command.endPoint.y}`
+        )
+      } else if(command.type==="t" || command.type==="l"){
+        return(
+          `${command.type}${command.endPoint.x},${command.endPoint.y}`
+        )
+      } else if(command.type==="v"){
+        return(
+          `${command.type}${command.endPoint.y}`
+        )
+      } else if(command.type==="h"){
+        return(
+          `${command.type}${command.endPoint.x}`
+        )
+      }
+    });
+
+    const fullCommand = `M50,50${commandFromMap}`;
+
+    const absoluteCommandFromMap = props.path.map((command, i) => {
+      if(command.type==="c"){
+        return(
+          `${command.type.toUpperCase()}${command.controlPoints[0].value+command.startPoint.x},${command.controlPoints[1].value+command.startPoint.y} ${command.controlPoints[2].value+command.startPoint.x},${command.controlPoints[3].value+command.startPoint.y} ${command.endPoint.x+command.startPoint.x},${command.endPoint.y+command.startPoint.y}`
+        )
+      } else if(command.type==="q" || command.type==="s"){
+        return(
+          `${command.type.toUpperCase()}${command.controlPoints[0].value+command.startPoint.x},${command.controlPoints[1].value+command.startPoint.y} ${command.endPoint.x+command.startPoint.x},${command.endPoint.y+command.startPoint.y}`
+        )
+      } else if(command.type==="t" || command.type==="l"){
+        return(
+          `${command.type.toUpperCase()}${command.endPoint.x+command.startPoint.x},${command.endPoint.y+command.startPoint.y}`
+        )
+      } else if(command.type==="v"){
+        return(
+          `${command.type.toUpperCase()}${command.endPoint.y+command.startPoint.y}`
+        )
+      } else if(command.type==="h"){
+        return(
+          `${command.type.toUpperCase()}${command.endPoint.x+command.startPoint.x}`
+        )
+      }
+    });
+
+    const fullAbsCommand= `M50,50${absoluteCommandFromMap}`;
 
     return (
       <View>
@@ -63,27 +89,19 @@ const Main = (props) => {
                 </View>
 
                 <View style={styles(props).container}>
-                  <Grid size="450" mainWidth="530" id="grid" children={<PathFromArray path={props.path} stroke={props.stroke} strokeWidth={props.strokeWidth} strokeOpacity={props.strokeOpacity} fill={props.fill} fillOpacity={props.fillOpacity} setInfo={setInfo} setEndPoint={setEndPoint} setFirstCtrl={setFirstCtrl} setSecondCtrl={setSecondCtrl} controlCol={props.controlCol} ctrlOpacity={props.ctrlOpacity} controlSize={props.controlSize} endCol={props.endCol} endOpacity={props.endOpacity} endSize={props.endSize} highlight={props.highlight}/>} />
-                  {/* <Grid size="450" id="grid" children={<Path path={props.path} stroke={props.stroke} strokeWidth={props.strokeWidth} strokeOpacity={props.strokeOpacity} fill={props.fill} fillOpacity={props.fillOpacity} setInfo={setInfo} setEndPoint={setEndPoint} setFirstCtrl={setFirstCtrl} setSecondCtrl={setSecondCtrl} controlCol={props.controlCol} ctrlOpacity={props.ctrlOpacity} controlSize={props.controlSize} endCol={props.endCol} endOpacity={props.endOpacity} endSize={props.endSize} highlight={props.highlight} showNodes={showNodes}/>} />                   */}
+                  <Grid size={size} mainWidth="530" id="grid" children={<PathFromArray size={size} path={props.path} stroke={props.stroke} strokeWidth={props.strokeWidth} strokeOpacity={props.strokeOpacity} fill={props.fill} fillOpacity={props.fillOpacity} setInfo={setInfo} setEndPoint={setEndPoint} setFirstCtrl={setFirstCtrl} setSecondCtrl={setSecondCtrl} controlCol={props.controlCol} ctrlOpacity={props.ctrlOpacity} controlSize={props.controlSize} endCol={props.endCol} endOpacity={props.endOpacity} endSize={props.endSize} highlight={props.highlight} setShowBtn={setShowBtn} rollingStart={props.rollingStart} setRollingStart={props.setRollingStart}/> } rollingStart={props.rollingStart} setRollingStart={props.setRollingStart} />
                 </View>
 
                 <View style={styles(props).configCommands}>
-                  <CommandPanel path={props.path} setPath={props.setPath} stroke={props.stroke} strokeWidth={props.strokeWidth} strokeOpacity={props.strokeOpacity} fill={props.fill} fillOpacity={props.fillOpacity} pathID={props.pathID} setPathID={props.setPathID} info={info} setInfo={setInfo} setEndPoint={setEndPoint} setFirstCtrl={setFirstCtrl} setSecondCtrl={setSecondCtrl} endPoint={endPoint} firstCtrl={firstCtrl} secondCtrl={secondCtrl} controlCol={props.controlCol} ctrlOpacity={props.ctrlOpacity} controlSize={props.controlSize} endCol={props.endCol} endOpacity={props.endOpacity} endSize={props.endSize} highlight={props.highlight}  />
-                  <SidePanel info={info} setInfo={setInfo} firstCtrl={firstCtrl} setFirstCtrl={setFirstCtrl} secondCtrl={secondCtrl} setSecondCtrl={setSecondCtrl} endPoint={endPoint} setEndPoint={setEndPoint} path={props.path} setPath={props.setPath} pathID={props.pathID} setPathID={props.setPathID} stroke={props.stroke} strokeWidth={props.strokeWidth} strokeOpacity={props.strokeOpacity} fill={props.fill} fillOpacity={props.fillOpacity} controlCol={props.controlCol} ctrlOpacity={props.ctrlOpacity} controlSize={props.controlSize} endCol={props.endCol} endOpacity={props.endOpacity} endSize={props.endSize} highlight={props.highlight} />
+                  <CommandPanel path={props.path} setPath={props.setPath} stroke={props.stroke} strokeWidth={props.strokeWidth} strokeOpacity={props.strokeOpacity} fill={props.fill} fillOpacity={props.fillOpacity} pathID={props.pathID} setPathID={props.setPathID} info={info} setInfo={setInfo} setEndPoint={setEndPoint} setFirstCtrl={setFirstCtrl} setSecondCtrl={setSecondCtrl} endPoint={endPoint} firstCtrl={firstCtrl} secondCtrl={secondCtrl} controlCol={props.controlCol} ctrlOpacity={props.ctrlOpacity} controlSize={props.controlSize} endCol={props.endCol} endOpacity={props.endOpacity} endSize={props.endSize} highlight={props.highlight} rollingStart={props.rollingStart} setRollingStart={props.setRollingStart} />
+                  <SidePanel info={info} setInfo={setInfo} firstCtrl={firstCtrl} setFirstCtrl={setFirstCtrl} secondCtrl={secondCtrl} setSecondCtrl={setSecondCtrl} endPoint={endPoint} setEndPoint={setEndPoint} path={props.path} setPath={props.setPath} pathID={props.pathID} setPathID={props.setPathID} stroke={props.stroke} strokeWidth={props.strokeWidth} strokeOpacity={props.strokeOpacity} fill={props.fill} fillOpacity={props.fillOpacity} controlCol={props.controlCol} ctrlOpacity={props.ctrlOpacity} controlSize={props.controlSize} endCol={props.endCol} endOpacity={props.endOpacity} endSize={props.endSize} highlight={props.highlight} showBtn={showBtn} rollingStart={props.rollingStart} setRollingStart={props.setRollingStart} />
                 </View>
               </View>
             </View>
+            
             <View style={styles(props).fullPath}>
-              <Text numberOfLines={10} style={styles(props).fullPathText} >Relative path: "M50,50{props.path.map((command, i) => {
-                return(
-                  <Text key={i}>{command.command}</Text>
-                )
-              })}"</Text>
-              <Text numberOfLines={10} style={styles(props).fullPathText} >Absolute path: "M50,50{props.path.map((command, i) => {
-                return(
-                  <Text key={i}>{command.absCommand}</Text>
-                )
-              })}"</Text>
+              <Text numberOfLines={10} style={styles(props).fullPathText} >Relative path: "{fullCommand}"</Text>
+              <Text numberOfLines={10} style={styles(props).fullPathText} >Absolute path: "{fullAbsCommand}"</Text>
               </View>
         </View>
     )
@@ -91,7 +109,6 @@ const Main = (props) => {
 
 export default Main;
 
-//All below checked, all are being used
 const styles = (props) => StyleSheet.create({
   mainCont:{
     display: 'flex',

@@ -22,7 +22,7 @@ const Header = ( props ) => {
 
     const [width, height] = useWindowSize();
     const viewbox = `0 0 ${width} ${height}`;
-    const myPath = `M0,0 l${width},0 l0,120 c-${width/16},60 -${width/8},-40 -${width/4},0 s-${width/8},-60 -${width/4},0s-${width/8},-40 -${width/4},0s-${width/8},-60 -${width/4},10z`;
+    const myPath = `M0,0 l${width},0 l0,120 c-${width/16},60 -${width/8},-40 -${width/4},0 s-${width/8},-30 -${width/4},5s-${width/8},-40 -${width/4},0s-${width/8},-60 -${width/4},10z`;
 
     return(
         <Svg style={styles.header}>
@@ -35,7 +35,7 @@ const Header = ( props ) => {
             </Defs>
             <G x="0" y="0" viewBox={viewbox}>
                 <Path x="0" y="0" viewBox={viewbox} fill="url(#grad)" d={myPath} stroke="none" preserveAspectRatio="minXminY meet"/>
-                <ForeignObject x={width/2} y={0} width={150} height={150} >
+                <ForeignObject x={(width+150)/2} y={0} width={150} height={150} >
                     <Image style={styles.logo} source={require('../assets/logo.svg')} onClick={njtd} />
                 </ForeignObject>
             </G>

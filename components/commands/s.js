@@ -1,28 +1,27 @@
 import { useState } from 'react';
 import GridWithDrag from './gridWithDrag';
-import { StyleSheet, Text, View, Modal } from 'react-native';
+import { StyleSheet, Text, View, Modal} from 'react-native';
 import Tables from './tables';
-import Presets from '../presetPaths/q';
 import Help from '../help';
 
-const Q = (props) => {
+const S = (props) => {
     const [modalIsOpen, setModalIsOpen] = useState(false);
-    const [hover, setHover] = useState({sub: false, can: false, q: false, dx1: false, dy1: false, x: false, y:false});
+    const [hover, setHover] = useState({sub: false, can: false, s: false, dx2: false, dy2: false, x: false, y:false});
     
     const startX = props.path[props.pathID].endPoint.x + props.path[props.pathID].startPoint.x;
-    const startY = props.path[props.pathID].endPoint.y + props.path[props.pathID].startPoint.y;    
+    const startY = props.path[props.pathID].endPoint.y + props.path[props.pathID].startPoint.y;
 
     function openModal(){
-        props.setFirstCtrl({x:25, y:50})  
-        props.setEndPoint({x:50, y:0})
+        props.setSecondCtrl({x:75, y:50})
+        props.setEndPoint({x:100, y:0})
         setModalIsOpen(true)
     }
     function closeModal(){
         setModalIsOpen(false)
     }
     function hoverFunc(i){
-        if (i==='dx1'||i==='dy1'){
-            const newHover = { ...hover, dx1:true, dy1:true}
+        if (i==='dx2'||i==='dy2'){
+            const newHover = { ...hover, dx2:true, dy2:true}
             setHover(newHover)
         }else if (i==='x'||i==='y'){
             const newHover = { ...hover, x:true, y:true}
@@ -33,37 +32,35 @@ const Q = (props) => {
         }
     }
     function resetHover(){
-        setHover({sub: false, can: false, q: false, dx1: false, dy1: false, x: false, y:false})
+        setHover({sub: false, can: false, s: false, dx2: false, dy2: false, x: false, y:false})
     }
 
     const first = {
-        type: 'q',
+        type:'s',
         id: props.pathID+1,
         startPoint: {x: 50, y: 50},
-        controlPoints: [{key: 'dx1', value:25}, {key: 'dy1', value:50}],
-        endPoint: {x:50, y: 0}
+        controlPoints: [{key: 'dx2', value:75}, {key: 'dy2', value:50}],
+        endPoint: {x: 100, y: 0},
     }
-    const [defaultPath, setDefaultPath] = useState(first);
 
     function addToPath(){
-        const qPath = {
-            type: 'q',
-            id: props.pathID+1,
-            startPoint: {x: startX, y: startY},
-            controlPoints: [{key: 'dx1', value:props.firstCtrl.x}, {key: 'dy1', value:props.firstCtrl.y}],
-            endPoint: {x: props.endPoint.x,y: props.endPoint.y}
-        } 
-        console.log(qPath)
-        const newPath = [...props.path, qPath]
+        const sPath = {
+        type: 's',
+        id: props.pathID+1,
+        startPoint: {x: startX, y: startY},
+        controlPoints: [{key: 'dx2', value:props.secondCtrl.x}, {key: 'dy2', value:props.secondCtrl.y}],
+        endPoint: {x: props.endPoint.x,y: props.endPoint.y}
+        }
+        const newPath = [...props.path, sPath]
         props.setPath(newPath)
-        props.setPathID(props.pathID+1)
-        setModalIsOpen(false)
+        props.setPathID(props.pathID+1)  
+        setModalIsOpen(false) 
     }
 
     return (
         <View style={styles(props).outerContainer}>
-            <Text onClick={openModal} onMouseOver={() => hoverFunc('q')} onMouseLeave={resetHover} style={hover.q?styles(props).hover:styles(props).button}>
-                Q
+            <Text onClick={openModal} onMouseOver={() => hoverFunc('s')} onMouseLeave={resetHover} style={hover.s?styles(props).hover:styles(props).button}>
+                S
             </Text>
             <Modal
             animationType="slide"
@@ -72,20 +69,19 @@ const Q = (props) => {
             onRequestClose={closeModal}
             >
                 <View style={styles(props).row}>
-                    <Presets pathID={props.pathID} defaultPath={defaultPath} setDefaultPath={setDefaultPath} stroke={props.stroke} strokeWidth={props.strokeWidth} setFirstCtrl={props.setFirstCtrl} setEndPoint={props.setEndPoint} firstCtrl={props.firstCtrl} endPoint={props.endPoint} fill={props.fill} fillOpacity={props.fillOpacity} strokeOpacity={props.strokeOpacity} />
                     <View style={styles(props).middleSection}>
                         <View style={styles(props).titleContainer}>
                             <Text style={styles(props).title}>
-                                New Q Command
+                                New S Command
                             </Text>
                         </View>
                         <View style={styles(props).container}>
-                            <GridWithDrag size="250" path={defaultPath} firstCtrl={props.firstCtrl} setFirstCtrl={props.setFirstCtrl} endPoint={props.endPoint} setEndPoint={props.setEndPoint} strokeWidth={props.strokeWidth} stroke={props.stroke} fill={props.fill} fillOpacity={props.fillOpacity} strokeOpacity={props.strokeOpacity} controlCol={props.controlCol} ctrlOpacity={props.ctrlOpacity} controlSize={props.controlSize} endCol={props.endCol} endOpacity={props.endOpacity} endSize={props.endSize} highlight={props.highlight} startX={startX} startY={startY} resetHover={resetHover} hoverFunc={hoverFunc} />
+                            <GridWithDrag size="250" path={first} startPoint={props.startPoint} setStartPoint={props.setStartPoint} secondCtrl={props.secondCtrl} setSecondCtrl={props.setSecondCtrl} endPoint={props.endPoint} setEndPoint={props.setEndPoint} strokeWidth={props.strokeWidth} stroke={props.stroke} fill={props.fill} fillOpacity={props.fillOpacity} strokeOpacity={props.strokeOpacity} controlCol={props.controlCol} ctrlOpacity={props.ctrlOpacity} controlSize={props.controlSize} endCol={props.endCol} endOpacity={props.endOpacity} endSize={props.endSize} highlight={props.highlight} startX={startX} startY={startY} resetHover={resetHover} hoverFunc={hoverFunc}/>
                         </View>
                     </View>
                     <View style={styles(props).container}>
-                        <Help url="https://svgwg.org/svg2-draft/paths.html#PathDataQuadraticBezierCommands" />
-                        <Tables type="q" firstCtrl={props.firstCtrl} endPoint={props.endPoint} controlCol={props.controlCol} endCol={props.endCol} endSize={props.endSize} resetHover={resetHover} hoverFunc={hoverFunc} startX={startX} startY={startY} hover={hover} />
+                        <Help url="https://svgwg.org/svg2-draft/paths.html#PathDataCubicBezierCommands" />
+                        <Tables type="s" secondCtrl={props.secondCtrl} endPoint={props.endPoint} controlCol={props.controlCol} endCol={props.endCol} resetHover={resetHover} hoverFunc={hoverFunc} startX={startX} startY={startY} hover={hover} />
                     </View>
                 
                 </View>
@@ -100,58 +96,59 @@ const Q = (props) => {
     )
 };
 
-export default Q;
+export default S;
 
 const styles = (props) => StyleSheet.create({
     outerContainer:{
-    display: 'flex',
-    alignItems: 'center',
-    flexDirection:'column',
-    justifyContent: 'center',
-    },
-    container: {
-      display: 'flex',
-      backgroundColor: '#fff',
-      alignItems: 'center',
-      justifyContent: 'space-evenly',
-    },
-    row: {
-        display:'flex',
-        flexDirection: "row",
-        alignContent: 'center',
-        justifyContent: 'center',
-        marginTop: 20
-    },
-    middleSection: {
-        margin: 10
-    },
-    titleContainer:{
         display: 'flex',
-        flexDirection: 'column',
         alignItems: 'center',
-        alignSelf: 'center',
-        justifyContent: 'center',
-        width: 'fit-content',
-        marginTop: 10
-      },
-    title:{
-        fontFamily: 'Geologica-Bold',
-        fontSize:30,
-        marginTop: 10,
-        textShadow: '-2px 2px 4px gray, 2px 2px 2px gray',
-        textAlign: 'center'
-      },
-    subCan: {
-        flex: 1,
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-evenly',
-        alignSelf: 'center',
-        marginTop: -150,
-        marginLeft: -75,
-        width: 350
-      },
-    button: {
+        flexDirection:'column',
+        justifyContent: 'center'
+        },
+        container: {
+          display: 'flex',
+          backgroundColor: '#fff',
+          alignItems: 'center',
+          justifyContent: 'space-evenly',
+        },
+        row: {
+            display:'flex',
+            flexDirection: "row",
+            alignContent: 'center',
+            justifyContent: 'center',
+            marginTop: 20
+        },
+        middleSection: {
+            margin: 10,
+            width: 'fit-content'
+        },
+        titleContainer:{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            alignSelf: 'center',
+            justifyContent: 'center',
+            width: 'fit-content',
+            marginTop: 10
+          },
+        title:{
+            fontFamily: 'Geologica-Bold',
+            fontSize:30,
+            marginTop: 10,
+            textShadow: '-2px 2px 4px gray, 2px 2px 2px gray',
+            textAlign: 'center'
+        },
+        subCan: {
+            flex: 1,
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'space-around',
+            alignSelf: 'center',
+            marginTop: -150,
+            marginLeft: -75,
+            width:350
+          },
+      button: {
         display:'flex',
         flexDirection: 'column',
         alignItems: 'center',
@@ -166,11 +163,11 @@ const styles = (props) => StyleSheet.create({
         borderColor: '#4e4e4e',
         borderWidth: 2,
         borderRadius: 6,
-        paddingBottom: 5,
         margin: 5,
         textAlign: 'center',
+        paddingBottom: 1,
       },
-    hover: {
+      hover: {
         display:'flex',
         flexDirection: 'column',
         alignItems: 'center',
@@ -185,29 +182,29 @@ const styles = (props) => StyleSheet.create({
         fontSize: 18,
         cursor: 'pointer',
         textAlign: 'center',
-        paddingBottom: 5,
+        paddingBottom: 1,
         margin: 5,   
         color:'#ffffff',
         fontFamily: 'Quicksand-Medium',
       },
         submitButton: {
-        display:'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        width:'fit-content',
-        height:25,
-        padding:3,
-        color:'#4e4e4e',
-        backgroundColor: '#6c6c6c',
-        textShadow: '-1px 1px 1px #4e4e4e',
-        fontFamily: 'Quicksand-Regular',
-        fontSize: 18,
-        borderColor: '#4e4e4e',
-        borderWidth: 2,
-        borderRadius: 6,
-        margin: 5,
-        textAlign: 'center'
+            display:'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            width:'fit-content',
+            height:25,
+            padding:3,
+            color:'#4e4e4e',
+            backgroundColor: '#6c6c6c',
+            textShadow: '-1px 1px 1px #4e4e4e',
+            fontFamily: 'Quicksand-Regular',
+            fontSize: 18,
+            borderColor: '#4e4e4e',
+            borderWidth: 2,
+            borderRadius: 6,
+            margin: 5,
+            textAlign: 'center'
       },
       submitHover: {
         display:'flex',
@@ -268,4 +265,18 @@ const styles = (props) => StyleSheet.create({
         margin:5,
         textAlign: 'center'
       },
+      defaultSection:{
+        width: 150,
+        backgroundColor: '#ddd',
+        borderColor: '#fdb',
+        borderWidth: 3,
+        borderRadius: 18,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: 22,
+        boxShadow: '-2px 2px 8px #9c9c9c',
+        margin: 8,
+        height: 450,
+    }
 })

@@ -24,6 +24,7 @@ export default function App() {
   const [endOpacity, setEndOpacity] = useState(0.9);
   const [endSize, setEndSize] = useState(5);
   const [highlight, setHighlight] = useState('#00eeff');
+  const [rollingStart, setRollingStart] = useState({x:150, y:50})
 
   const blank = {
     type: '',
@@ -66,7 +67,7 @@ export default function App() {
         <Header />
         <SafeAreaView style={styles.container}>
           <Opening setPath={setPath} path={path} setPathID={setPathID} pathID={pathID} />
-          <Main path={path} setPath={setPath} stroke={stroke} setStroke={setStroke} strokeWidth={strokeWidth} setStrokeWidth={setStrokeWidth} strokeOpacity={strokeOpacity} setStrokeOpacity={setStrokeOpacity} fill={fill} setFill={setFill} fillOpacity={fillOpacity} setFillOpacity={setFillOpacity} controlCol={controlCol} setControlCol={setControlCol} ctrlOpacity={ctrlOpacity} setCtrlOpacity={setCtrlOpacity} controlSize={controlSize} setControlSize={setControlSize} endCol={endCol} setEndCol={setEndCol} endOpacity={endOpacity} setEndOpacity={setEndOpacity} endSize={endSize} setEndSize={setEndSize} highlight={highlight} setHighlight={setHighlight} setPathID={setPathID} pathID={pathID}  />
+          <Main path={path} setPath={setPath} stroke={stroke} setStroke={setStroke} strokeWidth={strokeWidth} setStrokeWidth={setStrokeWidth} strokeOpacity={strokeOpacity} setStrokeOpacity={setStrokeOpacity} fill={fill} setFill={setFill} fillOpacity={fillOpacity} setFillOpacity={setFillOpacity} controlCol={controlCol} setControlCol={setControlCol} ctrlOpacity={ctrlOpacity} setCtrlOpacity={setCtrlOpacity} controlSize={controlSize} setControlSize={setControlSize} endCol={endCol} setEndCol={setEndCol} endOpacity={endOpacity} setEndOpacity={setEndOpacity} endSize={endSize} setEndSize={setEndSize} highlight={highlight} setHighlight={setHighlight} setPathID={setPathID} pathID={pathID} rollingStart={rollingStart} setRollingStart={setRollingStart} />
           
         </SafeAreaView>
         <Footer />

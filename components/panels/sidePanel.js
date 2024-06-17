@@ -25,35 +25,44 @@ const SidePanel = (props) => {
         setModalIsOpen(false)
     }
 
+    const startX = props.info.startPoint.x
+    const startY = props.info.startPoint.y
+
     const ControlTable = () => {
         return(
-            <FieldSet label="Control Points" labelColor={props.controlCol} labelStyle={styles(props).label} mainStyle={styles(props).fieldSet}>
-                <table style={styles(props).table}>
-                    <tbody style={styles(props).tbody}>
-                        <tr style={styles(props).tr}>
+            <FieldSet id="CtrlPoints" label="Control Points" labelColor={props.controlCol} labelStyle={styles(props).label} mainStyle={styles(props).fieldSet}>
+                <table id="CtrlPointsTable" style={styles(props).table}>
+                    <tbody id="CtrlPointsBody" style={styles(props).tbody}>
+                        <tr id="CtrlPointsHeadersRow" style={styles(props).tr}>
                             {props.info.controlPoints.map((point, i) => {
                                 return(
-                                    <th style={styles(props).th} key={i}>{point.key}</th>
+                                    <th id="CtrlPointsHeaders" style={styles(props).th} key={i}>{point.key}</th>
                                 )
                             })}
                         </tr>
-                        <tr style={styles(props).trWide}> 
-                            <th style={styles(props).ctrlWide}>Relative</th>
+                        <tr id="CtrlPointsRelativeWide" style={styles(props).trWide}> 
+                            <th id="CtrlPointsRelativeHeader" style={styles(props).ctrlWide}>Relative</th>
                         </tr>
-                        <tr style={styles(props).tr}>
+                        <tr id="CtrlPointsRelativeRow" style={styles(props).tr}>
                             {props.info.controlPoints.map((point, i) => {
                                 return(
-                                    <td style={(hover[point.key])?styles(props).hoverTd:styles(props).td} key={i} onMouseEnter={()=>hoverFunc(point.key)} onMouseLeave={resetHover}>{point.value}</td>
+                                    <td id="CtrlPointsRelData" style={(hover[point.key])?styles(props).hoverTd:styles(props).td} key={i} onMouseEnter={()=>hoverFunc(point.key)} onMouseLeave={resetHover}>{point.value}</td>
                                 )
                             })}
                         </tr>
-                        <tr style={styles(props).trWide}> 
-                            <th style={styles(props).ctrlWide}>Absolute</th>
+                        <tr id="CtrlPointsAbsoluteWide" style={styles(props).trWide}> 
+                            <th id="CtrlPointsAbsoluteHeader" style={styles(props).ctrlWide}>Absolute</th>
                         </tr>
-                        <tr style={styles(props).tr}>
-                            {props.info.absControlPoints.map((point, i) => {
+                        <tr id="CtrlPointsAbsoluteRow" style={styles(props).tr}>
+                            {props.info.controlPoints.map((point, i) => {
+                                let displayValue;
+                                if(point.key==="dx1" || point.key==="dx2"){
+                                    displayValue = point.value+startX
+                                } else {
+                                    displayValue = point.value+startY
+                                }
                                 return(
-                                    <td style={(hover[point.key])?styles(props).hoverTd:styles(props).td} key={i} onMouseEnter={()=>hoverFunc(point.key)} onMouseLeave={resetHover}>{point.value}</td>
+                                    <td id="CtrlPointsRelData" style={(hover[point.key])?styles(props).hoverTd:styles(props).td} key={i} onMouseEnter={()=>hoverFunc(point.key)} onMouseLeave={resetHover}>{displayValue}</td>
                                 )
                             })}
                         </tr>
@@ -63,7 +72,7 @@ const SidePanel = (props) => {
         )
     }
     function displayCtrlTables(){
-        if(props.info.type==='v'||props.info.type==='h'||props.info.type==='l'||props.info.type===''){
+        if(props.info.type==='v'||props.info.type==='h'||props.info.type==='l'||props.info.type==='t'||props.info.type===''){
             return(
                 <></>
             )
@@ -114,8 +123,8 @@ const SidePanel = (props) => {
                                 <th style={styles(props).thWide}>Absolute</th>
                             </tr>
                             <tr style={styles(props).tr}>
-                                <td style={hover.x?styles(props).hoverEnd:styles(props).end} onMouseEnter={()=>{hoverFunc('x')}} onMouseLeave={resetHover}>{props.info.absEndPoint.x}</td>
-                                <td style={hover.y?styles(props).hoverEnd:styles(props).end} onMouseEnter={()=>{hoverFunc('y')}} onMouseLeave={resetHover}>{props.info.absEndPoint.y}</td>
+                                <td style={hover.x?styles(props).hoverEnd:styles(props).end} onMouseEnter={()=>{hoverFunc('x')}} onMouseLeave={resetHover}>{props.info.endPoint.x+startX}</td>
+                                <td style={hover.y?styles(props).hoverEnd:styles(props).end} onMouseEnter={()=>{hoverFunc('y')}} onMouseLeave={resetHover}>{props.info.endPoint.y+startY}</td>
                             </tr>
                         </tbody>
                     </table>
@@ -125,7 +134,7 @@ const SidePanel = (props) => {
                 </View>
             </View>
             <View style={styles(props).editHelp}>
-                    <Edit info={props.info} setInfo={props.setInfo} path={props.path} setPath={props.setPath} relative={props.relative} pathID={props.pathID} setPathID={props.setPathID} stroke={props.stroke} strokeWidth={props.strokeWidth} strokeOpacity={props.strokeOpacity} fill={props.fill} fillOpacity={props.fillOpacity} firstCtrl={props.firstCtrl} setFirstCtrl={props.setFirstCtrl} secondCtrl={props.secondCtrl} setSecondCtrl={props.setSecondCtrl} endPoint={props.endPoint} setEndPoint={props.setEndPoint} controlCol={props.controlCol} ctrlOpacity={props.ctrlOpacity} controlSize={props.controlSize} endCol={props.endCol} endOpacity={props.endOpacity} endSize={props.endSize} highlight={props.highlight}/>
+                    <Edit info={props.info} setInfo={props.setInfo} path={props.path} setPath={props.setPath} relative={props.relative} pathID={props.pathID} setPathID={props.setPathID} stroke={props.stroke} strokeWidth={props.strokeWidth} strokeOpacity={props.strokeOpacity} fill={props.fill} fillOpacity={props.fillOpacity} firstCtrl={props.firstCtrl} setFirstCtrl={props.setFirstCtrl} secondCtrl={props.secondCtrl} setSecondCtrl={props.setSecondCtrl} endPoint={props.endPoint} setEndPoint={props.setEndPoint} controlCol={props.controlCol} ctrlOpacity={props.ctrlOpacity} controlSize={props.controlSize} endCol={props.endCol} endOpacity={props.endOpacity} endSize={props.endSize} highlight={props.highlight} showBtn={props.showBtn} rollingStart={props.rollingStart} setRollingStart={props.setRollingStart}/>
                     <Help />
             </View>
             <Modal
@@ -164,7 +173,7 @@ const styles = (props) => StyleSheet.create({
         padding: 22,
         boxShadow: '-2px 2px 8px #9c9c9c',
         margin: 10,
-        height: 400,
+        height: 350,
         width: 360  
     },
     top: {
