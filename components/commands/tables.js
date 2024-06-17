@@ -5,64 +5,148 @@ import FieldSet from '@njtd/react-native-fieldset';
 
 
 const Tables = (props) => {
-    const ControlTable = () => {
-        let controlPoints = [];
-        props.secondCtrl
-        ?
-        controlPoints = [{key: 'dx1', value:`${props.firstCtrl.x}`}, {key: 'dy1', value:`${props.firstCtrl.y}`}, {key: 'dx2', value:`${props.secondCtrl.x}`}, {key: 'dy2', value:`${props.secondCtrl.y}`}]
-        :
-        controlPoints = [{key: 'dx1', value:`${props.firstCtrl.x}`}, {key: 'dy1', value:`${props.firstCtrl.y}`}];
-        let headerArr = [];
-        controlPoints.map((point, i) =>{
-            headerArr.push(point.key)
-        })
-        let absControlPoints = [];
-        props.secondCtrl
-        ?
-        absControlPoints = [{key: 'dx1', value:`${props.firstCtrl.x+props.startX}`}, {key: 'dy1', value:`${props.firstCtrl.y+props.startY}`}, {key: 'dx2', value:`${props.secondCtrl.x+props.startX}`}, {key: 'dy2', value:`${props.secondCtrl.y+props.startY}`}]
-        :
-        absControlPoints = [{key: 'dx1', value:`${props.firstCtrl.x+props.startX}`}, {key: 'dy1', value:`${props.firstCtrl.y+props.startY}`}];
-        
-        return(
-            <FieldSet label="Control Points" labelColor={props.controlCol} labelStyle={styles(props).label} mainStyle={styles(props).fieldSet}>
-                <table style={styles(props).table}>
-                    <tbody style={styles(props).tbody}>
-                        <tr style={styles(props).tr}>
-                            {headerArr.map((header, i) => {
-                                return(
-                                    <th style={styles(props).th} key={i}>{header}</th>
-                                )
-                            })}
-                        </tr>
-                        <tr style={styles(props).trWide}> 
-                                    <th style={styles(props).ctrlWide}>Relative</th>
-                                </tr>
-                        <tr style={styles(props).tr}>
-                            {controlPoints.map((point, i) => {
-                                return(
-                                    <td style={(props.hover[point.key])?styles(props).hoverTd:styles(props).td} key={i} onMouseEnter={()=>props.hoverFunc(point.key)} onMouseLeave={props.resetHover}>{point.value}</td>
-                                )
-                            })}
-                        </tr>
-                        <tr style={styles(props).trWide}> 
-                                    <th style={styles(props).ctrlWide}>Absolute</th>
-                                </tr>
-                        <tr style={styles(props).tr}>
-                            {absControlPoints.map((point, i) => {
-                                return(
-                                    <td style={(props.hover[point.key])?styles(props).hoverTd:styles(props).td} key={i} onMouseEnter={()=>props.hoverFunc(point.key)} onMouseLeave={props.resetHover}>{point.value}</td>
-                                )
-                            })}
-                        </tr>
-                    </tbody>
-                </table>
-            </FieldSet>
-        )
+    let ControlTable;
+    if(props.type==="q"){
+        ControlTable = () => {
+            const controlPoints = [{key: 'dx1', value:props.firstCtrl.x}, {key: 'dy1', value:props.firstCtrl.y}];
+            let headerArr = [];
+            controlPoints.map((point, i) =>{
+                headerArr.push(point.key)
+            })
+            const absControlPoints = [{key: 'dx1', value:props.firstCtrl.x+props.startX}, {key: 'dy1', value:props.firstCtrl.y+props.startY}];
+            
+            return(
+                <FieldSet label="Control Points" labelColor={props.controlCol} labelStyle={styles(props).label} mainStyle={styles(props).fieldSet}>
+                    <table style={styles(props).table}>
+                        <tbody style={styles(props).tbody}>
+                            <tr style={styles(props).tr}>
+                                {headerArr.map((header, i) => {
+                                    return(
+                                        <th style={styles(props).th} key={i}>{header}</th>
+                                    )
+                                })}
+                            </tr>
+                            <tr style={styles(props).trWide}> 
+                                        <th style={styles(props).ctrlWide}>Relative</th>
+                                    </tr>
+                            <tr style={styles(props).tr}>
+                                {controlPoints.map((point, i) => {
+                                    return(
+                                        <td style={(props.hover[point.key])?styles(props).hoverTd:styles(props).td} key={i} onMouseEnter={()=>props.hoverFunc(point.key)} onMouseLeave={props.resetHover}>{point.value}</td>
+                                    )
+                                })}
+                            </tr>
+                            <tr style={styles(props).trWide}> 
+                                        <th style={styles(props).ctrlWide}>Absolute</th>
+                                    </tr>
+                            <tr style={styles(props).tr}>
+                                {absControlPoints.map((point, i) => {
+                                    return(
+                                        <td style={(props.hover[point.key])?styles(props).hoverTd:styles(props).td} key={i} onMouseEnter={()=>props.hoverFunc(point.key)} onMouseLeave={props.resetHover}>{point.value}</td>
+                                    )
+                                })}
+                            </tr>
+                        </tbody>
+                    </table>
+                </FieldSet>
+            )
+        }
+    } else if (props.type==="c"){
+        ControlTable = () => {
+            const controlPoints = [{key: 'dx1', value:props.firstCtrl.x}, {key: 'dy1', value:props.firstCtrl.y}, {key: 'dx2', value:props.secondCtrl.x}, {key: 'dy2', value:props.secondCtrl.y}]
+            let headerArr = [];
+            controlPoints.map((point, i) =>{
+                headerArr.push(point.key)
+            })
+            const absControlPoints = [{key: 'dx1', value:props.firstCtrl.x+props.startX}, {key: 'dy1', value:props.firstCtrl.y+props.startY}, {key: 'dx2', value:props.secondCtrl.x+props.startX}, {key: 'dy2', value:props.secondCtrl.y+props.startY}]
+            
+            return(
+                <FieldSet label="Control Points" labelColor={props.controlCol} labelStyle={styles(props).label} mainStyle={styles(props).fieldSet}>
+                    <table style={styles(props).table}>
+                        <tbody style={styles(props).tbody}>
+                            <tr style={styles(props).tr}>
+                                {headerArr.map((header, i) => {
+                                    return(
+                                        <th style={styles(props).th} key={i}>{header}</th>
+                                    )
+                                })}
+                            </tr>
+                            <tr style={styles(props).trWide}> 
+                                        <th style={styles(props).ctrlWide}>Relative</th>
+                                    </tr>
+                            <tr style={styles(props).tr}>
+                                {controlPoints.map((point, i) => {
+                                    return(
+                                        <td style={(props.hover[point.key])?styles(props).hoverTd:styles(props).td} key={i} onMouseEnter={()=>props.hoverFunc(point.key)} onMouseLeave={props.resetHover}>{point.value}</td>
+                                    )
+                                })}
+                            </tr>
+                            <tr style={styles(props).trWide}> 
+                                        <th style={styles(props).ctrlWide}>Absolute</th>
+                                    </tr>
+                            <tr style={styles(props).tr}>
+                                {absControlPoints.map((point, i) => {
+                                    return(
+                                        <td style={(props.hover[point.key])?styles(props).hoverTd:styles(props).td} key={i} onMouseEnter={()=>props.hoverFunc(point.key)} onMouseLeave={props.resetHover}>{point.value}</td>
+                                    )
+                                })}
+                            </tr>
+                        </tbody>
+                    </table>
+                </FieldSet>
+            )
+        }
+    } else if (props.type==="t"){
+        ControlTable = () => {
+            const controlPoints = [{key: 'dx2', value:props.secondCtrl.x}, {key: 'dy2', value:props.secondCtrl.y}]
+            let headerArr = [];
+            controlPoints.map((point, i) =>{
+                headerArr.push(point.key)
+            })
+            const absControlPoints = [{key: 'dx2', value:props.secondCtrl.x+props.startX}, {key: 'dy2', value:props.secondCtrl.y+props.startY}]
+            
+            return(
+                <FieldSet label="Control Points" labelColor={props.controlCol} labelStyle={styles(props).label} mainStyle={styles(props).fieldSet}>
+                    <table style={styles(props).table}>
+                        <tbody style={styles(props).tbody}>
+                            <tr style={styles(props).tr}>
+                                {headerArr.map((header, i) => {
+                                    return(
+                                        <th style={styles(props).th} key={i}>{header}</th>
+                                    )
+                                })}
+                            </tr>
+                            <tr style={styles(props).trWide}> 
+                                        <th style={styles(props).ctrlWide}>Relative</th>
+                                    </tr>
+                            <tr style={styles(props).tr}>
+                                {controlPoints.map((point, i) => {
+                                    return(
+                                        <td style={(props.hover[point.key])?styles(props).hoverTd:styles(props).td} key={i} onMouseEnter={()=>props.hoverFunc(point.key)} onMouseLeave={props.resetHover}>{point.value}</td>
+                                    )
+                                })}
+                            </tr>
+                            <tr style={styles(props).trWide}> 
+                                        <th style={styles(props).ctrlWide}>Absolute</th>
+                                    </tr>
+                            <tr style={styles(props).tr}>
+                                {absControlPoints.map((point, i) => {
+                                    return(
+                                        <td style={(props.hover[point.key])?styles(props).hoverTd:styles(props).td} key={i} onMouseEnter={()=>props.hoverFunc(point.key)} onMouseLeave={props.resetHover}>{point.value}</td>
+                                    )
+                                })}
+                            </tr>
+                        </tbody>
+                    </table>
+                </FieldSet>
+            )
+        }
     }
+
     return(
         <View style={styles(props).mainContainer}>
             {
-            props.firstCtrl
+            props.type==="c"||props.type==="q"||props.type==="s"
             ?
             <ControlTable />
             :

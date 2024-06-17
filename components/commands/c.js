@@ -10,8 +10,8 @@ const C = (props) => {
     const [hover, setHover] = useState({sub: false, can: false, c: false, dx1:false, dy1: false, dx2: false, dy2: false, x: false, y:false});
     
     
-    const startX = props.path[props.pathID].absX;
-    const startY = props.path[props.pathID].absY;
+    const startX = props.path[props.pathID].endPoint.x + props.path[props.pathID].startPoint.x;
+    const startY = props.path[props.pathID].endPoint.y + props.path[props.pathID].startPoint.y;
 
     function openModal(){
         props.setFirstCtrl({x:25, y:50})
@@ -41,47 +41,28 @@ const C = (props) => {
         setHover({sub: false, can: false, c: false, dx1:false, dy1: false, dx2: false, dy2: false, x: false, y:false})
     }
 
-    const first = {
+    const first = Command = {
         type:'c',
-        absType: 'C',
         id: props.pathID+1,
-        absX: 150,
-        absY: 50,
         startPoint: {x: 50, y: 50},
         controlPoints: [{key: 'dx1', value:25}, {key: 'dy1', value:50}, {key: 'dx2', value:75}, {key: 'dy2', value:50}],
-        absControlPoints: [{key: 'dx1', value:75}, {key: 'dy1', value:100}, {key: 'dx2', value:125}, {key: 'dy2', value:100}],
-        endPoint: {x: 100, y: 0},
-        absEndPoint: {x: 150, y: 50},
-        command: 'c25,50 75,50 100,0',
-        absCommand: 'C75,100 125,100 150,50',
-        fullCommand: 'M50,50c25,50 75,50 100,0',
-        fullAbsCommand: 'M50,50C75,100 125,100 150,50'
+        endPoint: {x: 100, y: 0}
     }
     const [defaultPath, setDefaultPath] = useState(first);
 
     function addToPath(){
-        const startX = props.path[props.pathID].absX;
-        const startY = props.path[props.pathID].absY;
+        
         const cPath = {
         type: 'c',
-        absType: 'C',
         id: props.pathID+1,
-        absX: props.endPoint.x+startX,
-        absY: props.endPoint.y+startY,
         startPoint: {x: startX, y: startY},
-        controlPoints: [{key: 'dx1', value:`${props.firstCtrl.x}`}, {key: 'dy1', value:`${props.firstCtrl.y}`}, {key: 'dx2', value:`${props.secondCtrl.x}`}, {key: 'dy2', value:`${props.secondCtrl.y}`}],
-        absControlPoints: [{key: 'dx1', value:`${props.firstCtrl.x+startX}`}, {key: 'dy1', value:`${props.firstCtrl.y+startY}`}, {key: 'dx2', value:`${props.secondCtrl.x+startX}`}, {key: 'dy2', value:`${props.secondCtrl.y+startY}`}],
-        endPoint: {x: props.endPoint.x,y: props.endPoint.y},
-        absEndPoint: {x: props.endPoint.x+startX,y: props.endPoint.y+startY},
-        command: `c${props.firstCtrl.x},${props.firstCtrl.y} ${props.secondCtrl.x},${props.secondCtrl.y} ${props.endPoint.x},${props.endPoint.y}`,
-        absCommand: `C${startX+props.firstCtrl.x},${startY+props.firstCtrl.y} ${startX+props.secondCtrl.x},${startY+props.secondCtrl.y} ${startX+props.endPoint.x},${startY+props.endPoint.y}`,
-        fullCommand: `M${startX},${startY}c${props.firstCtrl.x},${props.firstCtrl.y} ${props.secondCtrl.x},${props.secondCtrl.y} ${props.endPoint.x},${props.endPoint.y}`,
-        fullAbsCommand: `M${startX},${startY}C${startX+props.firstCtrl.x},${startY+props.firstCtrl.y} ${startX+props.secondCtrl.x},${startY+props.secondCtrl.y} ${startX+props.endPoint.x},${startY+props.endPoint.y}`
-        }
-        const newPath = [...props.path, cPath]
-        props.setPath(newPath)
-        props.setPathID(props.pathID+1)  
-        setModalIsOpen(false) 
+        controlPoints: [{key: 'dx1', value:props.firstCtrl.x}, {key: 'dy1', value:props.firstCtrl.y}, {key: 'dx2', value:props.secondCtrl.x}, {key: 'dy2', value:props.secondCtrl.y}],
+        endPoint: {x: props.endPoint.x,y: props.endPoint.y}
+        };
+        const newPath = [...props.path, cPath];
+        props.setPath(newPath);
+        props.setPathID(props.pathID+1);
+        setModalIsOpen(false);
     }
 
     return (
@@ -108,8 +89,8 @@ const C = (props) => {
                         </View>
                     </View>
                     <View style={styles(props).container}>
-                        <Help url="https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorial/Paths" />
-                        <Tables firstCtrl={props.firstCtrl} secondCtrl={props.secondCtrl} endPoint={props.endPoint} controlCol={props.controlCol} endCol={props.endCol} endSize={props.endSize} resetHover={resetHover} hoverFunc={hoverFunc} startX={startX} startY={startY} hover={hover} />
+                        <Help url="https://svgwg.org/svg2-draft/paths.html#PathDataCubicBezierCommands" />
+                        <Tables type="c" firstCtrl={props.firstCtrl} secondCtrl={props.secondCtrl} endPoint={props.endPoint} controlCol={props.controlCol} endCol={props.endCol} resetHover={resetHover} hoverFunc={hoverFunc} startX={startX} startY={startY} hover={hover} />
                     </View>
                 
                 </View>

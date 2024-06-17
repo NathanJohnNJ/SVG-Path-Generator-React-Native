@@ -9,8 +9,8 @@ const H = (props) => {
     const [modalIsOpen, setModalIsOpen] = useState(false);
     const [hover, setHover] = useState({sub: false, can: false, h:false, x:false, y:false});
 
-    const startX = props.path[props.pathID].absX;
-    const startY = props.path[props.pathID].absY;
+    const startX = props.path[props.pathID].endPoint.x + props.path[props.pathID].startPoint.x;
+    const startY = props.path[props.pathID].endPoint.y + props.path[props.pathID].startPoint.y;
 
     function openModal(){ 
         props.setEndPoint({x:50, y:0})
@@ -30,40 +30,23 @@ const H = (props) => {
 
     const defaultPath = {
         type: 'h',
-        absType:'H',
         id: props.pathID+1,
-        absX: 100,
-        absY: 50,
         startPoint: {x: 50, y: 50},
-        endPoint: {x:50, y: 0},
-        absEndPoint: {x: 100, y: 50},
-        command: 'h50',
-        absCommand: 'H100',
-        fullCommand: 'M50,50h50',
-        fullAbsCommand: 'M50,50H100'
+        endPoint: {x:50, y: 0}
     }
     
     function addToPath(){
-        const startX = props.path[props.pathID].absX;
-        const startY = props.path[props.pathID].absY;
         const hPath = {
             type: 'h',
-            absType: 'H',
             id: props.pathID+1,
-            absX: props.endPoint.x+startX,
-            absY: props.endPoint.y+startY,
             startPoint: {x: startX, y: startY},
-            endPoint: {x: props.endPoint.x, y: props.endPoint.y},
-            absEndPoint: {x: props.endPoint.x+startX, y: props.endPoint.y+startY},
-            command: `h${props.endPoint.x}`,
-            absCommand: `H${startX+props.endPoint.x}`,
-            fullCommand: `M${startX},${startY}h${props.endPoint.x}`,
-            fullAbsCommand: `M${startX},${startY}H${startX+props.endPoint.x}`
+            endPoint: {x: props.endPoint.x, y: props.endPoint.y}
         } 
         const newPath = [...props.path, hPath]
         props.setPath(newPath)
         props.setPathID(props.pathID+1)  
         setModalIsOpen(false)
+        console.log(hPath)
     }
 
     return (
@@ -86,7 +69,7 @@ const H = (props) => {
                     <View style={styles(props).mainContainer}>
                     <Help url="https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorial/Paths" />
                        
-                            <View style={styles(props).tableContainer}>
+                        <View style={styles(props).tableContainer}>
                             <FieldSet label="End Point" labelColor={props.endCol} labelStyle={styles(props).label} mainStyle={styles(props).fieldSet}>
                                 <table style={styles(props).table}>
                                     <tbody style={styles(props).tbody}>

@@ -3,17 +3,14 @@ import GridWithDrag from './gridWithDrag';
 import { StyleSheet, Text, View, Modal } from 'react-native';
 import React from 'react';
 import Tables from './tables';
-import Presets from '../presetPaths/t';
 import Help from '../help';
 
 const T = (props) => {
     const [modalIsOpen, setModalIsOpen] = useState(false);
     const [hover, setHover] = useState({sub: false, can: false, t: false, x: false, y:false});
     
-
-    const startX = props.path[props.pathID].absX;
-    const startY = props.path[props.pathID].absY;
-    
+    const startX = props.path[props.pathID].endPoint.x + props.path[props.pathID].startPoint.x;
+    const startY = props.path[props.pathID].endPoint.y + props.path[props.pathID].startPoint.y;
 
     function openModal(){ 
         props.setEndPoint({x:50, y:0})
@@ -32,42 +29,24 @@ const T = (props) => {
         }
     }
     function resetHover(){
-        setHover({sub: false, can: false, t: false, dx1: false, dy1: false, x: false, y:false})
+        setHover({sub: false, can: false, t: false, x: false, y:false})
     }
 
     const defaultPath = {
         type: 't',
-        absType: 'T',
         id: props.pathID+1,
-        absX: 100,
-        absY: 50,
         startPoint: {x: 50, y: 50},
         endPoint: {x:50, y: 0},
-        absEndPoint: {x: 100, y: 50},
-        command: 't50,0',
-        absCommand: 'T100,50',
-        fullCommand: 'M50,50t50,0',
-        fullAbsCommand: 'M50,50T100,50'
     }
 
     function addToPath(){
-        const startX = props.path[props.pathID].absX;
-        const startY = props.path[props.pathID].absY;
         const tPath = {
             type: 't',
-            absType:'T',
             id: props.pathID+1,
-            absX: props.endPoint.x+startX,
-            absY: props.endPoint.y+startY,
             startPoint: {x: startX, y: startY},
-            endPoint: {x: props.endPoint.x,y: props.endPoint.y},
-            absEndPoint: {x: props.endPoint.x+startX,y: props.endPoint.y+startY},
-            command: `t${props.endPoint.x},${props.endPoint.y}`,
-            absCommand: `T${startX+props.endPoint.x},${startY+props.endPoint.y}`,
-            fullCommand: `M${startX},${startY}t${props.endPoint.x},${props.endPoint.y}`,
-            fullAbsCommand: `M${startX},${startY}T${startX+props.endPoint.x},${startY+props.endPoint.y}`
+            endPoint: {x: props.endPoint.x,y: props.endPoint.y}
         } 
-        const newPath = [...props.path, sPath]
+        const newPath = [...props.path, tPath]
         props.setPath(newPath)
         props.setPathID(props.pathID+1)
         setModalIsOpen(false)
@@ -84,17 +63,16 @@ const T = (props) => {
             onRequestClose={closeModal}
             >
                 <View style={styles(props).row}>
-                   <Presets stroke={props.stroke} fill={props.fill} fillOpacity={props.fillOpacity} />
                    <View style={styles(props).middleSection}>
                    <View style={styles.titleContainer}>
                     <Text style={styles(props).title}>New T Command</Text>
                     </View>
                     <View style={styles(props).container}>
-                        <GridWithDrag size="250" path={defaultPath} endPoint={props.endPoint} setEndPoint={props.setEndPoint} strokeWidth={props.strokeWidth} stroke={props.stroke} fill={props.fill} fillOpacity={props.fillOpacity} strokeOpacity={props.strokeOpacity} controlCol={props.controlCol} ctrlOpacity={props.ctrlOpacity} controlSize={props.controlSize} endCol={props.endCol} endOpacity={props.endOpacity} endSize={props.endSize} highlight={props.highlight} startX={startX} startY={startY} resetHover={resetHover} hoverFunc={hoverFunc} />
+                        <GridWithDrag size="250" path={defaultPath} pathID={props.pathID} fullPath={props.path} endPoint={props.endPoint} setEndPoint={props.setEndPoint} strokeWidth={props.strokeWidth} stroke={props.stroke} fill={props.fill} fillOpacity={props.fillOpacity} strokeOpacity={props.strokeOpacity} controlCol={props.controlCol} ctrlOpacity={props.ctrlOpacity} controlSize={props.controlSize} endCol={props.endCol} endOpacity={props.endOpacity} endSize={props.endSize} highlight={props.highlight} startX={startX} startY={startY} resetHover={resetHover} hoverFunc={hoverFunc} />
                     </View>
                     </View>
                     <View style={styles(props).container}>
-                    <Help url="https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorial/Paths" />
+                    <Help url="https://svgwg.org/svg2-draft/paths.html#PathDataQuadraticBezierCommands" />
                        
                         <Tables path={defaultPath} endPoint={props.endPoint} setEndPoint={props.setEndPoint} controlCol={props.controlCol} ctrlOpacity={props.ctrlOpacity} controlSize={props.controlSize} endCol={props.endCol} endOpacity={props.endOpacity} endSize={props.endSize} highlight={props.highlight} resetHover={resetHover} hoverFunc={hoverFunc} startX={startX} startY={startY} hover={hover} />
                     </View>

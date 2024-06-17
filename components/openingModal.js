@@ -12,90 +12,48 @@ const Opening = (props) => {
     }
     const cPath = {
         type:'c',
-        absType: 'C',
         name: 'Curve',                                                      
         id: props.pathID,
-        absX: 150,
-        absY: 50,
         startPoint: {x: 50, y: 50},
         controlPoints: [{key: 'dx1', value:25}, {key: 'dy1', value:50}, {key: 'dx2', value:75}, {key: 'dy2', value:-50}],
-        absControlPoints: [{key: 'dx1', value:75}, {key: 'dy1', value:100}, {key: 'dx2', value:125}, {key: 'dy2', value:0}],
         endPoint: {x: 100, y: 0},
-        absEndPoint: {x: 150, y: 50},
-        command: 'c25,50 75,-50 100,0',
-        absCommand: 'C75,100 125,0 150,50',
-        fullCommand: 'M50,50c25,50 75,-50 100,0',
-        fullAbsCommand: 'M50,50C75,100 125,0 150,50'
     }
 
     const qPath = {
         type: 'q',
-        absType: 'Q',
         name: 'Quadratic',
         name2: 'Bézier',
         name3: 'Curve',
         id: props.pathID,
-        absX: 100,
-        absY: 50,
         startPoint: {x: 50, y: 50},
         controlPoints: [{key: 'dx1', value:25}, {key: 'dy1', value:50}],
-        absControlPoints: [{key: 'dx1', value:75}, {key: 'dy1', value:100}],
         endPoint: {x:50, y: 0},
-        absEndPoint: {x: 100, y: 50},
-        command: 'q25,50 50,0',
-        absCommand: 'Q75,100 100,50',
-        fullCommand: 'M50,50q25,50 50,0',
-        fullAbsCommand: 'M50,50Q75,100 100,50'
     }
 
     const lPath = {
         type: 'l',
-        absType: 'L',
         name: 'Line',
         id: props.pathID,
-        absX: 100,
-        absY: 100,
         startPoint: {x: 50, y: 50},
-        endPoint: {x:50, y: 50},
-        absEndPoint: {x: 100, y: 100},
-        command: 'l50,50',
-        absCommand: 'L100,100',
-        fullCommand: 'M50,50l50,50',
-        fullAbsCommand: 'M50,50L100,100'
+        endPoint: {x:50, y: 50}
     }
 
     const hPath = {
         type: 'h',
-        absType:'H',
         name: 'Horizontal',
         name2: 'Line',
         id: props.pathID,
-        absX: 100,
-        absY: 50,
         startPoint: {x: 50, y: 50},
-        endPoint: {x:50, y: 0},
-        absEndPoint: {x: 100, y: 50},
-        command: 'h50',
-        absCommand: 'H100',
-        fullCommand: 'M50,50h50',
-        fullAbsCommand: 'M50,50H100'
+        endPoint: {x:50, y: 0}
     }
 
     const vPath = {
         type: 'v',
-        absType:'V',
         name: 'Vertical',
         name2: 'Line',
         id: props.pathID,
-        absX: 50,
-        absY: 100,
         startPoint: {x: 50, y: 50},
-        endPoint: {x:0, y: 50},
-        absEndPoint: {x: 50, y: 100},
-        command: 'v50',
-        absCommand: 'V100',
-        fullCommand: 'M50,50v50',
-        fullAbsCommand: 'M50,50V100'
+        endPoint: {x:0, y: 50}
     }
 
     const openingArray = [cPath, qPath, lPath, hPath, vPath];
@@ -144,6 +102,14 @@ const Opening = (props) => {
                     {
                         openingArray.map((command, i) => {
                             const ID = `grid${command.type}`
+                            let d;
+                            if(command.type==="c"){
+                                d = `M${command.startPoint.x},${command.startPoint.y}${command.type}${command.controlPoints[0].value},${command.controlPoints[1].value} ${command.controlPoints[2].value},${command.controlPoints[3].value} ${command.endPoint.x},${command.endPoint.y}`;
+                            } else if(command.type==="q" || command.type==="s"){
+                                d = `M${command.startPoint.x},${command.startPoint.y}${command.type}${command.controlPoints[0].value},${command.controlPoints[1].value} ${command.endPoint.x},${command.endPoint.y}`;
+                            } else if(command.type==="t" || command.type==="l" || command.type==="v" || command.type==="h"){
+                                d = `M${command.startPoint.x},${command.startPoint.y}${command.type}${command.endPoint.x},${command.endPoint.y}`;
+                            }
                             return(
                                 <View key={i*8} style={styles.gridWithTitle}>
                                     <View style={styles.gridTitleSection}>
@@ -159,7 +125,7 @@ const Opening = (props) => {
                                     </View>
                                 <Pressable style={styles.gridSection} key={i+20} onPress={()=>select(command)}  onHoverIn={() => hoverFunc(ID)} onHoverOut={() => resetHover(ID)} id={ID}>
                                     <Grid size="150" mainWidth="180" id="miniGrid" key={i}>
-                                        <Path id={command.type} d={command.fullAbsCommand} fill="none" key={i+10} stroke="#fda" strokeWidth="5" onMouseOver={()=>mouseOver(command.type)} onMouseOut={()=>mouseOut(command.type)}/>
+                                        <Path id={command.type} d={d} fill="none" key={i+10} stroke="#fda" strokeWidth="5" onMouseOver={()=>mouseOver(command.type)} onMouseOut={()=>mouseOut(command.type)}/>
                                     </Grid>
                                 </Pressable>
                                 </View>
@@ -208,7 +174,10 @@ const styles = StyleSheet.create({
         borderWidth: 3,
         borderRadius: 18,
         boxShadow: '-2px 2px 8px #9c9c9c',
-        padding: 5,
+        paddingTop: 5,
+        paddingBottom: 5,
+        paddingLeft: 5,
+        paddingRight:4,
         marginHorizontal: -40,
       },
       gridWithTitle:{
