@@ -44,7 +44,6 @@ const L = (props) => {
     
     function addToPath(){
         
-        props.setRollingStart({x:startX+props.endPoint.x, y:startY+props.endPoint.y}) 
         const lPath = {
             type: 'l',
             id: props.pathID+1,

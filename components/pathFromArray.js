@@ -73,13 +73,13 @@ const PathFromArray = (props) => {
                           } 
                           else if(command.type==="t"){
                             d = `M${props.path[command.id-1].startPoint.x},${props.path[command.id-1].startPoint.y}q${props.path[command.id-1].controlPoints[0].value},${props.path[command.id-1].controlPoints[1].value} ${props.path[command.id-1].endPoint.x},${props.path[command.id-1].endPoint.y}t${command.endPoint.x},${command.endPoint.y}`
-                            const height = props.path[command.id-1].startPoint.y+command.endPoint.y
-                            const width = props.path[command.id-1].startPoint.x+command.endPoint.x
+                            // const height = props.path[command.id-1].startPoint.y+command.endPoint.y
+                            const width = props.size-props.path[command.id-1].startPoint.x
                             return(
                                 <Svg key={i+200}  height={props.size} width={props.size} viewBox={viewBox} x="0" y="0">
                                     <Defs>
                                     <ClipPath id="clip">
-                                        <Rect x={props.path[command.id-1].startPoint.x+props.path[command.id-1].endPoint.x} y="0" width={width} height={height} />
+                                        <Rect x={props.path[command.id-1].startPoint.x+props.path[command.id-1].endPoint.x} y="0" width={width} height={props.size} />
                                     </ClipPath>
                                 </Defs>
                                 <G id="pathGroup" height={props.size} width={props.size} viewBox={viewBox} key={i+300} >

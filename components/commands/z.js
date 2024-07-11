@@ -1,23 +1,26 @@
 import { useState, useEffect } from 'react';
-import GridWithDrag from './gridWithDrag';
 import { StyleSheet, Text, View, Modal, Pressable } from 'react-native';
+import FinalPathPreview from '../finalPathPreview';
+import Grid from '../grid';
 import React from 'react';
-import FieldSet from '@njtd/react-native-fieldset';
 import Help from '../help';
 
 const Z = (props) => {
     const [modalIsOpen, setModalIsOpen] = useState(false);
-    const [hover, setHover] = useState({export: false, back: false, z:false});
-    const [finalPath, setFinalPath] = useState({})
-
-
+    const [hover, setHover] = useState({sub: false, can: false, z:false});
+    const zPath = {
+        type: 'z',
+        id: props.pathID + 1,
+        startPoint: {x:'', y: ''},
+        endPoint: {x:'', y:''}
+    }
+    
     function openModal(){ 
         setModalIsOpen(true)
     }
     function closeModal(){
         setModalIsOpen(false)
     }
-
     function hoverFunc(i){
         const newHover = { ...hover, [i]: true}
         setHover(newHover)
@@ -25,84 +28,43 @@ const Z = (props) => {
     function resetHover(){
         setHover({export: false, back: false, z:false})
     }
-
+    
     function addToPath(){
-        const zPath = {
-            type: `${finalPath.type}`,
-            id: `${finalPath.id}`,
-            startPoint: `${finalPath.startPoint}`,
-            endPoint: `${finalPath.endPoint}`,
-        }
-        let newPath = [];
-        for (let i=0; i<props.path.length-1; i++){
-            newPath.push(props.path[i])
-            } 
+        const newPath = props.path
         newPath.push(zPath)
         props.setPath(newPath) 
         setModalIsOpen(false)
     }
-
-    useEffect(() => {
-        setFinalPath(props.path[props.pathID])
-    }, [])
+    
     return (
         <View style={styles(props).outerContainer}>
             <Pressable onPress={addToPath}>
-            <Text onClick={openModal}  onMouseOver={() => hoverFunc('z')} onMouseLeave={resetHover} style={hover.z?styles(props).hover:styles(props).button}>Z</Text>
+                <Text onClick={openModal}  onMouseOver={() => hoverFunc('z')} onMouseLeave={resetHover} style={hover.z?styles(props).hover:styles(props).button}>
+                    Z
+                </Text>
             </Pressable>
-            {/* <Modal
+
+            <Modal
             animationType="slide"
             transparent={false}
             visible={modalIsOpen}
             onReluestClose={closeModal}
             >
-                <Text style={styles(props).title}>New H Command</Text>
+                <Text style={styles(props).title}>Z Command - Close Path</Text>
+                <Text style={styles(props).text}>
+                    Are you sure you want to add the 'Z' command. This will close your current path - connect the end of the path to the beginning with a direct, straight line. Below is a preview of how this will look...
+                </Text>
                 
-                <View style={styles(props).row}>
-                   
-                    <View style={styles(props).container}>
-                        <GridWithDrag size="250" path={props.path} endPoint={props.endPoint} setEndPoint={props.setEndPoint} strokeWidth={props.strokeWidth} stroke={props.stroke} fill={props.fill} fillOpacity={props.fillOpacity} strokeOpacity={props.strokeOpacity} endCol={props.endCol} endOpacity={props.endOpacity} endSize={props.endSize} highlight={props.highlight} startX={startX} resetHover={resetHover} hoverFunc={hoverFunc}/>
-                    </View>
-                   
-                    <View style={styles(props).mainContainer}>
-                    <Help url="https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorial/Paths" />
-                       
-                            <View style={styles(props).tableContainer}>
-                            <FieldSet label="End Point" labelColor={props.endCol} labelStyle={styles(props).label} mainStyle={styles(props).fieldSet}>
-                                <table style={styles(props).table}>
-                                    <tbody style={styles(props).tbody}>
-                                        <tr style={styles(props).tr}> 
-                                            <th style={styles(props).endTh}>x</th>
-                                            <th style={styles(props).endTh}>y</th>
-                                        </tr>
-                                        <tr style={styles(props).trWide}> 
-                                            <th style={styles(props).thWide}>Relative</th>
-                                        </tr>
-                                        <tr style={styles(props).tr}>
-                                            <td style={hover.x?styles(props).hoverEnd:styles(props).end} onMouseEnter={()=>{hoverFunc('x')}} onMouseLeave={resetHover}>{props.endPoint.x}</td>
-                                            <td style={hover.y?styles(props).hoverEnd:styles(props).end} onMouseEnter={()=>{hoverFunc('y')}} onMouseLeave={resetHover}>{props.endPoint.y}</td>
-                                        </tr>
-                                        <tr style={styles(props).trWide}> 
-                                            <th style={styles(props).thWide}>Absolute</th>
-                                        </tr>
-                                        <tr style={styles(props).tr}>
-                                            <td style={hover.x?styles(props).hoverEnd:styles(props).end} onMouseEnter={()=>{hoverFunc('x')}} onMouseLeave={resetHover}>{props.endPoint.x+startX}</td>
-                                            <td style={hover.y?styles(props).hoverEnd:styles(props).end} onMouseEnter={()=>{hoverFunc('y')}} onMouseLeave={resetHover}>{props.endPoint.y+startY}</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </FieldSet>
-                        </View>
-                        
-                    </View>
-                </View>
-                
+                  <Grid size="400" mainWidth="500" id="zGrid" children={<FinalPathPreview size="400" stroke={props.stroke} strokeWidth={props.strokeWidth} strokeOpacity={props.strokeOpacity} fill={props.fill} fillOpacity={props.fillOpacity} controlCol={props.controlCol} ctrlOpacity={props.ctrlOpacity} controlSize={props.controlSize} endCol={props.endCol} endOpacity={props.endOpacity} endSize={props.endSize} highlight={props.highlight} fullCommand={props.fullCommand} /> } />
+
                 <View style={styles(props).subCan}>
                     <Text onClick={addToPath} onMouseOver={() => hoverFunc('sub')} onMouseLeave={resetHover} style={hover.sub?styles(props).submitHover:styles(props).submitButton}>Add to path!</Text>
+
+{/* <Help url="https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorial/Paths" /> */}
+
                     <Text onClick={closeModal} onMouseOver={() => hoverFunc('can')} onMouseLeave={resetHover} style={hover.can?styles(props).cancelHover:styles(props).cancelButton}>Cancel</Text>
                 </View>
-
-            </Modal> */}
+            </Modal>
         </View>
     )
 };
@@ -133,6 +95,12 @@ const styles = (props) => StyleSheet.create({
         fontSize: 30,
         textAlign: 'center',
         margin: 15
+    },
+    text:{
+        fontFamily:'Quicksand',
+        fontSize: 25,
+        textAlign: 'center',
+        margin: 5
     },
     subCan: {
         flex: 1,
@@ -270,115 +238,5 @@ const styles = (props) => StyleSheet.create({
         borderWidth: 3,
         borderColor: '#abd',
         height: 300
-        },
-      tableContainer: {
-          display: "flex",
-          flexDirection: 'column',
-          justifyContent: 'center',
-          alignItems: 'center',
-          flex:1
-      },
-      fieldSet:{
-          height: 80,
-          width: 'fit-content',
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'flex-start',
-          borderRadius: 6
-      },
-      label: {
-          fontFamily: 'Quicksand-Bold',
-          fontSize: 17.5,
-          backgroundColor: 'rgba(255, 255, 255, 0.9)',
-          borderRadius:6
-      },
-      table: {
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          color: '#fff',
-          flex:1,
-          borderRadius: 6,
-          marginTop: 5
-      },
-      tbody:{
-          flex:1,
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-      },
-      tr: {
-          flex: 1,
-          display: 'flex',
-          flexDirection: 'row',
-          alignItems: 'center',
-          justifyContent: 'center',
-      },
-      trWide:{
-          flex: 1,
-          display: 'flex',
-          marginTop:5
-      },
-      thWide: {
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        border: '1.8px solid black',
-        borderRadius: 5,
-        fontFamily: 'Quicksand-Bold',
-        fontSize: 16,
-        flex:1,
-        width: 80,
-        height: 25,
-        marginTop: 1,
-        padding:4,
-        backgroundColor: props.endCol,
-      },
-      endTh: {
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        border: '1.8px solid black',
-        borderRadius: 5,
-        fontFamily: 'Quicksand-Medium',
-        fontSize: 16,
-        flex:1,
-        width: 40,
-        height: 25,
-        marginTop: 1,
-        padding:2,
-        backgroundColor: props.endCol,
-    },
-    end: {
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        textAlign: 'center',
-        border: '1.5px dashed grey',
-        borderRadius: 5,
-        fontFamily: 'Quicksand-Regular',
-        fontSize: 16,
-        color: props.endCol,
-        flex:1,
-        width: 40,
-        height: 25,
-        padding: 2
-    },
-    hoverEnd: {
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        textAlign: 'center',
-        border: '1.5px dashed grey',
-        borderRadius: 5,
-        fontFamily: 'Quicksand-Bold',
-        fontSize: 18,
-        color: props.endCol,
-        flex:1,
-        width: 40,
-        height: 25,
-        padding: 2
-    },
+        }
 })

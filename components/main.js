@@ -4,8 +4,9 @@ import SidePanel from './panels/sidePanel';
 import ConfigPanel from './panels/configPanel';
 import CommandPanel from './panels/commandPanel';
 import { StyleSheet, Text, View } from 'react-native';
+// import PathFromArray from './pathWithNodes';
 import PathFromArray from './pathFromArray';
-
+import NodePanel from './panels/nodePanel';
 const Main = (props) => {
 
     const blank = {
@@ -89,12 +90,15 @@ const Main = (props) => {
                 </View>
 
                 <View style={styles(props).container}>
-                  <Grid size={size} mainWidth="530" id="grid" children={<PathFromArray size={size} path={props.path} stroke={props.stroke} strokeWidth={props.strokeWidth} strokeOpacity={props.strokeOpacity} fill={props.fill} fillOpacity={props.fillOpacity} setInfo={setInfo} setEndPoint={setEndPoint} setFirstCtrl={setFirstCtrl} setSecondCtrl={setSecondCtrl} controlCol={props.controlCol} ctrlOpacity={props.ctrlOpacity} controlSize={props.controlSize} endCol={props.endCol} endOpacity={props.endOpacity} endSize={props.endSize} highlight={props.highlight} setShowBtn={setShowBtn} rollingStart={props.rollingStart} setRollingStart={props.setRollingStart}/> } rollingStart={props.rollingStart} setRollingStart={props.setRollingStart} />
+                  <Grid size={size} mainWidth="530" id="grid" children={<PathFromArray size={size} path={props.path} stroke={props.stroke} strokeWidth={props.strokeWidth} strokeOpacity={props.strokeOpacity} fill={props.fill} fillOpacity={props.fillOpacity} setInfo={setInfo} setEndPoint={setEndPoint} setFirstCtrl={setFirstCtrl} setSecondCtrl={setSecondCtrl} controlCol={props.controlCol} ctrlOpacity={props.ctrlOpacity} controlSize={props.controlSize} endCol={props.endCol} endOpacity={props.endOpacity} endSize={props.endSize} highlight={props.highlight} setShowBtn={setShowBtn} endPoint={endPoint} firstCtrl={firstCtrl} secondCtrl={secondCtrl} /> } />
                 </View>
 
                 <View style={styles(props).configCommands}>
-                  <CommandPanel path={props.path} setPath={props.setPath} stroke={props.stroke} strokeWidth={props.strokeWidth} strokeOpacity={props.strokeOpacity} fill={props.fill} fillOpacity={props.fillOpacity} pathID={props.pathID} setPathID={props.setPathID} info={info} setInfo={setInfo} setEndPoint={setEndPoint} setFirstCtrl={setFirstCtrl} setSecondCtrl={setSecondCtrl} endPoint={endPoint} firstCtrl={firstCtrl} secondCtrl={secondCtrl} controlCol={props.controlCol} ctrlOpacity={props.ctrlOpacity} controlSize={props.controlSize} endCol={props.endCol} endOpacity={props.endOpacity} endSize={props.endSize} highlight={props.highlight} rollingStart={props.rollingStart} setRollingStart={props.setRollingStart} />
-                  <SidePanel info={info} setInfo={setInfo} firstCtrl={firstCtrl} setFirstCtrl={setFirstCtrl} secondCtrl={secondCtrl} setSecondCtrl={setSecondCtrl} endPoint={endPoint} setEndPoint={setEndPoint} path={props.path} setPath={props.setPath} pathID={props.pathID} setPathID={props.setPathID} stroke={props.stroke} strokeWidth={props.strokeWidth} strokeOpacity={props.strokeOpacity} fill={props.fill} fillOpacity={props.fillOpacity} controlCol={props.controlCol} ctrlOpacity={props.ctrlOpacity} controlSize={props.controlSize} endCol={props.endCol} endOpacity={props.endOpacity} endSize={props.endSize} highlight={props.highlight} showBtn={showBtn} rollingStart={props.rollingStart} setRollingStart={props.setRollingStart} />
+                  <View style={styles(props).boxRow}>
+                    <CommandPanel path={props.path} setPath={props.setPath} stroke={props.stroke} strokeWidth={props.strokeWidth} strokeOpacity={props.strokeOpacity} fill={props.fill} fillOpacity={props.fillOpacity} pathID={props.pathID} setPathID={props.setPathID} info={info} setInfo={setInfo} setEndPoint={setEndPoint} setFirstCtrl={setFirstCtrl} setSecondCtrl={setSecondCtrl} endPoint={endPoint} firstCtrl={firstCtrl} secondCtrl={secondCtrl} controlCol={props.controlCol} ctrlOpacity={props.ctrlOpacity} controlSize={props.controlSize} endCol={props.endCol} endOpacity={props.endOpacity} endSize={props.endSize} highlight={props.highlight} fullCommand={fullCommand}/>
+                    <NodePanel path={props.path} controlCol={props.controlCol} endCol={props.endCol}/>
+                  </View>
+                  <SidePanel info={info} setInfo={setInfo} firstCtrl={firstCtrl} setFirstCtrl={setFirstCtrl} secondCtrl={secondCtrl} setSecondCtrl={setSecondCtrl} endPoint={endPoint} setEndPoint={setEndPoint} path={props.path} setPath={props.setPath} pathID={props.pathID} setPathID={props.setPathID} stroke={props.stroke} strokeWidth={props.strokeWidth} strokeOpacity={props.strokeOpacity} fill={props.fill} fillOpacity={props.fillOpacity} controlCol={props.controlCol} ctrlOpacity={props.ctrlOpacity} controlSize={props.controlSize} endCol={props.endCol} endOpacity={props.endOpacity} endSize={props.endSize} highlight={props.highlight} showBtn={showBtn} />
                 </View>
               </View>
             </View>
@@ -137,6 +141,10 @@ const styles = (props) => StyleSheet.create({
       justifyContent: 'center',
       width: 'fit-content',
       marginTop: 10
+    },
+    boxRow:{
+      display: 'flex',
+      flexDirection: 'row',
     },
     title:{
       fontFamily: 'Geologica-Bold',

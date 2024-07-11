@@ -53,7 +53,6 @@ const Q = (props) => {
             controlPoints: [{key: 'dx1', value:props.firstCtrl.x}, {key: 'dy1', value:props.firstCtrl.y}],
             endPoint: {x: props.endPoint.x,y: props.endPoint.y}
         } 
-        console.log(qPath)
         const newPath = [...props.path, qPath]
         props.setPath(newPath)
         props.setPathID(props.pathID+1)
