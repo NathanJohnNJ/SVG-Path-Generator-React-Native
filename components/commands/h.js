@@ -46,7 +46,6 @@ const H = (props) => {
         props.setPath(newPath)
         props.setPathID(props.pathID+1)  
         setModalIsOpen(false)
-        console.log(hPath)
     }
 
     return (

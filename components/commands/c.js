@@ -8,8 +8,6 @@ import Help from '../help';
 const C = (props) => {
     const [modalIsOpen, setModalIsOpen] = useState(false);
     const [hover, setHover] = useState({sub: false, can: false, c: false, dx1:false, dy1: false, dx2: false, dy2: false, x: false, y:false});
-    
-    
     const startX = props.path[props.pathID].endPoint.x + props.path[props.pathID].startPoint.x;
     const startY = props.path[props.pathID].endPoint.y + props.path[props.pathID].startPoint.y;
 
@@ -41,7 +39,7 @@ const C = (props) => {
         setHover({sub: false, can: false, c: false, dx1:false, dy1: false, dx2: false, dy2: false, x: false, y:false})
     }
 
-    const first = Command = {
+    const first = {
         type:'c',
         id: props.pathID+1,
         startPoint: {x: 50, y: 50},

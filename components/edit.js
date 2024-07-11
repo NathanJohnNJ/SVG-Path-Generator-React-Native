@@ -81,85 +81,78 @@ const Edit = (props) => {
                 type: props.info.type,
                 id: props.info.id,
                 startPoint: {x: props.info.startPoint.x, y: props.info.startPoint.y},
-                endPoint: {x: props.endPoint.x, y: props.info.startPoint.y},
+                endPoint: {x: props.endPoint.x, y: 0},
             };
         } else if(props.info.type === "v"){
             newInfo = {
                 type: props.info.type,
                 id: props.info.id,
                 startPoint: {x: props.info.startPoint.x, y: props.info.startPoint.y},
-                endPoint: {x: props.info.startPoint.x, y: props.endPoint.y},
+                endPoint: {x: 0, y: props.endPoint.y},
             };
         } 
-        console.log(newInfo)
+        
         let newPath = [];
         props.path.map((command, i)=> {
-            const lastCommand = props.path[i-1];
+            const lastCommand = newPath[i-1];
             let newCommand;
             if(i>props.info.id){
-                console.log("after command, adjusting...")
                 if(command.type==="l" || command.type==="t"){
                     newCommand = {
                         type: command.type,
                         id: command.id,
-                        startPoint: {x:lastCommand.startPoint.x+props.endPoint.x, y:lastCommand.startPoint.y+props.endPoint.y},
+                        startPoint: {x:lastCommand.endPoint.x + lastCommand.startPoint.x, y:lastCommand.endPoint.y + lastCommand.startPoint.y},
                         endPoint: {x:command.endPoint.x, y:command.endPoint.y}
                     }
                 } else if(command.type==="v"){
                     newCommand = {
                         type: command.type,
                         id: command.id,
-                        startPoint: {x:lastCommand.startPoint.x+props.endPoint.x, y:lastCommand.startPoint.y+props.endPoint.y},
-                        endPoint: {x:command.startPoint.x, y:command.endPoint.y}
+                        startPoint: {x:lastCommand.endPoint.x + lastCommand.startPoint.x, y:lastCommand.endPoint.y + lastCommand.startPoint.y},
+                        endPoint: {x:0, y:command.endPoint.y}
                     }
                 } else if(command.type==="h"){
                     newCommand = {
                         type: command.type,
                         id: command.id,
-                        startPoint: {x:lastCommand.startPoint.x+props.endPoint.x, y:lastCommand.startPoint.y+props.endPoint.y},
-                        endPoint: {x:command.endPoint.x, y:command.startPoint.y}
+                        startPoint: {x:lastCommand.endPoint.x + lastCommand.startPoint.x, y:lastCommand.endPoint.y + lastCommand.startPoint.y},
+                        endPoint: {x:command.endPoint.x, y:0}
                     }
                 } else if (command.type==="q"){
                     newCommand = {
                         type: command.type,
                         id: command.id,
-                        startPoint: {x:lastCommand.startPoint.x+props.endPoint.x, y:lastCommand.startPoint.y+props.endPoint.y},
-                        controlPoints: [{key: 'dx1', value:props.firstCtrl.x}, {key: 'dy1', value:props.firstCtrl.y}],
+                        startPoint: {x:lastCommand.endPoint.x + lastCommand.startPoint.x, y:lastCommand.endPoint.y + lastCommand.startPoint.y},
+                        controlPoints: [{key: 'dx1', value:command.controlPoints[0].value}, {key: 'dy1', value:command.controlPoints[1].value}],
                         endPoint: {x:command.endPoint.x, y:command.endPoint.y}
                     }
                 } else if (command.type==="s"){
                     newCommand = {
                         type: command.type,
                         id: command.id,
-                        startPoint: {x:lastCommand.startPoint.x+props.endPoint.x, y:lastCommand.startPoint.y+props.endPoint.y},
-                        controlPoints: [{key: 'dx2', value:props.secondCtrl.x}, {key: 'dy2', value:props.secondCtrl.y}],
+                        startPoint: {x:lastCommand.endPoint.x + lastCommand.startPoint.x, y:lastCommand.endPoint.y + lastCommand.startPoint.y},
+                        controlPoints: [{key: 'dx2', value:command.controlPoints[0].value}, {key: 'dy2', value:command.controlPoints[1].value}],
                         endPoint: {x:command.endPoint.x, y:command.endPoint.y}
                     }
                 } else if (command.type==="c"){
                     newCommand = {
                         type: command.type,
                         id: command.id,
-                        startPoint: {x:lastCommand.startPoint.x+props.endPoint.x, y:lastCommand.startPoint.y+props.endPoint.y},
-                        controlPoints: [{key: 'dx1', value:props.firstCtrl.x}, {key: 'dy1', value:props.firstCtrl.y}, {key: 'dx2', value:props.secondCtrl.x}, {key: 'dy2', value:props.secondCtrl.y}],
+                        startPoint: {x:lastCommand.endPoint.x + lastCommand.startPoint.x, y:lastCommand.endPoint.y + lastCommand.startPoint.y},
+                        controlPoints: [{key: 'dx1', value:command.controlPoints[0].value}, {key: 'dy1', value:command.controlPoints[1].value}, {key: 'dx2', value:command.controlPoints[2].value}, {key: 'dy2', value:command.controlPoints[3].value}],
                         endPoint: {x:command.endPoint.x, y:command.endPoint.y}
                     }
                 }
-                // Object.assign(command, newCommand)
                 newPath.push(newCommand)
             } else if (i < props.info.id){
                 newPath.push(command)
-                console.log('before command, dont need to adjust')
             } else {
                 newPath.push(newInfo)
-                console.log('edited command, adding new figures')
             }
         });
         props.setPath(newPath)
         setModalIsOpen(false) 
     }
-    useEffect(()=>{
-        console.log(props.showBtn)
-    }, [props.showBtn])
     
     return(
         <View style={styles(props).outerContainer}>
