@@ -26,7 +26,7 @@ const Z = (props) => {
         setHover(newHover)
     }
     function resetHover(){
-        setHover({export: false, back: false, z:false})
+        setHover({sub: false, can: false, z:false})
     }
     
     function addToPath(){
@@ -48,7 +48,7 @@ const Z = (props) => {
             animationType="slide"
             transparent={false}
             visible={modalIsOpen}
-            onReluestClose={closeModal}
+            onRequestClose={closeModal}
             >
                 <Text style={styles(props).title}>Z Command - Close Path</Text>
                 <Text style={styles(props).text}>

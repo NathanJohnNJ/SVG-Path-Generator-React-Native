@@ -20,54 +20,51 @@ const GridWithDrag = (props) => {
         if (selectedElement) {
             evt.preventDefault();
             let coord = getMousePosition(evt);
-            let xCoord = Math.round( ( coord.x - offsetX ))
-            let yCoord = Math.round( ( coord.y - offsetY ))
+            let xCoord = Math.round( ( coord.x - offsetX ));
+            let yCoord = Math.round( ( coord.y - offsetY ));
             if(props.path.type==='h'){
                 selectedElement.setAttributeNS(null, "cx", xCoord);
-                selectedElement.setAttributeNS(null, 'r', props.endSize*1.5) 
-                props.setEndPoint({x:xCoord-50, y:0})
-                props.hoverFunc('h');
-                document.getElementById('createGrid').removeChild(document.getElementById('path'))
-                drawPath()
+                selectedElement.setAttributeNS(null, 'r', props.endSize*1.5);
+                props.setEndPoint({x:xCoord-50, y:0});
+                document.getElementById('createGrid').removeChild(document.getElementById('path'));
+                drawPath();
             }else if (props.path.type==="v"){
                 selectedElement.setAttributeNS(null, "cy", yCoord);
-                selectedElement.setAttributeNS(null, 'r', props.endSize*1.5) 
-                props.setEndPoint({x:0, y:yCoord-100})
-                props.hoverFunc('v');
-                document.getElementById('createGrid').removeChild(document.getElementById('path'))
-                drawPath()
+                selectedElement.setAttributeNS(null, 'r', props.endSize*1.5);
+                props.setEndPoint({x:0, y:yCoord-100});
+                document.getElementById('createGrid').removeChild(document.getElementById('path'));
+                drawPath();
             }else if (props.path.type==="t"){
                 selectedElement.setAttributeNS(null, "cy", yCoord);
-                selectedElement.setAttributeNS(null, 'r', props.endSize*1.5) 
-                props.setEndPoint({x:xCoord-50-props.fullPath[props.pathID].endPoint.x, y:yCoord-100-props.fullPath[props.pathID].endPoint.y})
-                props.hoverFunc('t');
-                document.getElementById('createGrid').removeChild(document.getElementById('path'))
-                drawPath()
+                selectedElement.setAttributeNS(null, 'r', props.endSize*1.5);
+                props.setEndPoint({x:xCoord-50-props.fullPath[props.pathID].endPoint.x, y:yCoord-100-props.fullPath[props.pathID].endPoint.y});
+                document.getElementById('createGrid').removeChild(document.getElementById('path'));
+                drawPath();
             }else{
                 selectedElement.setAttributeNS(null, "cx", xCoord);
                 selectedElement.setAttributeNS(null, "cy", yCoord);  
                 if(selectedElement.id==="firstCtrl"){
-                    selectedElement.setAttributeNS(null, 'r', props.controlSize*1.5) 
-                    props.setFirstCtrl({x:xCoord-50, y:yCoord-100})
-                    props.hoverFunc('dx1')
-                    props.hoverFunc('dy1')
-                    document.getElementById('createGrid').removeChild(document.getElementById('path'))
-                    drawPath()
+                    selectedElement.setAttributeNS(null, 'r', props.controlSize*1.5);
+                    props.setFirstCtrl({x:xCoord-50, y:yCoord-100});
+                    props.hoverFunc('dx1');
+                    props.hoverFunc('dy1');
+                    document.getElementById('createGrid').removeChild(document.getElementById('path'));
+                    drawPath();
                 }else if(selectedElement.id==="secondCtrl"){
-                    selectedElement.setAttributeNS(null, 'r', props.controlSize*1.5) 
-                    props.setSecondCtrl({x:xCoord-50, y:yCoord-100})
-                    props.hoverFunc('dx2')
-                    props.hoverFunc('dy2')
-                    document.getElementById('createGrid').removeChild(document.getElementById('path'))
-                    drawPath()
+                    selectedElement.setAttributeNS(null, 'r', props.controlSize*1.5);
+                    props.setSecondCtrl({x:xCoord-50, y:yCoord-100});
+                    props.hoverFunc('dx2');
+                    props.hoverFunc('dy2');
+                    document.getElementById('createGrid').removeChild(document.getElementById('path'));
+                    drawPath();
                 }
                 else{
-                    props.setEndPoint({x:xCoord-50, y:yCoord-100})
-                    selectedElement.setAttributeNS(null, 'r', props.endSize*1.5) 
+                    props.setEndPoint({x:xCoord-50, y:yCoord-100});
+                    selectedElement.setAttributeNS(null, 'r', props.endSize*1.5);
                     props.hoverFunc('x');
                     props.hoverFunc('y');
-                    document.getElementById('createGrid').removeChild(document.getElementById('path'))
-                    drawPath()
+                    document.getElementById('createGrid').removeChild(document.getElementById('path'));
+                    drawPath();
                 }
             }
         }
