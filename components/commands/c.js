@@ -43,7 +43,7 @@ const C = (props) => {
         type:'c',
         id: props.pathID+1,
         startPoint: {x: 50, y: 50},
-        controlPoints: [{key: 'dx1', value:25}, {key: 'dy1', value:50}, {key: 'dx2', value:75}, {key: 'dy2', value:50}],
+        controlPoints: [{key: 'dx1', value:25, id: props.pathID+1}, {key: 'dy1', value:50, id: props.pathID+1}, {key: 'dx2', value:75, id: props.pathID+1}, {key: 'dy2', value:50, id: props.pathID+1}],
         endPoint: {x: 100, y: 0}
     }
     const [defaultPath, setDefaultPath] = useState(first);
@@ -54,7 +54,7 @@ const C = (props) => {
         type: 'c',
         id: props.pathID+1,
         startPoint: {x: startX, y: startY},
-        controlPoints: [{key: 'dx1', value:props.firstCtrl.x}, {key: 'dy1', value:props.firstCtrl.y}, {key: 'dx2', value:props.secondCtrl.x}, {key: 'dy2', value:props.secondCtrl.y}],
+        controlPoints: [{key: 'dx1', value:props.firstCtrl.x, id: props.pathID+1}, {key: 'dy1', value:props.firstCtrl.y, id: props.pathID+1}, {key: 'dx2', value:props.secondCtrl.x, id: props.pathID+1}, {key: 'dy2', value:props.secondCtrl.y, id: props.pathID+1}],
         endPoint: {x: props.endPoint.x,y: props.endPoint.y}
         };
         const newPath = [...props.path, cPath];

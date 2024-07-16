@@ -7,6 +7,7 @@ import { StyleSheet, Text, View } from 'react-native';
 // import PathFromArray from './pathWithNodes';
 import PathFromArray from './pathFromArray';
 import NodePanel from './panels/nodePanel';
+import Test from './panels/testDrag';
 const Main = (props) => {
 
     const blank = {
@@ -96,7 +97,7 @@ const Main = (props) => {
                 <View style={styles(props).configCommands}>
                   <View style={styles(props).boxRow}>
                     <CommandPanel path={props.path} setPath={props.setPath} stroke={props.stroke} strokeWidth={props.strokeWidth} strokeOpacity={props.strokeOpacity} fill={props.fill} fillOpacity={props.fillOpacity} pathID={props.pathID} setPathID={props.setPathID} info={info} setInfo={setInfo} setEndPoint={setEndPoint} setFirstCtrl={setFirstCtrl} setSecondCtrl={setSecondCtrl} endPoint={endPoint} firstCtrl={firstCtrl} secondCtrl={secondCtrl} controlCol={props.controlCol} ctrlOpacity={props.ctrlOpacity} controlSize={props.controlSize} endCol={props.endCol} endOpacity={props.endOpacity} endSize={props.endSize} highlight={props.highlight} fullCommand={fullCommand}/>
-                    <NodePanel path={props.path} controlCol={props.controlCol} endCol={props.endCol}/>
+                    <NodePanel path={props.path} fullAbsCommand={fullAbsCommand} controlCol={props.controlCol} endCol={props.endCol} fill={props.fill} fillOpacity={props.fillOpacity} stroke={props.stroke} strokeWidth={props.strokeWidth} strokeOpacity={props.strokeOpacity}/>
                   </View>
                   <SidePanel info={info} setInfo={setInfo} firstCtrl={firstCtrl} setFirstCtrl={setFirstCtrl} secondCtrl={secondCtrl} setSecondCtrl={setSecondCtrl} endPoint={endPoint} setEndPoint={setEndPoint} path={props.path} setPath={props.setPath} pathID={props.pathID} setPathID={props.setPathID} stroke={props.stroke} strokeWidth={props.strokeWidth} strokeOpacity={props.strokeOpacity} fill={props.fill} fillOpacity={props.fillOpacity} controlCol={props.controlCol} ctrlOpacity={props.ctrlOpacity} controlSize={props.controlSize} endCol={props.endCol} endOpacity={props.endOpacity} endSize={props.endSize} highlight={props.highlight} showBtn={showBtn} />
                 </View>
@@ -107,6 +108,7 @@ const Main = (props) => {
               <Text numberOfLines={10} style={styles(props).fullPathText} >Relative path: "{fullCommand}"</Text>
               <Text numberOfLines={10} style={styles(props).fullPathText} >Absolute path: "{fullAbsCommand}"</Text>
               </View>
+              <Test />
         </View>
     )
 };

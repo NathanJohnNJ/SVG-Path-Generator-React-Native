@@ -1,6 +1,7 @@
 import { StyleSheet, View, Modal, Pressable, Text } from 'react-native';
 import { useState, useEffect } from 'react';
 import FieldSet from '@njtd/react-native-fieldset';
+// import FullPath from '../fullPath';
 
 export const Checkbox = (props) => {
     
@@ -27,15 +28,15 @@ const NodePanel = (props) => {
     const [mousePosition,setMousePosition] = useState({ x: null, y: null });
     const useMousePosition = () => {
         
-        useEffect(() => {
+        // useEffect(() => {
           const updateMousePosition = ev => {
             setMousePosition({ x: ev.clientX, y: ev.clientY });
           };
           window.addEventListener('mousemove', updateMousePosition);
-          return () => {
-            window.removeEventListener('mousemove', updateMousePosition);
-          };
-        }, []);
+        //   return () => {
+        //     window.removeEventListener('mousemove', updateMousePosition);
+        //   };
+        // }, []);
         return mousePosition;
       };  
     
@@ -80,46 +81,71 @@ const NodePanel = (props) => {
         }
     }
     
+    function addNodes(){
+      const arr = props.fullAbsCommand.split(/([\D][0-9 ,]+)/)
+      let newArr = [];
+      arr.map((char, i) => {
+      if(char!=""){
+        newArr.push(char)
+      }
+    })
+    console.log(newArr)
+
+    }
     function checkHandler(){
-        setIsChecked(!isChecked)
+        setIsChecked(!isChecked);
+        let fullPath = 'M50,50';
+        if(!document.getElementById('pathGroup')){
+          const grid = document.getElementById('grid');
+          grid.removeChild(document.getElementById('fullPath'));
+        }else{
+          props.path.map((currentPath, i) => {
+            fullPath += currentPath.fullCommand
+            return fullPath
+          })
+        }
         !isChecked
         ?
-          props.path.map((command, i) => {
-              const svgns = "http://www.w3.org/2000/svg"
-              const grid = document.getElementById('grid');
-              grid.addEventListener('mousemove', (evt)=>drag(evt));
-              grid.addEventListener('mouseleave', endDrag);
-              if (command.type==="q" || command.type ==="s"){
-                  const node1 = document.createElementNS(svgns, 'circle');
-                  node1.setAttributeNS(null, 'id', `controlNode${command.id}`);
-                  node1.setAttributeNS(null, "cx", `${command.controlPoints[0].value+command.startPoint.x}`);
-                  node1.setAttributeNS(null, "cy", `${command.controlPoints[1].value+command.startPoint.y}`);
-                  node1.setAttributeNS(null, "r", '5');
-                  node1.addEventListener('mousedown', (evt)=>startDrag(evt));
-                  node1.addEventListener('mouseleave', endDrag);
-                  node1.classList.add('draggable');
-                  grid.appendChild(node1);
-              } else if(command.type==="c"){
-                  const node1 = document.createElementNS(svgns, 'circle');
-                  node1.setAttributeNS(null, 'id', `controlNode${command.id}`);
-                  node1.setAttributeNS(null, "cx", `${command.controlPoints[0].value+command.startPoint.x}`);
-                  node1.setAttributeNS(null, "cy", `${command.controlPoints[1].value+command.startPoint.y}`);
-                  node1.setAttributeNS(null, "r", '5');
-                  node1.addEventListener('mousedown', (evt)=>startDrag(evt));
-                  node1.addEventListener('mouseleave', endDrag);
-                  node1.classList.add('draggable');
-                  grid.appendChild(node1);
-                  const node2 = document.createElementNS(svgns, 'circle');
-                  node2.setAttributeNS(null, 'id', `control2Node${command.id}`);
-                  node2.setAttributeNS(null, 'cx',`${command.controlPoints[2].value+command.startPoint.x}`);
-                  node2.setAttributeNS(null, "cy", `${command.controlPoints[3].value+command.startPoint.y}`);
-                  node2.setAttributeNS(null, "r", '5');
-                  node2.addEventListener('mousedown', (evt)=>startDrag(evt));
-                  node2.addEventListener('mouseleave', endDrag);
-                  node2.classList.add('draggable');
-                  grid.appendChild(node2);
-              }
-          })
+        addNodes()
+          // props.path.map((command, i) => {
+          //     const svgns = "http://www.w3.org/2000/svg"
+          //     const grid = document.getElementById('grid');
+          //     grid.addEventListener('mousemove', (evt)=>drag(evt));
+          //     grid.addEventListener('mouseup', endDrag);
+          //     if (command.type==="q" || command.type ==="s"){
+          //         const node1 = document.createElementNS(svgns, 'circle');
+          //         node1.setAttributeNS(null, 'id', `controlNode${command.id}`);
+          //         node1.setAttributeNS(null, "cx", `${command.controlPoints[0].value+command.startPoint.x}`);
+          //         node1.setAttributeNS(null, "cy", `${command.controlPoints[1].value+command.startPoint.y}`);
+          //         node1.setAttributeNS(null, "r", '5');
+          //         node1.addEventListener('mousedown', (evt)=>startDrag(evt));
+          //         node1.addEventListener('mousemove', (evt)=>drag(evt));
+          //         node1.addEventListener('mouseleave', endDrag);
+          //         node1.classList.add('draggable');
+          //         grid.appendChild(node1);
+          //     } else if(command.type==="c"){
+          //         const node1 = document.createElementNS(svgns, 'circle');
+          //         node1.setAttributeNS(null, 'id', `controlNode${command.id}`);
+          //         node1.setAttributeNS(null, "cx", `${command.controlPoints[0].value+command.startPoint.x}`);
+          //         node1.setAttributeNS(null, "cy", `${command.controlPoints[1].value+command.startPoint.y}`);
+          //         node1.setAttributeNS(null, "r", '5');
+          //         node1.addEventListener('mousedown', (evt)=>startDrag(evt));
+          //         node1.addEventListener('mousemove', (evt)=>drag(evt));
+          //         node1.addEventListener('mouseleave', endDrag);
+          //         node1.classList.add('draggable');
+          //         grid.appendChild(node1);
+          //         const node2 = document.createElementNS(svgns, 'circle');
+          //         node2.setAttributeNS(null, 'id', `control2Node${command.id}`);
+          //         node2.setAttributeNS(null, 'cx',`${command.controlPoints[2].value+command.startPoint.x}`);
+          //         node2.setAttributeNS(null, "cy", `${command.controlPoints[3].value+command.startPoint.y}`);
+          //         node2.setAttributeNS(null, "r", '5');
+          //         node2.addEventListener('mousedown', (evt)=>startDrag(evt));
+          //         node2.addEventListener('mousemove', (evt)=>drag(evt));
+          //         node2.addEventListener('mouseleave', endDrag);
+          //         node2.classList.add('draggable');
+          //         grid.appendChild(node2);
+          //     }
+          // })
         :
           props.path.map((command,i) => {
               const grid = document.getElementById('grid');
@@ -156,24 +182,6 @@ const NodePanel = (props) => {
               grid.removeChild(document.getElementById(`endNode${command.id}`));
           })
       }
-    
-    const [modalIsOpen, setModalIsOpen] = useState(false);
-    const [hover, setHover] = useState({sub: false, can: false, edit:false, change:false, com:false, dx1: false, dy1: false, dx2: false, dy2: false, x: false, y:false});
-
-    function hoverFunc(i){
-        const newHover = { ...hover, [i]: true}
-        setHover(newHover)
-    }
-    function resetHover(){
-        setHover({sub: false, can: false, edit:false, change:false, com:false, dx1: false, dy1: false, dx2: false, dy2: false, x: false, y:false})
-    }
-    function openModal(){
-        setModalIsOpen(true)
-    }
-    function closeModal(){
-        setModalIsOpen(false)
-    }
-
 
     return(
         <View style={styles(props).nodePanel}>
@@ -194,14 +202,6 @@ const NodePanel = (props) => {
                         </tbody>
                     </table>
             </FieldSet>
-            <Modal
-            animationType="slide"
-            transparent={false}
-            visible={modalIsOpen}
-            onRequestClose={closeModal}
-            >
-                
-            </Modal>
         </View>
     )
 }

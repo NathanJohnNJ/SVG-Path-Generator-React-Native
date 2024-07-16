@@ -63,7 +63,7 @@ const L = (props) => {
             animationType="slide"
             transparent={false}
             visible={modalIsOpen}
-            onReluestClose={closeModal}
+            onRequestClose={closeModal}
             >
                 <View style={styles(props).row}>
                     <Presets pathID={props.pathID} defaultPath={defaultPath} setDefaultPath={setDefaultPath} stroke={props.stroke} strokeWidth={props.strokeWidth} setFirstCtrl={props.setFirstCtrl} setEndPoint={props.setEndPoint} firstCtrl={props.firstCtrl} endPoint={props.endPoint} fill={props.fill} fillOpacity={props.fillOpacity} strokeOpacity={props.strokeOpacity} />

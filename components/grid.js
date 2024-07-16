@@ -1,5 +1,6 @@
 import { StyleSheet, View } from 'react-native';
 import Svg, { G, Rect, Defs, Pattern, Line } from "react-native-svg";
+import Draggable from './draggable';
 
 
 const Grid = (props) => {
@@ -37,6 +38,7 @@ const Grid = (props) => {
                 <Rect fill="url(#ThickLinePattern)" stroke="#bbb" strokeWidth="5" x="0" y="0" width={props.size} height={props.size} />
                 </G>
                 {props.children}
+                {/* <Draggable initialX="150" initialY="150" /> */}
             </Svg>
         </View>
     )

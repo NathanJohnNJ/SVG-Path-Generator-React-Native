@@ -11,14 +11,15 @@
     "@njtd/react-native-fieldset": "^1.0.7",
     "@react-native/assets-registry": "^0.74.85",
     "@vercel/analytics": "^1.3.1",
-    "expo": "^51.0.19",
-    "expo-font": "^12.0.7",
+    "expo": "^51.0.20",
+    "expo-font": "^12.0.8",
     "react": "^18.3.1",
+    "react-beautiful-dnd": "^13.1.1",
     "react-dom": "^18.3.1",
     "react-native": "^0.74.3",
     "react-native-gesture-handler": "^2.17.1",
     "react-native-reanimated": "^3.14.0",
-    "react-native-svg": "^15.3.0",
+    "react-native-svg": "^15.4.0",
     "reanimated-color-picker": "^3.0.4"
   },
   "devDependencies": {

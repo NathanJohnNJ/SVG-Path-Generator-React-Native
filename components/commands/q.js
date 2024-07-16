@@ -40,7 +40,7 @@ const Q = (props) => {
         type: 'q',
         id: props.pathID+1,
         startPoint: {x: 50, y: 50},
-        controlPoints: [{key: 'dx1', value:25}, {key: 'dy1', value:50}],
+        controlPoints: [{key: 'dx1', value:25, id: props.pathID+1}, {key: 'dy1', value:50, id: props.pathID+1}],
         endPoint: {x:50, y: 0}
     }
     const [defaultPath, setDefaultPath] = useState(first);

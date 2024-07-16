@@ -1,0 +1,1 @@
+ {"depcheck": {"ignoreMatches": ["@react-native/assets-registry", "@expo/metro-runtime"]}}

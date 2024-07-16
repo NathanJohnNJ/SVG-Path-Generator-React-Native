@@ -55,7 +55,7 @@ const H = (props) => {
             animationType="slide"
             transparent={false}
             visible={modalIsOpen}
-            onReluestClose={closeModal}
+            onRequestClose={closeModal}
             >
                 <Text style={styles(props).title}>New H Command</Text>
                 

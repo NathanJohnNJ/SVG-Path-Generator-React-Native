@@ -55,7 +55,7 @@ const V = (props) => {
             animationType="slide"
             transparent={false}
             visible={modalIsOpen}
-            onReluestClose={closeModal}
+            onRequestClose={closeModal}
             >
                 <Text style={styles(props).title}>New V Command</Text>
                 
